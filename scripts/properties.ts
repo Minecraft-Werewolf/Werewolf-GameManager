@@ -15,7 +15,7 @@ export type SemVer = {
  */
 
 export const properties = {
-    id: "Werewolf-GameManager", // a-z & 0-9 - _
+    id: "werewolf-gamemanager", // a-z & 0-9 - _
     metadata: { 
         /** 製作者の名前 */
         authors: [
@@ -65,7 +65,8 @@ export const properties = {
         "kairo": "1.0.0-dev.1" // "kairo": "1.0.0"
     },
     tags: [
-        // "stable",
+        "official",
+        "stable",
     ],
 }
 
