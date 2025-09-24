@@ -1,4 +1,5 @@
 import { Kairo } from "./Kairo/index";
+import "./GameManager/index";
 
 async function main(): Promise<void> {
     Kairo.init(); // client
