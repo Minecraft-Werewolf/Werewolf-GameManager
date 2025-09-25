@@ -13,4 +13,8 @@ export class WerewolfGameManager {
         }
         return this.instance;
     }
+
+    public roleRegistration(args: string[]): void {
+        this.roleRegistrationReceiver.roleRegistration(args);
+    }
 }

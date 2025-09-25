@@ -5,4 +5,8 @@ export class RoleRegistrationReceiver {
     public static create(werewolfGameManager: WerewolfGameManager): RoleRegistrationReceiver {
         return new RoleRegistrationReceiver(werewolfGameManager);
     }
+
+    public roleRegistration(args: string[]): void {
+        
+    }
 }
