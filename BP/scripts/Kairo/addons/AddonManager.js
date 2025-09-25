@@ -1,4 +1,4 @@
-import { ScriptEventCommandMessageAfterEvent, system } from "@minecraft/server";
+import { system } from "@minecraft/server";
 import { AddonReceiver } from "./router/AddonReceiver";
 export class AddonManager {
     constructor(kairo) {
