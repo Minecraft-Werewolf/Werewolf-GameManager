@@ -36,7 +36,8 @@ Kairo.onScriptEvent = (message: string) => {
 
     switch (command) {
         case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION:
-            werewolfGameManager.roleRegistration(args);
+            // registrationRoles(addonId: string, roles: Role[])
+            werewolfGameManager.registrationRoles(args);
             break;
         default:
             break;
