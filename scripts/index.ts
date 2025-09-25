@@ -21,7 +21,7 @@ Kairo.onDeactivate = () => {
      */
 };
 
-Kairo.onScriptEvent = () => {
+Kairo.onScriptEvent = (message: string) => {
     /**
      * ここにはアドオンが scriptEvent を受け取った際の処理を書く
      * 利用できるプロパティは { message } のみ
