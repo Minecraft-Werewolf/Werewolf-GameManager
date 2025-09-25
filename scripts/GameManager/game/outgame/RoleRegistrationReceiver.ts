@@ -7,6 +7,13 @@ export class RoleRegistrationReceiver {
     }
 
     public roleRegistration(args: string[]): void {
-        
+        args.forEach((arg: string) =>{
+            try {
+                const data = JSON.parse(arg);
+                
+            } catch (e) {
+
+            }
+        });
     }
 }
