@@ -54,7 +54,8 @@ export const properties = {
     ],
     /** 前提アドオン */
     requiredAddons: {
-        "kairo": "1.0.0-dev.1" // "kairo": "1.0.0"
+        "kairo": "1.0.0-dev.1", // "kairo": "1.0.0"
+        "kairo-datavault": "1.0.0-dev.1"
     },
     tags: [
         "official",

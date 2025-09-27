@@ -1,7 +1,10 @@
+import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegistrationReceiver } from "./outgame/RoleRegistrationReceiver";
 export class WerewolfGameManager {
     constructor() {
+        this.roles = new Map();
         this.roleRegistrationReceiver = RoleRegistrationReceiver.create(this);
+        this.roleDataValidator = RoleDataValidator.create(this);
     }
     static getInstance() {
         if (this.instance === null) {
@@ -9,8 +12,14 @@ export class WerewolfGameManager {
         }
         return this.instance;
     }
-    roleRegistration(args) {
-        this.roleRegistrationReceiver.roleRegistration(args);
+    registrationRoles(args) {
+        this.roleRegistrationReceiver.registrationRoles(args);
+    }
+    isRole(data) {
+        return this.roleDataValidator.isRole(data);
+    }
+    setRoles(addonId, roles) {
+        this.roles.set(addonId, roles);
     }
 }
 WerewolfGameManager.instance = null;
