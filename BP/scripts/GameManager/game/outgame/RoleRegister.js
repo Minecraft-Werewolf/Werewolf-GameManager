@@ -1,11 +1,11 @@
 import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import { WerewolfGameManager } from "../WerewolfGameManager";
-export class RoleRegistrationReceiver {
+export class RoleRegister {
     constructor(werewolfGameManager) {
         this.werewolfGameManager = werewolfGameManager;
     }
     static create(werewolfGameManager) {
-        return new RoleRegistrationReceiver(werewolfGameManager);
+        return new RoleRegister(werewolfGameManager);
     }
     registrationRoles(args) {
         const roles = args.slice(1).map((arg) => {
