@@ -1,14 +1,17 @@
 import type { Role } from "../data/roles";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
-import { RoleRegistrationReceiver } from "./outgame/RoleRegistrationReceiver";
+import { RoleRegister } from "./outgame/RoleRegister";
+import { ScriptEventReceiver } from "./ScriptEventReceiver";
 
 export class WerewolfGameManager {
-    private readonly roleRegistrationReceiver: RoleRegistrationReceiver;
+    private readonly scriptEventReceiver: ScriptEventReceiver;
+    private readonly roleRegistrationReceiver: RoleRegister;
     private readonly roleDataValidator: RoleDataValidator;
     private readonly roles: Map<string, Role[]> = new Map();
 
     private constructor() {
-        this.roleRegistrationReceiver = RoleRegistrationReceiver.create(this);
+        this.scriptEventReceiver = ScriptEventReceiver.create(this);
+        this.roleRegistrationReceiver = RoleRegister.create(this);
         this.roleDataValidator = RoleDataValidator.create(this);
     }
     private static instance: WerewolfGameManager | null = null;
@@ -30,5 +33,9 @@ export class WerewolfGameManager {
 
     public setRoles(addonId: string, roles: Role[]): void {
         this.roles.set(addonId, roles);
+    }
+
+    public handleOnScriptEvent(message: string): void {
+        this.scriptEventReceiver.handleOnScriptEvent(message);
     }
 }
