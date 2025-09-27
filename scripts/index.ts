@@ -1,7 +1,6 @@
 import { Kairo } from "./Kairo/index";
-import "./GameManager/index";
 import { SCRIPT_EVENT_COMMAND_IDS } from "./GameManager/constants";
-import { werewolfGameManager } from "./GameManager/index";
+import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
 
 async function main(): Promise<void> {
     Kairo.init(); // client
@@ -37,7 +36,7 @@ Kairo.onScriptEvent = (message: string) => {
     switch (command) {
         case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION:
             // registrationRoles(addonId: string, roles: Role[])
-            werewolfGameManager.registrationRoles(args);
+            WerewolfGameManager.getInstance().registrationRoles(args);
             break;
         default:
             break;

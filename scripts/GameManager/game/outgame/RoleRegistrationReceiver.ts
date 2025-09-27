@@ -1,7 +1,6 @@
-import { werewolfGameManager } from "../..";
 import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import type { Role } from "../../data/roles";
-import type { WerewolfGameManager } from "../WerewolfGameManager";
+import { WerewolfGameManager } from "../WerewolfGameManager";
 
 export class RoleRegistrationReceiver {
     private constructor(private readonly werewolfGameManager: WerewolfGameManager) {}
@@ -18,7 +17,7 @@ export class RoleRegistrationReceiver {
                 ConsoleManager.error("Failed to parse role registration data: Invalid JSON format.");
             }
 
-            if (data && werewolfGameManager.isRole(data)) {
+            if (data && WerewolfGameManager.getInstance().isRole(data)) {
                 return data as Role;
             }
             return null;

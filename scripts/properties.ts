@@ -19,7 +19,7 @@ export const properties = {
     metadata: { 
         /** 製作者の名前 */
         authors: [
-            //"shizuku86"
+            "shizuku86"
         ]
     },
     header: {
