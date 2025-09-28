@@ -2,10 +2,10 @@ import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import type { Role } from "../../data/roles";
 import { WerewolfGameManager } from "../WerewolfGameManager";
 
-export class RoleRegistrationReceiver {
+export class RoleRegister {
     private constructor(private readonly werewolfGameManager: WerewolfGameManager) {}
-    public static create(werewolfGameManager: WerewolfGameManager): RoleRegistrationReceiver {
-        return new RoleRegistrationReceiver(werewolfGameManager);
+    public static create(werewolfGameManager: WerewolfGameManager): RoleRegister {
+        return new RoleRegister(werewolfGameManager);
     }
 
     public registrationRoles(args: string[]): void {

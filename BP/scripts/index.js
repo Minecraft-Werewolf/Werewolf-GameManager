@@ -1,5 +1,4 @@
 import { Kairo } from "./Kairo/index";
-import { SCRIPT_EVENT_COMMAND_IDS } from "./GameManager/constants";
 import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
 async function main() {
     Kairo.init(); // client
@@ -25,15 +24,6 @@ Kairo.onScriptEvent = (message) => {
      * Write the handler logic for when the addon receives a scriptEvent
      * The only available property is { message }
      */
-    const command = message.split(" ")[0];
-    const args = message.split(" ").slice(1).join("").split(",");
-    switch (command) {
-        case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION:
-            // registrationRoles(addonId: string, roles: Role[])
-            WerewolfGameManager.getInstance().registrationRoles(args);
-            break;
-        default:
-            break;
-    }
+    WerewolfGameManager.getInstance().handleOnScriptEvent(message);
 };
 main();
