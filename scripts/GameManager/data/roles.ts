@@ -40,8 +40,6 @@ type RoleRef = RoleKey;
 
 export interface Role {
     id: string;
-    name: string;
-    description: string;
     faction: RoleFaction;
     count: {
         max?: number;
