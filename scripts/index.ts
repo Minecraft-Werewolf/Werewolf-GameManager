@@ -1,3 +1,4 @@
+import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
 import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
 
