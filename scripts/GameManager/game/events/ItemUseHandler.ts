@@ -1,28 +1,26 @@
-import { ItemUseAfterEvent, ItemUseBeforeEvent, world } from "@minecraft/server";
+import { ItemUseAfterEvent, ItemUseBeforeEvent, system, world } from "@minecraft/server";
 import type { EventManager } from "./EventManager";
+import { ITEM_USE, SCRIPT_EVENT_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants";
+import { BaseEventHandler } from "./BaseEventHandler";
 
-export class ItemUseHandler {
-    private constructor(private readonly eventManager: EventManager) {}
-
+export class ItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     public static create(eventManager: EventManager): ItemUseHandler {
         return new ItemUseHandler(eventManager);
     }
 
-    public subscribe(): void {
-        world.afterEvents.itemUse.subscribe(this.handleItemUseAfterEvent);
-        world.beforeEvents.itemUse.subscribe(this.handleItemUseBeforeEvent);
+    protected beforeEvent = world.beforeEvents.itemUse;
+    protected afterEvent = world.afterEvents.itemUse;
+
+    protected handleBefore(ev: ItemUseBeforeEvent): void {
+        // 使用前処理
     }
 
-    public unsubscribe(): void {
-        world.afterEvents.itemUse.unsubscribe(this.handleItemUseAfterEvent);
-        world.beforeEvents.itemUse.unsubscribe(this.handleItemUseBeforeEvent);
-    }
+    protected handleAfter(ev: ItemUseAfterEvent): void {
+        // 使用後処理
+        const { itemStack, source } = ev;
 
-    private handleItemUseBeforeEvent = (ev: ItemUseBeforeEvent): void => {
-        // アイテム使用前の処理
-    }
-
-    private handleItemUseAfterEvent = (ev: ItemUseAfterEvent): void => {
-        // アイテム使用後の処理
+        switch (itemStack.typeId) {
+            case ITEM_USE.GAME_START_ITEM_ID: system.sendScriptEvent(SCRIPT_EVENT_IDS.WEREWOLF_GAME_START, SCRIPT_EVENT_MESSAGES.NONE); break;
+        }
     }
 }
