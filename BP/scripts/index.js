@@ -1,3 +1,4 @@
+import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
 import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
 async function main() {
@@ -8,6 +9,7 @@ Kairo.onActivate = () => {
      * ここにアドオン有効化時の初期化処理を書く
      * Write the initialization logic executed when the addon becomes active
      */
+    WerewolfGameManager.getInstance().subscribeEvents();
 };
 Kairo.onDeactivate = () => {
     /**
@@ -16,6 +18,7 @@ Kairo.onDeactivate = () => {
      * Write the shutdown/cleanup logic executed when the addon becomes deactive
      * In principle, undo/disable what was done during initialization
      */
+    WerewolfGameManager.getInstance().unsubscribeEvents();
 };
 Kairo.onScriptEvent = (message) => {
     /**
