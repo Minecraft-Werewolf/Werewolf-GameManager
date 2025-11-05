@@ -4,6 +4,7 @@ import { EventManager } from "./events/EventManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
 import { ScriptEventReceiver } from "./ScriptEventReceiver";
+import { GameInitializer } from "./ingame/GameInitializer";
 
 export class WerewolfGameManager {
     private readonly scriptEventReceiver: ScriptEventReceiver;
@@ -11,6 +12,7 @@ export class WerewolfGameManager {
     private readonly roleDataValidator: RoleDataValidator;
     private readonly intervalManager: IntervalManager;
     private readonly eventManager: EventManager;
+    private readonly gameInitializer: GameInitializer = GameInitializer.create(this);
     private readonly roles: Map<string, Role[]> = new Map();
 
     private constructor() {
@@ -67,5 +69,9 @@ export class WerewolfGameManager {
 
     public stopInGameIntervals(): void {
         this.intervalManager.clearIntervals();
+    }
+
+    public gameInitialize(): void {
+        this.gameInitializer.initialize();
     }
 }

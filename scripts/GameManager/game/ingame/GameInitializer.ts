@@ -5,4 +5,8 @@ export class GameInitializer {
     public static create(werewolfGameManager: WerewolfGameManager): GameInitializer {
         return new GameInitializer(werewolfGameManager);
     }
+
+    public initialize(): void {
+        
+    }
 }
