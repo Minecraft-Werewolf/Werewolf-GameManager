@@ -20,7 +20,9 @@ export class ItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUse
         const { itemStack, source } = ev;
 
         switch (itemStack.typeId) {
-            case ITEM_USE.GAME_START_ITEM_ID: system.sendScriptEvent(SCRIPT_EVENT_IDS.WEREWOLF_GAME_START, SCRIPT_EVENT_MESSAGES.NONE); break;
+            case ITEM_USE.GAME_START_ITEM_ID:
+                system.sendScriptEvent(SCRIPT_EVENT_IDS.WEREWOLF_GAME_START, SCRIPT_EVENT_MESSAGES.NONE);
+                break;
         }
     }
 }

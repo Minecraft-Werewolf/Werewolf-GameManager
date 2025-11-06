@@ -18,4 +18,8 @@ export class EventManager {
     public unsubscribeAll(): void {
         this.itemUse.unsubscribe();
     }
+
+    public getWerewolfGameManager(): WerewolfGameManager {
+        return this.werewolfGameManager;
+    }
 }
