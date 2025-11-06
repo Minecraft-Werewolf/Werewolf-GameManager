@@ -1,6 +1,6 @@
 import { system } from "@minecraft/server";
 import { BaseEventHandler } from "./BaseEventHandler";
-import { SCRIPT_EVENT_IDS } from "../../constants";
+import { SCRIPT_EVENT_IDS } from "../../constants/scriptevent";
 export class ScriptEventReceiveHandler extends BaseEventHandler {
     constructor() {
         super(...arguments);

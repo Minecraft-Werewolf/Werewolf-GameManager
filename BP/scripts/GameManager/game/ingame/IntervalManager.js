@@ -1,5 +1,5 @@
 import { system } from "@minecraft/server";
-import { SYSTEMS } from "../../constants";
+import { SYSTEMS } from "../../constants/systems";
 export class IntervalManager {
     constructor(werewolfGameManager) {
         this.werewolfGameManager = werewolfGameManager;

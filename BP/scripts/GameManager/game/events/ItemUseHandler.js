@@ -1,6 +1,7 @@
 import { ItemUseAfterEvent, ItemUseBeforeEvent, system, world } from "@minecraft/server";
-import { ITEM_USE, SCRIPT_EVENT_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants";
 import { BaseEventHandler } from "./BaseEventHandler";
+import { ITEM_USE } from "../../constants/itemuse";
+import { SCRIPT_EVENT_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
 export class ItemUseHandler extends BaseEventHandler {
     constructor() {
         super(...arguments);
