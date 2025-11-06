@@ -33,4 +33,7 @@ export class AddonInitializer {
     getRegistrationNum() {
         return this.registrationNum;
     }
+    subscribeReceiverHooks() {
+        this.kairo.subscribeReceiverHooks();
+    }
 }
