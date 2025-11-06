@@ -1,7 +1,6 @@
 import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
 import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
-import { world } from "@minecraft/server";
 async function main() {
     Kairo.init(); // client
 }
@@ -11,7 +10,6 @@ Kairo.onActivate = () => {
      * Write the initialization logic executed when the addon becomes active
      */
     WerewolfGameManager.getInstance().subscribeEvents();
-    world.sendMessage("Werewolf Game Addon is now active!");
 };
 Kairo.onDeactivate = () => {
     /**
