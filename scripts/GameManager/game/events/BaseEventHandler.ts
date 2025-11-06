@@ -19,7 +19,6 @@ export abstract class BaseEventHandler<TBefore = undefined, TAfter = undefined> 
           }
         | undefined;
 
-    /** サブクラスで任意に実装 */
     protected handleBefore?(ev: TBefore): void;
     protected handleAfter?(ev: TAfter): void;
 
