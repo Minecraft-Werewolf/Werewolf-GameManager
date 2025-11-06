@@ -5,7 +5,6 @@ export abstract class BaseEventHandler<TBefore = undefined, TAfter = undefined> 
 
     protected constructor(protected readonly eventManager: EventManager) {}
 
-    /** before / after のどちらか一方だけ実装されてもOK */
     protected beforeEvent?:
         | {
               subscribe: (callback: (ev: TBefore) => void) => void;
