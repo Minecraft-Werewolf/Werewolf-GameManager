@@ -7,21 +7,25 @@ export class BaseEventHandler {
         if (this.isSubscribed)
             return;
         if (this.beforeEvent && this.handleBefore) {
-            this.beforeEvent.subscribe(this.handleBefore.bind(this));
+            this.boundHandleBefore = this.handleBefore.bind(this);
+            this.beforeEvent.subscribe(this.boundHandleBefore);
         }
         if (this.afterEvent && this.handleAfter) {
-            this.afterEvent.subscribe(this.handleAfter.bind(this));
+            this.boundHandleAfter = this.handleAfter.bind(this);
+            this.afterEvent.subscribe(this.boundHandleAfter);
         }
         this.isSubscribed = true;
     }
     unsubscribe() {
         if (!this.isSubscribed)
             return;
-        if (this.beforeEvent && this.handleBefore) {
-            this.beforeEvent.unsubscribe(this.handleBefore.bind(this));
+        if (this.beforeEvent && this.boundHandleBefore) {
+            this.beforeEvent.unsubscribe(this.boundHandleBefore);
+            this.boundHandleBefore = undefined;
         }
-        if (this.afterEvent && this.handleAfter) {
-            this.afterEvent.unsubscribe(this.handleAfter.bind(this));
+        if (this.afterEvent && this.boundHandleAfter) {
+            this.afterEvent.unsubscribe(this.boundHandleAfter);
+            this.boundHandleAfter = undefined;
         }
         this.isSubscribed = false;
     }

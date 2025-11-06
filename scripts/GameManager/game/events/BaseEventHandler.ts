@@ -3,6 +3,10 @@ import type { EventManager } from "./EventManager";
 export abstract class BaseEventHandler<TBefore = undefined, TAfter = undefined> {
     protected isSubscribed = false;
 
+    // bind 済みの関数を保持
+    private boundHandleBefore?: ((ev: TBefore) => void) | undefined;
+    private boundHandleAfter?: ((ev: TAfter) => void) | undefined;
+
     protected constructor(protected readonly eventManager: EventManager) {}
 
     protected beforeEvent?:
@@ -26,11 +30,13 @@ export abstract class BaseEventHandler<TBefore = undefined, TAfter = undefined> 
         if (this.isSubscribed) return;
 
         if (this.beforeEvent && this.handleBefore) {
-            this.beforeEvent.subscribe(this.handleBefore.bind(this));
+            this.boundHandleBefore = this.handleBefore.bind(this);
+            this.beforeEvent.subscribe(this.boundHandleBefore);
         }
 
         if (this.afterEvent && this.handleAfter) {
-            this.afterEvent.subscribe(this.handleAfter.bind(this));
+            this.boundHandleAfter = this.handleAfter.bind(this);
+            this.afterEvent.subscribe(this.boundHandleAfter);
         }
 
         this.isSubscribed = true;
@@ -39,12 +45,14 @@ export abstract class BaseEventHandler<TBefore = undefined, TAfter = undefined> 
     public unsubscribe(): void {
         if (!this.isSubscribed) return;
 
-        if (this.beforeEvent && this.handleBefore) {
-            this.beforeEvent.unsubscribe(this.handleBefore.bind(this));
+        if (this.beforeEvent && this.boundHandleBefore) {
+            this.beforeEvent.unsubscribe(this.boundHandleBefore);
+            this.boundHandleBefore = undefined;
         }
 
-        if (this.afterEvent && this.handleAfter) {
-            this.afterEvent.unsubscribe(this.handleAfter.bind(this));
+        if (this.afterEvent && this.boundHandleAfter) {
+            this.afterEvent.unsubscribe(this.boundHandleAfter);
+            this.boundHandleAfter = undefined;
         }
 
         this.isSubscribed = false;
