@@ -1,4 +1,4 @@
-import { SCRIPT_EVENT_COMMAND_IDS } from "../constants";
+import { SCRIPT_EVENT_COMMAND_IDS } from "../constants/scriptevent";
 import type { WerewolfGameManager } from "./WerewolfGameManager";
 
 export class ScriptEventReceiver {

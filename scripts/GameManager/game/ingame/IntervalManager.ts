@@ -1,6 +1,6 @@
 import { system } from "@minecraft/server";
 import type { WerewolfGameManager } from "../WerewolfGameManager";
-import { SYSTEMS } from "../../constants";
+import { SYSTEMS } from "../../constants/systems";
 
 interface IntervalIds {
     everyTick: number | null;
