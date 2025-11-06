@@ -3,8 +3,10 @@ import { EventManager } from "./events/EventManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
 import { ScriptEventReceiver } from "./ScriptEventReceiver";
+import { GameInitializer } from "./ingame/GameInitializer";
 export class WerewolfGameManager {
     constructor() {
+        this.gameInitializer = GameInitializer.create(this);
         this.roles = new Map();
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.roleRegistrationReceiver = RoleRegister.create(this);
@@ -47,6 +49,9 @@ export class WerewolfGameManager {
     }
     stopInGameIntervals() {
         this.intervalManager.clearIntervals();
+    }
+    gameInitialize() {
+        this.gameInitializer.initialize();
     }
 }
 WerewolfGameManager.instance = null;

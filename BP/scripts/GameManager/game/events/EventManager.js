@@ -13,4 +13,7 @@ export class EventManager {
     unsubscribeAll() {
         this.itemUse.unsubscribe();
     }
+    getWerewolfGameManager() {
+        return this.werewolfGameManager;
+    }
 }

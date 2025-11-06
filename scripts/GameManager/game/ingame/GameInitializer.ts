@@ -1,3 +1,4 @@
+import { world } from "@minecraft/server";
 import type { WerewolfGameManager } from "../WerewolfGameManager";
 
 export class GameInitializer {
@@ -7,6 +8,6 @@ export class GameInitializer {
     }
 
     public initialize(): void {
-        
+        world.sendMessage("Werewolf Game has started!");
     }
 }
