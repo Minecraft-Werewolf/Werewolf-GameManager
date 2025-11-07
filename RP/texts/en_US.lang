@@ -6,4 +6,5 @@ werewolf.gamemanager.title=§4Minecraft Werewolf§r
 werewolf.gamemanager.credits=created by shizuku86
 werewolf.gamemanager.version=ver.1.0.0
 
-werewolf.gamemanager.map_title=§b"Mansion"§r
+werewolf.gamemanager.stage.title=§b"Mansion"§r
+werewolf.gamemanager.stage.loading=Loading Stage...

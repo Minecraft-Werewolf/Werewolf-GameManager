@@ -4,7 +4,7 @@ import { EventManager } from "./events/EventManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
 import { ScriptEventReceiver } from "./ScriptEventReceiver";
-import { GameInitializer } from "./ingame/GameInitializer";
+import { GameInitializer } from "./ingame/init/GameInitializer";
 import { GamePreparationManager } from "./ingame/GamePreparationManager";
 
 export class WerewolfGameManager {
@@ -75,7 +75,11 @@ export class WerewolfGameManager {
         this.intervalManager.clearIntervals();
     }
 
-    public gameInitialize(): void {
+    public gameInitialization(): void {
         this.gameInitializer.runInitializationAsync();
+    }
+
+    public gamePreparation(): void {
+        this.gamePreparationManager.runPreparationAsync();
     }
 }
