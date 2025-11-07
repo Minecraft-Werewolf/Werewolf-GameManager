@@ -1,5 +1,5 @@
 import type { Role } from "../data/roles";
-import { IntervalManager } from "./ingame/IntervalManager";
+import { IntervalManager } from "./ingame/interval/IntervalManager";
 import { EventManager } from "./events/EventManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
@@ -57,22 +57,6 @@ export class WerewolfGameManager {
 
     public unsubscribeEvents(): void {
         this.eventManager.unsubscribeAll();
-    }
-
-    public onEveryTickInGame(): void {
-        // ゲーム中の毎ティック処理
-    }
-
-    public onEverySecondInGame(): void {
-        // ゲーム中の毎秒処理
-    }
-
-    public startInGameIntervals(): void {
-        this.intervalManager.runIntervals();
-    }
-
-    public stopInGameIntervals(): void {
-        this.intervalManager.clearIntervals();
     }
 
     public gameInitialization(): void {
