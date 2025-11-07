@@ -5,6 +5,7 @@ import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
 import { ScriptEventReceiver } from "./ScriptEventReceiver";
 import { GameInitializer } from "./ingame/GameInitializer";
+import { GamePreparationManager } from "./ingame/GamePreparationManager";
 
 export class WerewolfGameManager {
     private readonly scriptEventReceiver: ScriptEventReceiver;
@@ -12,7 +13,8 @@ export class WerewolfGameManager {
     private readonly roleDataValidator: RoleDataValidator;
     private readonly intervalManager: IntervalManager;
     private readonly eventManager: EventManager;
-    private readonly gameInitializer: GameInitializer = GameInitializer.create(this);
+    private readonly gameInitializer: GameInitializer;
+    private readonly gamePreparationManager: GamePreparationManager;
     private readonly roles: Map<string, Role[]> = new Map();
 
     private constructor() {
@@ -21,6 +23,8 @@ export class WerewolfGameManager {
         this.roleDataValidator = RoleDataValidator.create(this);
         this.intervalManager = IntervalManager.create(this);
         this.eventManager = EventManager.create(this);
+        this.gameInitializer = GameInitializer.create(this);
+        this.gamePreparationManager = GamePreparationManager.create(this);
     }
     private static instance: WerewolfGameManager | null = null;
 
@@ -72,6 +76,6 @@ export class WerewolfGameManager {
     }
 
     public gameInitialize(): void {
-        this.gameInitializer.initialize();
+        this.gameInitializer.runInitializationAsync();
     }
 }

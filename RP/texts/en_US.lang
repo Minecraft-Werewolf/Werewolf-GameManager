@@ -1,2 +1,9 @@
 werewolf-gamemanager.name=Werewolf-GameManager
 werewolf-gamemanager.description=functions as the central GameManager for the Werewolf game.
+
+
+werewolf.gamemanager.title=§4Minecraft Werewolf§r
+werewolf.gamemanager.credits=created by shizuku86
+werewolf.gamemanager.version=ver.1.0.0
+
+werewolf.gamemanager.map_title=§b"Mansion"§r
