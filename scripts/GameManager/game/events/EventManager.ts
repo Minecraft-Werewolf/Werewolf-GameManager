@@ -1,4 +1,4 @@
-import type { WerewolfGameManager } from "../WerewolfGameManager";
+import type { SystemManager } from "../SystemManager";
 import { ItemUseHandler } from "./ItemUseHandler";
 import { ScriptEventReceiveHandler } from "./ScriptEventReceiveHandler";
 
@@ -6,12 +6,12 @@ export class EventManager {
     private readonly itemUse: ItemUseHandler;
     private readonly scriptEventReceive: ScriptEventReceiveHandler;
 
-    private constructor(private readonly werewolfGameManager: WerewolfGameManager) {
+    private constructor(private readonly systemManager: SystemManager) {
         this.itemUse = ItemUseHandler.create(this);
         this.scriptEventReceive = ScriptEventReceiveHandler.create(this);
     }
-    public static create(werewolfGameManager: WerewolfGameManager): EventManager {
-        return new EventManager(werewolfGameManager);
+    public static create(systemManager: SystemManager): EventManager {
+        return new EventManager(systemManager);
     }
 
     public subscribeAll(): void {
@@ -24,7 +24,7 @@ export class EventManager {
         this.scriptEventReceive.unsubscribe();
     }
 
-    public getWerewolfGameManager(): WerewolfGameManager {
-        return this.werewolfGameManager;
+    public getSystemManager(): SystemManager {
+        return this.systemManager;
     }
 }

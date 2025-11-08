@@ -1,11 +1,11 @@
 import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import type { Role } from "../../data/roles";
-import { WerewolfGameManager } from "../WerewolfGameManager";
+import { SystemManager } from "../SystemManager";
 
 export class RoleRegister {
-    private constructor(private readonly werewolfGameManager: WerewolfGameManager) {}
-    public static create(werewolfGameManager: WerewolfGameManager): RoleRegister {
-        return new RoleRegister(werewolfGameManager);
+    private constructor(private readonly systemManager: SystemManager) {}
+    public static create(systemManager: SystemManager): RoleRegister {
+        return new RoleRegister(systemManager);
     }
 
     public registrationRoles(args: string[]): void {
@@ -17,12 +17,12 @@ export class RoleRegister {
                 ConsoleManager.error("Failed to parse role registration data: Invalid JSON format.");
             }
 
-            if (data && WerewolfGameManager.getInstance().isRole(data)) {
+            if (data && this.systemManager.isRole(data)) {
                 return data as Role;
             }
             return null;
         }).filter((role): role is Role => role !== null);
 
-        this.werewolfGameManager.setRoles(args[0] as string, roles);
+        this.systemManager.setRoles(args[0] as string, roles);
     }
 }

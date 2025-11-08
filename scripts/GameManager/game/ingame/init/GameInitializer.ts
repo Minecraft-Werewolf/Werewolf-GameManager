@@ -1,22 +1,23 @@
 import { world } from "@minecraft/server";
-import type { WerewolfGameManager } from "../../WerewolfGameManager";
+import type { SystemManager } from "../../SystemManager";
 import { InitPresentation } from "./InitPresentation";
 
 export class GameInitializer {
     private readonly initPresentation: InitPresentation
 
-    private constructor(private readonly werewolfGameManager: WerewolfGameManager) {
+    private constructor(private readonly systemManager: SystemManager) {
         this.initPresentation = InitPresentation.create(this);
     }
-    public static create(werewolfGameManager: WerewolfGameManager): GameInitializer {
-        return new GameInitializer(werewolfGameManager);
+    public static create(systemManager: SystemManager): GameInitializer {
+        return new GameInitializer(systemManager);
     }
 
     public async runInitializationAsync(): Promise<void> {
         const players = world.getPlayers();
         await this.initPresentation.showGameTitle(players);
         await this.initPresentation.cameraBlackoutEffect(players);
+        this.initPresentation.teleportPlayers(players);
         await this.initPresentation.showStageTitle(players);
-        this.werewolfGameManager.gamePreparation();
+        this.systemManager.gamePreparation();
     }
 }

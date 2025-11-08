@@ -15,7 +15,7 @@ export class ScriptEventReceiveHandler extends BaseEventHandler<undefined, Scrip
 
         switch (id) {
             case SCRIPT_EVENT_IDS.WEREWOLF_GAME_START:
-                this.eventManager.getWerewolfGameManager().gameInitialization();
+                this.eventManager.getSystemManager().gameInitialization();
                 break;
         }
     }

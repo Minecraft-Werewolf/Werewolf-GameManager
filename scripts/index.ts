@@ -1,6 +1,6 @@
 import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
-import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
+import { WerewolfGameManager } from "./GameManager/game/SystemManager";
 
 async function main(): Promise<void> {
     Kairo.init(); // client

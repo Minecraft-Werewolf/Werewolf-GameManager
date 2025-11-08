@@ -1,10 +1,10 @@
 import { SCRIPT_EVENT_COMMAND_IDS } from "../constants/scriptevent";
-import type { WerewolfGameManager } from "./WerewolfGameManager";
+import type { SystemManager } from "./SystemManager";
 
 export class ScriptEventReceiver {
-    private constructor(private readonly werewolfGameManager: WerewolfGameManager) {}
-    public static create(werewolfGameManager: WerewolfGameManager): ScriptEventReceiver {
-        return new ScriptEventReceiver(werewolfGameManager);
+    private constructor(private readonly systemManager: SystemManager) {}
+    public static create(systemManager: SystemManager): ScriptEventReceiver {
+        return new ScriptEventReceiver(systemManager);
     }
 
     public handleOnScriptEvent(message: string): void {
@@ -14,7 +14,7 @@ export class ScriptEventReceiver {
         switch (command) {
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION:
                 // registrationRoles(addonId: string, roles: Role[])
-                this.werewolfGameManager.registrationRoles(args);
+                this.systemManager.registrationRoles(args);
                 break;
             default:
                 break;

@@ -1,4 +1,4 @@
-import { HudElement, HudVisibility, InputPermissionCategory, system, type Player } from "@minecraft/server";
+import { HudElement, HudVisibility, InputPermissionCategory, system, world, type Player } from "@minecraft/server";
 import type { GameInitializer } from "./GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
@@ -30,6 +30,21 @@ export class InitPresentation {
         });
 
         await system.waitTicks(Math.floor(SYSTEMS.SHOW_TITLE_FADEOUT_DURATION));
+    }
+
+    public teleportPlayers(players: Player[]): void {
+        players.forEach((player) => {
+            player.teleport(
+                { x: 0.5, y: -58.94, z: 24.5 },
+                {
+                    checkForBlocks: false,
+                    dimension: world.getDimension("overworld"),
+                    // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
+                    keepVelocity: false,
+                    rotation: { x: 16, y: 180 },
+                }
+            );
+        });
     }
 
     public async showStageTitle(players: Player[]): Promise<void> {
@@ -65,7 +80,7 @@ export class InitPresentation {
                 HudElement.StatusEffects,
                 HudElement.ItemText,
             ]
-        )
+        );
     }
 
     private showGameTitleForPlayer(player: Player): void {
