@@ -47,7 +47,6 @@ export class CountdownManager {
             system.clearRun(this.intervalId);
             this.intervalId = null;
         }
-        options?.onWarningTick?.(0);
         options?.onComplete?.();
         if (this.resolveFn) {
             this.resolveFn();
