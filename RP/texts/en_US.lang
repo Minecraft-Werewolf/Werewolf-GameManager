@@ -8,3 +8,6 @@ werewolf.gamemanager.version=ver.1.0.0
 
 werewolf.gamemanager.stage.title=§b"Mansion"§r
 werewolf.gamemanager.stage.loading=Loading Stage...
+
+werewolf.gamemanager.game.preparation.countdown.message=§bGame starting in %s seconds...§r
+werewolf.gamemanager.game.start.message=§aThe game is starting!§r

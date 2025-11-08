@@ -66,4 +66,8 @@ export class WerewolfGameManager {
     public gamePreparation(): void {
         this.gamePreparationManager.runPreparationAsync();
     }
+
+    public getIntervalManager(): IntervalManager {
+        return this.intervalManager;
+    }
 }

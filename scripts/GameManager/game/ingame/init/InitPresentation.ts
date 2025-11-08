@@ -44,7 +44,7 @@ export class InitPresentation {
             });
         });
 
-        await system.waitTicks(Math.floor(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME));
+        await system.waitTicks(Math.floor(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL_EVERY_SECOND));
     }
 
     private hideHudForPlayer(player: Player): void {
