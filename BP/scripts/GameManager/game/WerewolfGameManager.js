@@ -1,4 +1,4 @@
-import { IntervalManager } from "./ingame/IntervalManager";
+import { IntervalManager } from "./ingame/interval/IntervalManager";
 import { EventManager } from "./events/EventManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
@@ -40,23 +40,14 @@ export class WerewolfGameManager {
     unsubscribeEvents() {
         this.eventManager.unsubscribeAll();
     }
-    onEveryTickInGame() {
-        // ゲーム中の毎ティック処理
-    }
-    onEverySecondInGame() {
-        // ゲーム中の毎秒処理
-    }
-    startInGameIntervals() {
-        this.intervalManager.runIntervals();
-    }
-    stopInGameIntervals() {
-        this.intervalManager.clearIntervals();
-    }
     gameInitialization() {
         this.gameInitializer.runInitializationAsync();
     }
     gamePreparation() {
         this.gamePreparationManager.runPreparationAsync();
+    }
+    getIntervalManager() {
+        return this.intervalManager;
     }
 }
 WerewolfGameManager.instance = null;

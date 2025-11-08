@@ -38,7 +38,7 @@ export class InitPresentation {
                 volume: SYSTEMS.SHOW_STAGE_TITLE_SOUND_VOLUME,
             });
         });
-        await system.waitTicks(Math.floor(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME));
+        await system.waitTicks(Math.floor(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL_EVERY_SECOND));
     }
     hideHudForPlayer(player) {
         player.onScreenDisplay.setHudVisibility(HudVisibility.Hide, [

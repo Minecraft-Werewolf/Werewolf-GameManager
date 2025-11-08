@@ -1,5 +1,4 @@
-import { InputPermissionCategory, system, world } from "@minecraft/server";
-import { SYSTEMS } from "../../../constants/systems";
+import { world } from "@minecraft/server";
 import { InitPresentation } from "./InitPresentation";
 export class GameInitializer {
     constructor(werewolfGameManager) {
