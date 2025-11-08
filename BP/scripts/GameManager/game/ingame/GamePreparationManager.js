@@ -1,30 +1,24 @@
-import { InputPermissionCategory, world } from "@minecraft/server";
+import { HudElement, HudVisibility, InputPermissionCategory, world } from "@minecraft/server";
 import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { CountdownManager } from "./utils/CountdownManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
 export class GamePreparationManager {
-    constructor(werewolfGameManager) {
-        this.werewolfGameManager = werewolfGameManager;
+    constructor(systemManager) {
+        this.systemManager = systemManager;
+        this.countdownManager = CountdownManager.create(DEFAULT_SETTINGS.GAME_PREPARATION_TIME, DEFAULT_SETTINGS.VERBOSE_COUNTDOWN);
     }
-    static create(werewolfGameManager) {
-        return new GamePreparationManager(werewolfGameManager);
+    static create(systemManager) {
+        return new GamePreparationManager(systemManager);
     }
     async runPreparationAsync() {
         const players = world.getPlayers();
         players.forEach((player) => {
-            player.teleport({ x: 0.5, y: -58.94, z: 24.5 }, {
-                checkForBlocks: false,
-                dimension: world.getDimension("overworld"),
-                // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
-                keepVelocity: false,
-                rotation: { x: 16, y: 180 },
-            });
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, true);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, true);
+            player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [HudElement.Crosshair]);
         });
-        const countdown = CountdownManager.create(DEFAULT_SETTINGS.GAME_PREPARATION_TIME);
-        await countdown.startAsync({
+        await this.countdownManager.startAsync({
             onNormalTick: (seconds) => {
                 world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE, with: [seconds.toString()] });
                 players.forEach((player) => {
@@ -55,6 +49,12 @@ export class GamePreparationManager {
                     });
                 });
             }
+        });
+        players.forEach((player) => {
+            player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [
+                HudElement.Hotbar,
+                HudElement.ItemText,
+            ]);
         });
     }
 }

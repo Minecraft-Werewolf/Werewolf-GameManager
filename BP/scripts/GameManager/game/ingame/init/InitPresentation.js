@@ -1,4 +1,4 @@
-import { HudElement, HudVisibility, InputPermissionCategory, system } from "@minecraft/server";
+import { HudElement, HudVisibility, InputPermissionCategory, system, world } from "@minecraft/server";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
 export class InitPresentation {
@@ -26,6 +26,17 @@ export class InitPresentation {
             this.cameraBlackoutEffectForPlayer(player);
         });
         await system.waitTicks(Math.floor(SYSTEMS.SHOW_TITLE_FADEOUT_DURATION));
+    }
+    teleportPlayers(players) {
+        players.forEach((player) => {
+            player.teleport({ x: 0.5, y: -58.94, z: 24.5 }, {
+                checkForBlocks: false,
+                dimension: world.getDimension("overworld"),
+                // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
+                keepVelocity: false,
+                rotation: { x: 16, y: 180 },
+            });
+        });
     }
     async showStageTitle(players) {
         players.forEach((player) => {

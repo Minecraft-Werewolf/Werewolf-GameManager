@@ -4,11 +4,11 @@ import { RoleFactionValues } from "../../data/roles";
  * データを検証する必要がある。そのためのクラス
  */
 export class RoleDataValidator {
-    constructor(game) {
-        this.game = game;
+    constructor(systemManager) {
+        this.systemManager = systemManager;
     }
-    static create(game) {
-        return new RoleDataValidator(game);
+    static create(systemManager) {
+        return new RoleDataValidator(systemManager);
     }
     isRole(data) {
         if (!this.isObject(data))

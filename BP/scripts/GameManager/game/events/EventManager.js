@@ -1,13 +1,13 @@
 import { ItemUseHandler } from "./ItemUseHandler";
 import { ScriptEventReceiveHandler } from "./ScriptEventReceiveHandler";
 export class EventManager {
-    constructor(werewolfGameManager) {
-        this.werewolfGameManager = werewolfGameManager;
+    constructor(systemManager) {
+        this.systemManager = systemManager;
         this.itemUse = ItemUseHandler.create(this);
         this.scriptEventReceive = ScriptEventReceiveHandler.create(this);
     }
-    static create(werewolfGameManager) {
-        return new EventManager(werewolfGameManager);
+    static create(systemManager) {
+        return new EventManager(systemManager);
     }
     subscribeAll() {
         this.itemUse.subscribe();
@@ -17,7 +17,7 @@ export class EventManager {
         this.itemUse.unsubscribe();
         this.scriptEventReceive.unsubscribe();
     }
-    getWerewolfGameManager() {
-        return this.werewolfGameManager;
+    getSystemManager() {
+        return this.systemManager;
     }
 }

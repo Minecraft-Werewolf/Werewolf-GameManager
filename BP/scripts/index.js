@@ -1,6 +1,6 @@
 import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
-import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
+import { SystemManager } from "./GameManager/game/SystemManager";
 async function main() {
     Kairo.init(); // client
 }
@@ -9,7 +9,7 @@ Kairo.onActivate = () => {
      * ここにアドオン有効化時の初期化処理を書く
      * Write the initialization logic executed when the addon becomes active
      */
-    WerewolfGameManager.getInstance().subscribeEvents();
+    SystemManager.getInstance().subscribeEvents();
 };
 Kairo.onDeactivate = () => {
     /**
@@ -18,7 +18,7 @@ Kairo.onDeactivate = () => {
      * Write the shutdown/cleanup logic executed when the addon becomes deactive
      * In principle, undo/disable what was done during initialization
      */
-    WerewolfGameManager.getInstance().unsubscribeEvents();
+    SystemManager.getInstance().unsubscribeEvents();
 };
 Kairo.onScriptEvent = (message) => {
     /**
@@ -27,7 +27,7 @@ Kairo.onScriptEvent = (message) => {
      * Write the handler logic for when the addon receives a scriptEvent
      * The only available property is { message }
      */
-    WerewolfGameManager.getInstance().handleOnScriptEvent(message);
+    SystemManager.getInstance().handleOnScriptEvent(message);
 };
 /**
  * Kairo-DataVault を利用しない場合は、以下の処理は削除しても良い

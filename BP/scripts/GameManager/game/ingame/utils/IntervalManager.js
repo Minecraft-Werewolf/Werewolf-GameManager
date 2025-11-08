@@ -1,13 +1,12 @@
-import { SecondInterval } from "./SecondInterval";
-import { TickInterval } from "./TickInterval";
+import { SecondInterval } from "./interval/SecondInterval";
+import { TickInterval } from "./interval/TickInterval";
 export class IntervalManager {
-    constructor(werewolfGameManager) {
-        this.werewolfGameManager = werewolfGameManager;
+    constructor() {
         this.tickInterval = new TickInterval(this);
         this.secondInterval = new SecondInterval(this);
     }
-    static create(werewolfGameManager) {
-        return new IntervalManager(werewolfGameManager);
+    static create() {
+        return new IntervalManager();
     }
     /** 全interval開始 */
     startAll() {

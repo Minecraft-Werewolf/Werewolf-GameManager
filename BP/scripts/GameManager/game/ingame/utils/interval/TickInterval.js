@@ -1,4 +1,4 @@
-import { SYSTEMS } from "../../../constants/systems";
+import { SYSTEMS } from "../../../../constants/systems";
 import { BaseInterval } from "./BaseInterval";
 export class TickInterval extends BaseInterval {
     constructor(intervalManager) {
