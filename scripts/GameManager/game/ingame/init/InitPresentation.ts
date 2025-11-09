@@ -21,7 +21,7 @@ export class InitPresentation {
             });
         });
 
-        await system.waitTicks(Math.floor(SYSTEMS.SHOW_TITLE_STAY_DURATION));
+        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_TITLE_STAY_DURATION);
     }
 
     public async cameraBlackoutEffect(players: Player[]): Promise<void> {
@@ -29,22 +29,7 @@ export class InitPresentation {
             this.cameraBlackoutEffectForPlayer(player);
         });
 
-        await system.waitTicks(Math.floor(SYSTEMS.SHOW_TITLE_FADEOUT_DURATION));
-    }
-
-    public teleportPlayers(players: Player[]): void {
-        players.forEach((player) => {
-            player.teleport(
-                { x: 0.5, y: -58.94, z: 24.5 },
-                {
-                    checkForBlocks: false,
-                    dimension: world.getDimension("overworld"),
-                    // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
-                    keepVelocity: false,
-                    rotation: { x: 16, y: 180 },
-                }
-            );
-        });
+        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_TITLE_FADEOUT_DURATION);
     }
 
     public async showStageTitle(players: Player[]): Promise<void> {
@@ -59,7 +44,7 @@ export class InitPresentation {
             });
         });
 
-        await system.waitTicks(Math.floor(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL_EVERY_SECOND));
+        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL_EVERY_SECOND);
     }
 
     private hideHudForPlayer(player: Player): void {

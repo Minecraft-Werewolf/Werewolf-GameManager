@@ -1,20 +1,17 @@
 import type { Role } from "../data/roles";
 import { EventManager } from "./events/EventManager";
+import { GameManager } from "./ingame/GameManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
 import { ScriptEventReceiver } from "./ScriptEventReceiver";
-import { GameInitializer } from "./ingame/init/GameInitializer";
-import { GamePreparationManager } from "./ingame/GamePreparationManager";
-import { GameManager } from "./ingame/GameManager";
 
 export class SystemManager {
     private readonly scriptEventReceiver: ScriptEventReceiver;
     private readonly roleRegistrationReceiver: RoleRegister;
     private readonly roleDataValidator: RoleDataValidator;
     private readonly eventManager: EventManager;
-    private readonly gameInitializer: GameInitializer;
-    private readonly gamePreparationManager: GamePreparationManager;
-    private readonly gameManager: GameManager;
+    private _gameManagerInst: GameManager | null = null;
+
     private readonly roles: Map<string, Role[]> = new Map();
 
     private constructor() {
@@ -22,10 +19,6 @@ export class SystemManager {
         this.roleRegistrationReceiver = RoleRegister.create(this);
         this.roleDataValidator = RoleDataValidator.create(this);
         this.eventManager = EventManager.create(this);
-        this.gameInitializer = GameInitializer.create(this);
-        this.gamePreparationManager = GamePreparationManager.create(this);
-        this.gameManager = GameManager
-        .create(this);
     }
     private static instance: SystemManager | null = null;
 
@@ -60,11 +53,18 @@ export class SystemManager {
         this.eventManager.unsubscribeAll();
     }
 
-    public gameInitialization(): void {
-        this.gameInitializer.runInitializationAsync();
+    public async gameStart(): Promise<void> {
+        this._gameManagerInst = GameManager.create();
+
+        await this._gameManagerInst.gameStart();
+
+        if (this._gameManagerInst !== null)
+            this._gameManagerInst = null;
     }
 
-    public gamePreparation(): void {
-        this.gamePreparationManager.runPreparationAsync();
+    public gameReset(): void {
+        if (this._gameManagerInst === null) return;
+
+        this._gameManagerInst.gameReset();
     }
 }

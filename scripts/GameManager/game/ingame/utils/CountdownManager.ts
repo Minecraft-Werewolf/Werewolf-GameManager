@@ -1,4 +1,4 @@
-import { system } from "@minecraft/server";
+import { IntervalManager } from "./IntervalManager";
 
 export interface CountdownOptions {
     onNormalTick?: (seconds: number) => void;
@@ -8,15 +8,19 @@ export interface CountdownOptions {
 
 export class CountdownManager {
     private remainingTime = 0;
-    private resolveFn: (() => void) | null = null;
     private isRunning = false;
-    private intervalId: number | null = null;
+    private isCancelled = false;
+    private resolveFn: (() => void) | null = null;
+    private rejectFn: ((reason?: any) => void) | null = null;
 
-    private readonly verbose: boolean;
+    private readonly intervalManager: IntervalManager;
 
-    private constructor(private readonly totalTime: number, verbose = true) {
+    private constructor(
+        private readonly totalTime: number,
+        private readonly verbose = true
+    ) {
         this.remainingTime = totalTime;
-        this.verbose = verbose;
+        this.intervalManager = IntervalManager.create();
     }
 
     public static create(totalTime: number, verbose = true): CountdownManager {
@@ -26,62 +30,78 @@ export class CountdownManager {
     public async startAsync(options?: CountdownOptions): Promise<void> {
         if (this.isRunning) return;
         this.isRunning = true;
+        this.isCancelled = false;
 
-        return new Promise<void>((resolve) => {
+        return new Promise<void>((resolve, reject) => {
             this.resolveFn = resolve;
+            this.rejectFn = reject;
 
-            this.intervalId = system.runInterval(() => {
-                if (this.remainingTime <= 0) {
-                    this.complete(options);
+            let tickCounter = 0;
+
+            this.intervalManager.tick.subscribe(() => {
+                if (this.isCancelled) {
+                    this.stopInternal(reject, new Error("Countdown cancelled"));
                     return;
                 }
 
-                this.handleTick(options);
-                this.remainingTime--;
-            }, 20);
+                tickCounter++;
+                if (tickCounter >= 20) {
+                    tickCounter = 0;
+                    this.handleSecondTick(options);
+                }
+            }, true);
+
+            this.intervalManager.startAll();
         });
     }
 
-    private handleTick(options?: CountdownOptions): void {
-        const s = this.remainingTime;
-
-        if (
-            !this.verbose &&
-            s % 10 !== 0 &&
-            ![3, 2, 1, 0].includes(s)
-        ) {
+    private handleSecondTick(options?: CountdownOptions): void {
+        if (this.remainingTime <= 0) {
+            this.complete(options);
             return;
         }
 
-        if (s > 3) {
-            options?.onNormalTick?.(s);
-        } else if (s <= 3 && s >= 1) {
-            options?.onWarningTick?.(s);
+        const s = this.remainingTime;
+
+        if (
+            this.verbose ||
+            s % 10 === 0 ||
+            [3, 2, 1].includes(s)
+        ) {
+            if (s > 3) {
+                options?.onNormalTick?.(s);
+            } else {
+                options?.onWarningTick?.(s);
+            }
         }
+
+        this.remainingTime--;
     }
 
     private complete(options?: CountdownOptions): void {
-        if (this.intervalId !== null) {
-            system.clearRun(this.intervalId);
-            this.intervalId = null;
-        }
+        this.cleanup();
         options?.onComplete?.();
-
-        if (this.resolveFn) {
-            this.resolveFn();
-            this.resolveFn = null;
-        }
-
-        this.isRunning = false;
+        this.resolveFn?.();
     }
 
     public stop(): void {
-        if (this.intervalId !== null) {
-            system.clearRun(this.intervalId);
-            this.intervalId = null;
-        }
+        if (!this.isRunning) return;
+        this.isCancelled = true;
+    }
+
+    private stopInternal(
+        reject: (reason?: any) => void,
+        reason: Error
+    ): void {
+        this.cleanup();
+        reject(reason);
+    }
+
+    private cleanup(): void {
+        this.intervalManager.clearAll();
         this.isRunning = false;
         this.resolveFn = null;
+        this.rejectFn = null;
     }
 
     public getRemainingTime(): number {
