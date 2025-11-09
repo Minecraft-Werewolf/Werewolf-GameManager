@@ -13,7 +13,10 @@ export class ScriptEventReceiveHandler extends BaseEventHandler {
         const { id, initiator, message, sourceBlock, sourceEntity, sourceType } = ev;
         switch (id) {
             case SCRIPT_EVENT_IDS.WEREWOLF_GAME_START:
-                this.eventManager.getSystemManager().gameInitialization();
+                this.eventManager.getSystemManager().gameStart();
+                break;
+            case SCRIPT_EVENT_IDS.WEREWOLF_GAME_RESET:
+                this.eventManager.getSystemManager().gameReset();
                 break;
         }
     }

@@ -1,21 +1,16 @@
 import { EventManager } from "./events/EventManager";
+import { GameManager } from "./ingame/GameManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
 import { ScriptEventReceiver } from "./ScriptEventReceiver";
-import { GameInitializer } from "./ingame/init/GameInitializer";
-import { GamePreparationManager } from "./ingame/GamePreparationManager";
-import { GameManager } from "./ingame/GameManager";
 export class SystemManager {
     constructor() {
+        this._gameManagerInst = null;
         this.roles = new Map();
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.roleRegistrationReceiver = RoleRegister.create(this);
         this.roleDataValidator = RoleDataValidator.create(this);
         this.eventManager = EventManager.create(this);
-        this.gameInitializer = GameInitializer.create(this);
-        this.gamePreparationManager = GamePreparationManager.create(this);
-        this.gameManager = GameManager
-            .create(this);
     }
     static getInstance() {
         if (this.instance === null) {
@@ -41,11 +36,16 @@ export class SystemManager {
     unsubscribeEvents() {
         this.eventManager.unsubscribeAll();
     }
-    gameInitialization() {
-        this.gameInitializer.runInitializationAsync();
+    async gameStart() {
+        this._gameManagerInst = GameManager.create();
+        await this._gameManagerInst.gameStart();
+        if (this._gameManagerInst !== null)
+            this._gameManagerInst = null;
     }
-    gamePreparation() {
-        this.gamePreparationManager.runPreparationAsync();
+    gameReset() {
+        if (this._gameManagerInst === null)
+            return;
+        this._gameManagerInst.gameReset();
     }
 }
 SystemManager.instance = null;
