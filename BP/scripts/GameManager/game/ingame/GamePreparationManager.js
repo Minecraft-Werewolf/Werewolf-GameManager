@@ -21,6 +21,9 @@ export class GamePreparationManager {
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [HudElement.Crosshair]);
         });
         try {
+            console.log("aiueo");
+            await this.countdownManager.startAsync();
+            console.log("aiueokakikukeko");
             await this.countdownManager.startAsync({
                 onNormalTick: (seconds) => {
                     world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE, with: [seconds.toString()] });
