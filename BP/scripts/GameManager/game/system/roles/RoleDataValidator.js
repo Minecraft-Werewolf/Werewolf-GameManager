@@ -1,4 +1,4 @@
-import { RoleFactionValues } from "../../data/roles";
+import { RoleFactionValues } from "../../../data/roles";
 /**
  * 役職データは文字列で送られてくるため、
  * データを検証する必要がある。そのためのクラス

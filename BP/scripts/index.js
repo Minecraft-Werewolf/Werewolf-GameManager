@@ -1,4 +1,3 @@
-import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
 import { SystemManager } from "./GameManager/game/SystemManager";
 async function main() {
@@ -27,7 +26,7 @@ Kairo.onScriptEvent = (message) => {
      * Write the handler logic for when the addon receives a scriptEvent
      * The only available property is { message }
      */
-    SystemManager.getInstance().handleOnScriptEvent(message);
+    SystemManager.getInstance().handleScriptEvent(message);
 };
 /**
  * Kairo-DataVault を利用しない場合は、以下の処理は削除しても良い

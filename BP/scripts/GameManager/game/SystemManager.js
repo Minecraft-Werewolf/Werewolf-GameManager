@@ -1,16 +1,28 @@
-import { SystemEventManager } from "./events/SystemEventManager";
 import { InGameManager } from "./ingame/InGameManager";
-import { RoleDataValidator } from "./outgame/RoleDataValidator";
-import { RoleRegister } from "./outgame/RoleRegister";
-import { ScriptEventReceiver } from "./ScriptEventReceiver";
+import { OutGameManager } from "./outgame/OutGameManager";
+import { SystemEventManager } from "./system/events/SystemEventManager";
+import { RoleDataValidator } from "./system/roles/RoleDataValidator";
+import { RoleRegister } from "./system/roles/RoleRegister";
+import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
+export var GameWorldState;
+(function (GameWorldState) {
+    GameWorldState[GameWorldState["InGame"] = 0] = "InGame";
+    GameWorldState[GameWorldState["OutGame"] = 1] = "OutGame";
+})(GameWorldState || (GameWorldState = {}));
 export class SystemManager {
     constructor() {
-        this._inGameManagerInst = null;
+        this.inGameManager = null;
+        this.outGameManager = null;
+        this.currentWorldState = GameWorldState.OutGame;
         this.roles = new Map();
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
-        this.roleRegistrationReceiver = RoleRegister.create(this);
-        this.roleDataValidator = RoleDataValidator.create(this);
         this.systemEventManager = SystemEventManager.create(this);
+        this.roleRegister = RoleRegister.create(this);
+        this.roleDataValidator = RoleDataValidator.create(this);
+        this.init();
+    }
+    init() {
+        this.changeWorldState(GameWorldState.OutGame);
     }
     static getInstance() {
         if (this.instance === null) {
@@ -18,8 +30,11 @@ export class SystemManager {
         }
         return this.instance;
     }
-    registrationRoles(args) {
-        this.roleRegistrationReceiver.registrationRoles(args);
+    handleScriptEvent(message) {
+        this.scriptEventReceiver.handleScriptEvent(message);
+    }
+    registerRoles(args) {
+        this.roleRegister.registerRoles(args);
     }
     isRole(data) {
         return this.roleDataValidator.isRole(data);
@@ -27,25 +42,49 @@ export class SystemManager {
     setRoles(addonId, roles) {
         this.roles.set(addonId, roles);
     }
-    handleOnScriptEvent(message) {
-        this.scriptEventReceiver.handleOnScriptEvent(message);
-    }
     subscribeEvents() {
         this.systemEventManager.subscribeAll();
     }
     unsubscribeEvents() {
         this.systemEventManager.unsubscribeAll();
     }
-    async gameStart() {
-        this._inGameManagerInst = InGameManager.create();
-        await this._inGameManagerInst.gameStart();
-        if (this._inGameManagerInst !== null)
-            this._inGameManagerInst = null;
-    }
-    gameReset() {
-        if (this._inGameManagerInst === null)
+    startGame() {
+        if (this.currentWorldState !== GameWorldState.OutGame)
             return;
-        this._inGameManagerInst.gameReset();
+        this.changeWorldState(GameWorldState.InGame);
+        this.inGameManager?.gameStart();
+    }
+    resetGame() {
+        if (this.currentWorldState !== GameWorldState.InGame)
+            return;
+        this.inGameManager?.gameReset();
+        this.changeWorldState(GameWorldState.OutGame);
+    }
+    changeWorldState(nextState) {
+        if (this.currentWorldState === nextState)
+            return;
+        switch (nextState) {
+            case GameWorldState.InGame:
+                this.enterInGame();
+                break;
+            case GameWorldState.OutGame:
+                this.enterOutGame();
+                break;
+        }
+    }
+    enterInGame() {
+        this.outGameManager?.getOutGameEventManager().unsubscribeAll();
+        this.outGameManager = null;
+        this.inGameManager = InGameManager.create(this);
+        this.inGameManager.getInGameEventManager().subscribeAll();
+        this.currentWorldState = GameWorldState.InGame;
+    }
+    enterOutGame() {
+        this.inGameManager?.getInGameEventManager().unsubscribeAll();
+        this.inGameManager = null;
+        this.outGameManager = OutGameManager.create(this);
+        this.outGameManager.getOutGameEventManager().subscribeAll();
+        this.currentWorldState = GameWorldState.OutGame;
     }
 }
 SystemManager.instance = null;

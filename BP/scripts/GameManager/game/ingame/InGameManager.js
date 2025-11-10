@@ -4,6 +4,7 @@ import { GameManager } from "./GameManager";
 import { GameInitializer } from "./init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
+import { InGameEventManager } from "./events/InGameEventManager";
 export var GamePhase;
 (function (GamePhase) {
     GamePhase[GamePhase["Initializing"] = 0] = "Initializing";
@@ -13,15 +14,17 @@ export var GamePhase;
     GamePhase[GamePhase["Waiting"] = 4] = "Waiting";
 })(GamePhase || (GamePhase = {}));
 export class InGameManager {
-    constructor() {
+    constructor(systemManager) {
+        this.systemManager = systemManager;
         this.currentPhase = GamePhase.Waiting;
         this.isResetRequested = false;
         this.gameInitializer = GameInitializer.create(this);
         this.gamePreparationManager = GamePreparationManager.create(this);
         this.gameManager = GameManager.create(this);
+        this.inGameEventManager = InGameEventManager.create(this);
     }
-    static create() {
-        return new InGameManager();
+    static create(systemManager) {
+        return new InGameManager(systemManager);
     }
     async gameStart() {
         this.isResetRequested = false;
@@ -80,5 +83,8 @@ export class InGameManager {
     }
     isResetPending() {
         return this.isResetRequested;
+    }
+    getInGameEventManager() {
+        return this.inGameEventManager;
     }
 }

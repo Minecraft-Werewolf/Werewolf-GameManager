@@ -1,7 +1,7 @@
 import { system } from "@minecraft/server";
-import { BaseEventHandler } from "../../events/BaseEventHandler";
 import { InGameEventManager } from "./InGameEventManager";
 import { SCRIPT_EVENT_IDS } from "../../../constants/scriptevent";
+import { BaseEventHandler } from "../../events/BaseEventHandler";
 export class InGameScriptEventReceiveHandler extends BaseEventHandler {
     constructor(inGameEventManager) {
         super(inGameEventManager);

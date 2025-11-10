@@ -1,5 +1,4 @@
-import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
-import { SystemManager } from "../SystemManager";
+import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 export class RoleRegister {
     constructor(systemManager) {
         this.systemManager = systemManager;
@@ -7,7 +6,7 @@ export class RoleRegister {
     static create(systemManager) {
         return new RoleRegister(systemManager);
     }
-    registrationRoles(args) {
+    registerRoles(args) {
         const roles = args.slice(1).map((arg) => {
             let data;
             try {
