@@ -8,4 +8,7 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE: "werewolf.gamemanager.game.preparation.countdown.message",
     WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE: "werewolf.gamemanager.game.preparation.countdown.warning.message",
     WEREWOLF_GAME_START_MESSAGE: "werewolf.gamemanager.game.start.message",
+
+    WEREWOLF_GAME_START_CANCELD_MESSAGE: "werewolf.gamemanager.game.start.canceled.message",
+    WEREWOLF_GAME_FORCE_QUIT_MESSAGE: "werewolf.gamemanager.game.forcequit.message",
 }
