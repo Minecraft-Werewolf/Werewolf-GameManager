@@ -1,84 +1,53 @@
-import { world } from "@minecraft/server";
-import { GamePreparationManager } from "./GamePreparationManager";
-import { InGameManager } from "./InGameManager";
-import { GameInitializer } from "./init/GameInitializer";
-import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
-import { SYSTEMS } from "../../constants/systems";
-export var GamePhase;
-(function (GamePhase) {
-    GamePhase[GamePhase["Initializing"] = 0] = "Initializing";
-    GamePhase[GamePhase["Preparing"] = 1] = "Preparing";
-    GamePhase[GamePhase["InGame"] = 2] = "InGame";
-    GamePhase[GamePhase["Result"] = 3] = "Result";
-    GamePhase[GamePhase["Waiting"] = 4] = "Waiting";
-})(GamePhase || (GamePhase = {}));
+import { GamePhase, InGameManager } from "./InGameManager";
+import { IntervalManager } from "./utils/IntervalManager";
 export class GameManager {
-    constructor() {
-        this.currentPhase = GamePhase.Waiting;
-        this.isResetRequested = false;
-        this.gameInitializer = GameInitializer.create(this);
-        this.gamePreparationManager = GamePreparationManager.create(this);
-        this.inGameManager = InGameManager.create(this);
+    constructor(inGameManager) {
+        this.inGameManager = inGameManager;
+        this.isRunning = false;
+        this.resolveFn = null;
+        this.rejectFn = null;
+        this.onTickUpdate = () => {
+            if (!this.isRunning)
+                return;
+        };
+        this.onSecondUpdate = () => {
+            if (!this.isRunning)
+                return;
+        };
+        this.intervalManager = IntervalManager.create();
     }
-    static create() {
-        return new GameManager();
+    static create(inGameManager) {
+        return new GameManager(inGameManager);
     }
-    async gameStart() {
-        this.isResetRequested = false;
-        try {
-            await this.runStep(async () => this.gameInitializer.runInitializationAsync());
-            await this.runStep(async () => this.gamePreparationManager.runPreparationAsync());
-            await this.runStep(async () => this.inGameManager.startGameAsync());
-        }
-        catch (e) {
-            console.warn(`[GameManager] Game start interrupted: ${String(e)}`);
-        }
-    }
-    async runStep(stepFn) {
-        if (this.isResetRequested) {
-            throw new Error("Game execution cancelled (reset requested)");
-        }
-        await stepFn();
-    }
-    gameReset() {
-        if (this.isResetRequested)
+    async startGameAsync() {
+        if (this.isRunning)
             return;
-        this.isResetRequested = true;
-        switch (this.currentPhase) {
-            case GamePhase.Initializing:
-                this.gameInitializer.cancel();
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE });
-                break;
-            case GamePhase.Preparing:
-                this.gamePreparationManager.stopPreparation();
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE });
-                break;
-            case GamePhase.InGame:
-                this.inGameManager.stopGame();
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE });
-                break;
-            case GamePhase.Result:
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE });
-                break;
-            case GamePhase.Waiting:
-                break;
-        }
-        this.setCurrentPhase(GamePhase.Waiting);
-        world.getPlayers().forEach((player) => {
-            player.playSound(SYSTEMS.GAME_FORCE_QUIT_SOUND, {
-                location: player.location,
-                pitch: SYSTEMS.GAME_FORCE_QUIT_SOUND_PITCH,
-                volume: SYSTEMS.GAME_FORCE_QUIT_SOUND_VOLUME
-            });
+        this.isRunning = true;
+        this.inGameManager.setCurrentPhase(GamePhase.InGame);
+        return new Promise((resolve, reject) => {
+            this.resolveFn = resolve;
+            this.rejectFn = reject;
+            this.intervalManager.tick.subscribe(this.onTickUpdate);
+            this.intervalManager.second.subscribe(this.onSecondUpdate);
+            this.intervalManager.startAll();
         });
     }
-    getCurrentPhase() {
-        return this.currentPhase;
+    stopGame() {
+        if (!this.isRunning)
+            return;
+        this.cleanup();
+        this.rejectFn?.(new Error("Game cancelled"));
     }
-    setCurrentPhase(phase) {
-        this.currentPhase = phase;
+    finishGame() {
+        if (!this.isRunning)
+            return;
+        this.cleanup();
+        this.resolveFn?.();
     }
-    isResetPending() {
-        return this.isResetRequested;
+    cleanup() {
+        this.intervalManager.clearAll();
+        this.isRunning = false;
+        this.resolveFn = null;
+        this.rejectFn = null;
     }
 }

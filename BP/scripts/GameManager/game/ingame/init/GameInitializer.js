@@ -1,23 +1,23 @@
 import { Player, world } from "@minecraft/server";
 import { InitPresentation } from "./InitPresentation";
-import { GamePhase } from "../GameManager";
+import { GamePhase } from "../InGameManager";
 import { CancelableWait } from "../utils/CancelableWait";
 export class GameInitializer {
-    constructor(gameManager) {
-        this.gameManager = gameManager;
+    constructor(inGameManager) {
+        this.inGameManager = inGameManager;
         this.waitController = new CancelableWait();
         this.isCancelled = false;
         this.initPresentation = InitPresentation.create(this);
     }
-    static create(gameManager) {
-        return new GameInitializer(gameManager);
+    static create(inGameManager) {
+        return new GameInitializer(inGameManager);
     }
     cancel() {
         this.isCancelled = true;
         this.waitController.cancel();
     }
     async runInitializationAsync() {
-        this.gameManager.setCurrentPhase(GamePhase.Initializing);
+        this.inGameManager.setCurrentPhase(GamePhase.Initializing);
         this.waitController.reset();
         const players = world.getPlayers();
         try {

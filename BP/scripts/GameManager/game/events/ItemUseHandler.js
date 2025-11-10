@@ -3,13 +3,14 @@ import { BaseEventHandler } from "./BaseEventHandler";
 import { ITEM_USE } from "../../constants/itemuse";
 import { SCRIPT_EVENT_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
 export class ItemUseHandler extends BaseEventHandler {
-    constructor() {
-        super(...arguments);
+    constructor(systemEventManager) {
+        super(systemEventManager);
+        this.systemEventManager = systemEventManager;
         this.beforeEvent = world.beforeEvents.itemUse;
         this.afterEvent = world.afterEvents.itemUse;
     }
-    static create(eventManager) {
-        return new ItemUseHandler(eventManager);
+    static create(systemEventManager) {
+        return new ItemUseHandler(systemEventManager);
     }
     handleBefore(ev) {
         // 使用前処理
