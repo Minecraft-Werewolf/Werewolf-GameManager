@@ -1,5 +1,5 @@
-import { SystemManager } from "../SystemManager";
-import { BaseEventManager } from "./BaseEventManager";
+import { BaseEventManager } from "../../events/BaseEventManager";
+import type { SystemManager } from "../../SystemManager";
 
 export class SystemEventManager extends BaseEventManager {
     private constructor(private readonly systemManager: SystemManager) {

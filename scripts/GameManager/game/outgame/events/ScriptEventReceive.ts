@@ -18,7 +18,7 @@ export class OutGameScriptEventReceiveHandler extends BaseEventHandler<undefined
 
         switch (id) {
             case SCRIPT_EVENT_IDS.WEREWOLF_GAME_START:
-                this.outGameEventManager.getOutGameManager().gameStart();
+                this.outGameEventManager.getOutGameManager().startGame();
                 break;
         }
     }
