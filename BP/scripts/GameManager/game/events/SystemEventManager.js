@@ -1,13 +1,16 @@
+import { SystemManager } from "../SystemManager";
+import { BaseEventManager } from "./BaseEventManager";
 import { ItemUseHandler } from "./ItemUseHandler";
 import { ScriptEventReceiveHandler } from "./ScriptEventReceiveHandler";
-export class EventManager {
+export class SystemEventManager extends BaseEventManager {
     constructor(systemManager) {
+        super();
         this.systemManager = systemManager;
         this.itemUse = ItemUseHandler.create(this);
         this.scriptEventReceive = ScriptEventReceiveHandler.create(this);
     }
     static create(systemManager) {
-        return new EventManager(systemManager);
+        return new SystemEventManager(systemManager);
     }
     subscribeAll() {
         this.itemUse.subscribe();

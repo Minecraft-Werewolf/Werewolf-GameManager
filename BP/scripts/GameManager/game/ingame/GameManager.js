@@ -1,48 +1,53 @@
-import { GamePreparationManager } from "./GamePreparationManager";
-import { InGameManager } from "./InGameManager";
-import { GameInitializer } from "./init/GameInitializer";
-export var GamePhase;
-(function (GamePhase) {
-    GamePhase[GamePhase["Initializing"] = 0] = "Initializing";
-    GamePhase[GamePhase["Preparing"] = 1] = "Preparing";
-    GamePhase[GamePhase["InGame"] = 2] = "InGame";
-    GamePhase[GamePhase["Result"] = 3] = "Result";
-    GamePhase[GamePhase["Waiting"] = 4] = "Waiting";
-})(GamePhase || (GamePhase = {}));
+import { GamePhase, InGameManager } from "./InGameManager";
+import { IntervalManager } from "./utils/IntervalManager";
 export class GameManager {
-    constructor() {
-        this.currentPhase = GamePhase.Waiting;
-        this.gameInitializer = GameInitializer.create(this);
-        this.gamePreparatonManager = GamePreparationManager.create(this);
-        this.inGameManager = InGameManager.create(this);
+    constructor(inGameManager) {
+        this.inGameManager = inGameManager;
+        this.isRunning = false;
+        this.resolveFn = null;
+        this.rejectFn = null;
+        this.onTickUpdate = () => {
+            if (!this.isRunning)
+                return;
+        };
+        this.onSecondUpdate = () => {
+            if (!this.isRunning)
+                return;
+        };
+        this.intervalManager = IntervalManager.create();
     }
-    static create() {
-        return new GameManager();
+    static create(inGameManager) {
+        return new GameManager(inGameManager);
     }
-    async gameStart() {
-        await this.gameInitializer.runInitializationAsync();
-        await this.gamePreparatonManager.runPreparationAsync();
-        this.inGameManager.startGame();
+    async startGameAsync() {
+        if (this.isRunning)
+            return;
+        this.isRunning = true;
+        this.inGameManager.setCurrentPhase(GamePhase.InGame);
+        return new Promise((resolve, reject) => {
+            this.resolveFn = resolve;
+            this.rejectFn = reject;
+            this.intervalManager.tick.subscribe(this.onTickUpdate);
+            this.intervalManager.second.subscribe(this.onSecondUpdate);
+            this.intervalManager.startAll();
+        });
     }
-    gameReset() {
-        switch (this.currentPhase) {
-            case GamePhase.Initializing:
-                break;
-            case GamePhase.Preparing:
-                break;
-            case GamePhase.InGame:
-                break;
-            case GamePhase.Result:
-                break;
-            case GamePhase.Waiting:
-                break;
-            default: break;
-        }
+    stopGame() {
+        if (!this.isRunning)
+            return;
+        this.cleanup();
+        this.rejectFn?.(new Error("Game cancelled"));
     }
-    getCurrentPhase() {
-        return this.currentPhase;
+    finishGame() {
+        if (!this.isRunning)
+            return;
+        this.cleanup();
+        this.resolveFn?.();
     }
-    setCurrentPhase(phase) {
-        this.currentPhase = phase;
+    cleanup() {
+        this.intervalManager.clearAll();
+        this.isRunning = false;
+        this.resolveFn = null;
+        this.rejectFn = null;
     }
 }

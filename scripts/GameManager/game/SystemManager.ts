@@ -1,25 +1,34 @@
 import type { Role } from "../data/roles";
-import { EventManager } from "./events/EventManager";
-import { GameManager } from "./ingame/GameManager";
-import { RoleDataValidator } from "./outgame/RoleDataValidator";
-import { RoleRegister } from "./outgame/RoleRegister";
-import { ScriptEventReceiver } from "./ScriptEventReceiver";
+import { InGameManager } from "./ingame/InGameManager";
+import { OutGameManager } from "./outgame/OutGameManager";
+import { SystemEventManager } from "./system/events/SystemEventManager";
+import { RoleDataValidator } from "./system/roles/RoleDataValidator";
+import { RoleRegister } from "./system/roles/RoleRegister";
+import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 
 export class SystemManager {
     private readonly scriptEventReceiver: ScriptEventReceiver;
-    private readonly roleRegistrationReceiver: RoleRegister;
+    private readonly systemEventManager: SystemEventManager;
+    private readonly roleRegister: RoleRegister;
     private readonly roleDataValidator: RoleDataValidator;
-    private readonly eventManager: EventManager;
-    private _gameManagerInst: GameManager | null = null;
+    private _inGameManagerInst: InGameManager | null = null;
+    private _outGameManagerInst: OutGameManager | null = null;
 
     private readonly roles: Map<string, Role[]> = new Map();
 
     private constructor() {
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
-        this.roleRegistrationReceiver = RoleRegister.create(this);
+        this.systemEventManager = SystemEventManager.create(this);
+        this.roleRegister = RoleRegister.create(this);
         this.roleDataValidator = RoleDataValidator.create(this);
-        this.eventManager = EventManager.create(this);
+
+        this.init();
     }
+
+    private init(): void{
+        this._outGameManagerInst = OutGameManager.create(this);
+    }
+
     private static instance: SystemManager | null = null;
 
     public static getInstance(): SystemManager {
@@ -29,8 +38,12 @@ export class SystemManager {
         return this.instance;
     }
 
+    public handleOnScriptEvent(message: string): void {
+        this.scriptEventReceiver.handleOnScriptEvent(message);
+    }
+
     public registrationRoles(args: string[]): void {
-        this.roleRegistrationReceiver.registrationRoles(args);
+        this.roleRegister.registrationRoles(args);
     }
 
     public isRole(data: unknown): boolean {
@@ -41,30 +54,26 @@ export class SystemManager {
         this.roles.set(addonId, roles);
     }
 
-    public handleOnScriptEvent(message: string): void {
-        this.scriptEventReceiver.handleOnScriptEvent(message);
-    }
-
     public subscribeEvents(): void {
-        this.eventManager.subscribeAll();
+        this.systemEventManager.subscribeAll();
     }
 
     public unsubscribeEvents(): void {
-        this.eventManager.unsubscribeAll();
+        this.systemEventManager.unsubscribeAll();
     }
 
     public async gameStart(): Promise<void> {
-        this._gameManagerInst = GameManager.create();
+        this._inGameManagerInst = InGameManager.create(this);
 
-        await this._gameManagerInst.gameStart();
+        await this._inGameManagerInst.gameStart();
 
-        if (this._gameManagerInst !== null)
-            this._gameManagerInst = null;
+        if (this._inGameManagerInst !== null)
+            this._inGameManagerInst = null;
     }
 
     public gameReset(): void {
-        if (this._gameManagerInst === null) return;
+        if (this._inGameManagerInst === null) return;
 
-        this._gameManagerInst.gameReset();
+        this._inGameManagerInst.gameReset();
     }
 }

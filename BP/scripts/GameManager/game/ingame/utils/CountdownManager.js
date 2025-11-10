@@ -22,43 +22,43 @@ export class CountdownManager {
         return new Promise((resolve, reject) => {
             this.resolveFn = resolve;
             this.rejectFn = reject;
-            let tickCounter = 0;
             this.intervalManager.tick.subscribe(() => {
+                if (!this.isRunning)
+                    return;
                 if (this.isCancelled) {
                     this.stopInternal(reject, new Error("Countdown cancelled"));
+                }
+            }, true);
+            this.intervalManager.second.subscribe(() => {
+                if (!this.isRunning || this.isCancelled)
+                    return;
+                if (this.remainingTime <= 0) {
+                    this.complete(options);
                     return;
                 }
-                tickCounter++;
-                if (tickCounter >= 20) {
-                    tickCounter = 0;
-                    this.handleSecondTick(options);
-                }
+                this.handleSecond(options);
+                this.remainingTime--;
             }, true);
             this.intervalManager.startAll();
         });
     }
-    handleSecondTick(options) {
-        if (this.remainingTime <= 0) {
-            this.complete(options);
+    handleSecond(options) {
+        const s = this.remainingTime;
+        if (!this.verbose && s % 10 !== 0 && ![3, 2, 1, 0].includes(s)) {
             return;
         }
-        const s = this.remainingTime;
-        if (this.verbose ||
-            s % 10 === 0 ||
-            [3, 2, 1].includes(s)) {
-            if (s > 3) {
-                options?.onNormalTick?.(s);
-            }
-            else {
-                options?.onWarningTick?.(s);
-            }
+        if (s > 3) {
+            options?.onNormalTick?.(s);
         }
-        this.remainingTime--;
+        else if (s <= 3 && s >= 1) {
+            options?.onWarningTick?.(s);
+        }
     }
     complete(options) {
+        const resolve = this.resolveFn;
         this.cleanup();
         options?.onComplete?.();
-        this.resolveFn?.();
+        resolve?.();
     }
     stop() {
         if (!this.isRunning)
@@ -72,8 +72,6 @@ export class CountdownManager {
     cleanup() {
         this.intervalManager.clearAll();
         this.isRunning = false;
-        this.resolveFn = null;
-        this.rejectFn = null;
     }
     getRemainingTime() {
         return this.remainingTime;

@@ -3,7 +3,7 @@ import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { CountdownManager } from "./utils/CountdownManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
-import { GamePhase } from "./GameManager";
+import { GamePhase } from "./InGameManager";
 export class GamePreparationManager {
     constructor(gameManager) {
         this.gameManager = gameManager;
@@ -56,14 +56,12 @@ export class GamePreparationManager {
                     });
                 }
             });
-            console.log("kakikukeko");
         }
         catch (err) {
             console.warn("[GamePreparationManager] Countdown stopped:", err);
             return;
         }
         players.forEach((player) => {
-            console.log("aiueo");
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [
                 HudElement.Hotbar,
                 HudElement.ItemText,

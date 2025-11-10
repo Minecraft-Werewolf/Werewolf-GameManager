@@ -1,16 +1,16 @@
-import { EventManager } from "./events/EventManager";
-import { GameManager } from "./ingame/GameManager";
+import { SystemEventManager } from "./events/SystemEventManager";
+import { InGameManager } from "./ingame/InGameManager";
 import { RoleDataValidator } from "./outgame/RoleDataValidator";
 import { RoleRegister } from "./outgame/RoleRegister";
 import { ScriptEventReceiver } from "./ScriptEventReceiver";
 export class SystemManager {
     constructor() {
-        this._gameManagerInst = null;
+        this._inGameManagerInst = null;
         this.roles = new Map();
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.roleRegistrationReceiver = RoleRegister.create(this);
         this.roleDataValidator = RoleDataValidator.create(this);
-        this.eventManager = EventManager.create(this);
+        this.systemEventManager = SystemEventManager.create(this);
     }
     static getInstance() {
         if (this.instance === null) {
@@ -31,21 +31,21 @@ export class SystemManager {
         this.scriptEventReceiver.handleOnScriptEvent(message);
     }
     subscribeEvents() {
-        this.eventManager.subscribeAll();
+        this.systemEventManager.subscribeAll();
     }
     unsubscribeEvents() {
-        this.eventManager.unsubscribeAll();
+        this.systemEventManager.unsubscribeAll();
     }
     async gameStart() {
-        this._gameManagerInst = GameManager.create();
-        await this._gameManagerInst.gameStart();
-        if (this._gameManagerInst !== null)
-            this._gameManagerInst = null;
+        this._inGameManagerInst = InGameManager.create();
+        await this._inGameManagerInst.gameStart();
+        if (this._inGameManagerInst !== null)
+            this._inGameManagerInst = null;
     }
     gameReset() {
-        if (this._gameManagerInst === null)
+        if (this._inGameManagerInst === null)
             return;
-        this._gameManagerInst.gameReset();
+        this._inGameManagerInst.gameReset();
     }
 }
 SystemManager.instance = null;

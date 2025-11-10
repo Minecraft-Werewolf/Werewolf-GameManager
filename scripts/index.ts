@@ -1,4 +1,3 @@
-import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
 import { SystemManager } from "./GameManager/game/SystemManager";
 
