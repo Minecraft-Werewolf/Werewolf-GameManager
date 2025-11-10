@@ -8,7 +8,7 @@ export class RoleRegister {
         return new RoleRegister(systemManager);
     }
 
-    public registrationRoles(args: string[]): void {
+    public registerRoles(args: string[]): void {
         const roles: Role[] = args.slice(1).map((arg: string) =>{
             let data;
             try {

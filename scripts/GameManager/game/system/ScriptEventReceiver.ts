@@ -7,14 +7,14 @@ export class ScriptEventReceiver {
         return new ScriptEventReceiver(systemManager);
     }
 
-    public handleOnScriptEvent(message: string): void {
+    public handleScriptEvent(message: string): void {
         const command = message.split(" ")[0];
         const args = message.split(" ").slice(1).join("").split(",");
 
         switch (command) {
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION:
                 // registrationRoles(addonId: string, roles: Role[])
-                this.systemManager.registrationRoles(args);
+                this.systemManager.registerRoles(args);
                 break;
             default:
                 break;

@@ -5,6 +5,7 @@ import { GameInitializer } from "./init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
 import type { SystemManager } from "../SystemManager";
+import { InGameEventManager } from "./events/InGameEventManager";
 
 export enum GamePhase {
     Initializing,
@@ -20,6 +21,7 @@ export class InGameManager {
     private readonly gameInitializer: GameInitializer;
     private readonly gamePreparationManager: GamePreparationManager;
     private readonly gameManager: GameManager;
+    private readonly inGameEventManager: InGameEventManager;
 
     private isResetRequested = false;
 
@@ -27,6 +29,7 @@ export class InGameManager {
         this.gameInitializer = GameInitializer.create(this);
         this.gamePreparationManager = GamePreparationManager.create(this);
         this.gameManager = GameManager.create(this);
+        this.inGameEventManager = InGameEventManager.create(this);
     }
 
     public static create(systemManager: SystemManager): InGameManager {
@@ -98,5 +101,9 @@ export class InGameManager {
 
     public isResetPending(): boolean {
         return this.isResetRequested;
+    }
+
+    public getInGameEventManager(): InGameEventManager {
+        return this.inGameEventManager;
     }
 }

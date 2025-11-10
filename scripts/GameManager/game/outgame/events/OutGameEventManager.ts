@@ -17,10 +17,12 @@ export class OutGameEventManager extends BaseEventManager {
     }
     
     public override subscribeAll(): void {
+        this.itemUse.subscribe();
         this.scriptEventReceive.subscribe();
     }
 
     public override unsubscribeAll(): void {
+        this.itemUse.subscribe();
         this.scriptEventReceive.unsubscribe();
     }
 

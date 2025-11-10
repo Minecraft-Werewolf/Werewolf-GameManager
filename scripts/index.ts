@@ -33,7 +33,7 @@ Kairo.onScriptEvent = (message: string) => {
      * The only available property is { message }
      */
 
-    SystemManager.getInstance().handleOnScriptEvent(message);
+    SystemManager.getInstance().handleScriptEvent(message);
 };
 
 /**
