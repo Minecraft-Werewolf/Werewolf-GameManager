@@ -53,14 +53,12 @@ export class GamePreparationManager {
                     });
                 }
             });
-            console.log("kakikukeko");
         }
         catch (err) {
             console.warn("[GamePreparationManager] Countdown stopped:", err);
             return;
         }
         players.forEach((player) => {
-            console.log("aiueo");
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [
                 HudElement.Hotbar,
                 HudElement.ItemText,
