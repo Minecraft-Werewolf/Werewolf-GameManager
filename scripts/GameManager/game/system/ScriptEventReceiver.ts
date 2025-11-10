@@ -1,5 +1,5 @@
-import { SCRIPT_EVENT_COMMAND_IDS } from "../constants/scriptevent";
-import type { SystemManager } from "./SystemManager";
+import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
+import type { SystemManager } from "../SystemManager";
 
 export class ScriptEventReceiver {
     private constructor(private readonly systemManager: SystemManager) {}

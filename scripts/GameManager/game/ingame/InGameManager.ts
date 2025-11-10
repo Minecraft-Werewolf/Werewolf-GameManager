@@ -1,60 +1,102 @@
-import { GamePhase, type GameManager } from "./GameManager";
-import { IntervalManager } from "./utils/IntervalManager";
+import { world } from "@minecraft/server";
+import { GamePreparationManager } from "./GamePreparationManager";
+import { GameManager } from "./GameManager";
+import { GameInitializer } from "./init/GameInitializer";
+import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
+import { SYSTEMS } from "../../constants/systems";
+import type { SystemManager } from "../SystemManager";
+
+export enum GamePhase {
+    Initializing,
+    Preparing,
+    InGame,
+    Result,
+    Waiting,
+}
 
 export class InGameManager {
-    private readonly intervalManager: IntervalManager;
-    private isRunning = false;
-    private resolveFn: (() => void) | null = null;
-    private rejectFn: ((reason?: any) => void) | null = null;
+    private currentPhase: GamePhase = GamePhase.Waiting;
 
-    private constructor(private readonly gameManager: GameManager) {
-        this.intervalManager = IntervalManager.create();
+    private readonly gameInitializer: GameInitializer;
+    private readonly gamePreparationManager: GamePreparationManager;
+    private readonly gameManager: GameManager;
+
+    private isResetRequested = false;
+
+    private constructor(private readonly systemManager: SystemManager) {
+        this.gameInitializer = GameInitializer.create(this);
+        this.gamePreparationManager = GamePreparationManager.create(this);
+        this.gameManager = GameManager.create(this);
     }
 
-    public static create(gameManager: GameManager): InGameManager {
-        return new InGameManager(gameManager);
+    public static create(systemManager: SystemManager): InGameManager {
+        return new InGameManager(systemManager);
     }
 
-    public async startGameAsync(): Promise<void> {
-        if (this.isRunning) return;
-        this.isRunning = true;
+    public async gameStart(): Promise<void> {
+        this.isResetRequested = false;
 
-        this.gameManager.setCurrentPhase(GamePhase.InGame);
+        try {
+            await this.runStep(async () => this.gameInitializer.runInitializationAsync());
+            await this.runStep(async () => this.gamePreparationManager.runPreparationAsync());
+            await this.runStep(async () => this.gameManager.startGameAsync());
+        } catch (e) {
+            console.warn(`[GameManager] Game start interrupted: ${String(e)}`);
+        }
+    }
 
-        return new Promise<void>((resolve, reject) => {
-            this.resolveFn = resolve;
-            this.rejectFn = reject;
+    private async runStep(stepFn: () => Promise<void> | void): Promise<void> {
+        if (this.isResetRequested) {
+            throw new Error("Game execution cancelled (reset requested)");
+        }
+        await stepFn();
+    }
 
-            this.intervalManager.tick.subscribe(this.onTickUpdate);
-            this.intervalManager.second.subscribe(this.onSecondUpdate);
-            this.intervalManager.startAll();
+    public gameReset(): void {
+        if (this.isResetRequested) return;
+        this.isResetRequested = true;
+
+        switch (this.currentPhase) {
+            case GamePhase.Initializing:
+                this.gameInitializer.cancel();
+                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE });
+                break;
+            case GamePhase.Preparing:
+                this.gamePreparationManager.stopPreparation();
+                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE });
+                break;
+            case GamePhase.InGame:
+                this.gameManager.stopGame();
+                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE });
+                break;
+            case GamePhase.Result:
+                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE });
+                break;
+            case GamePhase.Waiting:
+                break;
+        }
+
+        this.setCurrentPhase(GamePhase.Waiting);
+
+        world.getPlayers().forEach((player) => {
+            player.playSound(SYSTEMS.GAME_FORCE_QUIT_SOUND, {
+                location: player.location,
+                pitch: SYSTEMS.GAME_FORCE_QUIT_SOUND_PITCH,
+                volume: SYSTEMS.GAME_FORCE_QUIT_SOUND_VOLUME
+            });
+        
         });
     }
 
-    public stopGame(): void {
-        if (!this.isRunning) return;
-        this.cleanup();
-        this.rejectFn?.(new Error("Game cancelled"));
+    public getCurrentPhase(): GamePhase {
+        return this.currentPhase;
     }
 
-    public finishGame(): void {
-        if (!this.isRunning) return;
-        this.cleanup();
-        this.resolveFn?.();
+    public setCurrentPhase(phase: GamePhase): void {
+        this.currentPhase = phase;
     }
 
-    private onTickUpdate = (): void => {
-        if (!this.isRunning) return;
-    };
-
-    private onSecondUpdate = (): void => {
-        if (!this.isRunning) return;
-    };
-
-    private cleanup(): void {
-        this.intervalManager.clearAll();
-        this.isRunning = false;
-        this.resolveFn = null;
-        this.rejectFn = null;
+    public isResetPending(): boolean {
+        return this.isResetRequested;
     }
 }

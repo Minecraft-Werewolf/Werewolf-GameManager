@@ -3,17 +3,17 @@ import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { CountdownManager } from "./utils/CountdownManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
-import { GamePhase, type GameManager } from "./GameManager";
+import { GamePhase, type InGameManager } from "./InGameManager";
 
 export class GamePreparationManager {
     private readonly countdownManager: CountdownManager;
-    private constructor(private readonly gameManager: GameManager) {
+    private constructor(private readonly gameManager: InGameManager) {
         this.countdownManager = CountdownManager.create(
             DEFAULT_SETTINGS.GAME_PREPARATION_TIME,
             DEFAULT_SETTINGS.VERBOSE_COUNTDOWN
         );
     }
-    public static create(gameManager: GameManager): GamePreparationManager {
+    public static create(gameManager: InGameManager): GamePreparationManager {
         return new GamePreparationManager(gameManager);
     }
 

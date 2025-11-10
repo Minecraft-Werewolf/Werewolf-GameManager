@@ -1,6 +1,6 @@
-import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
-import type { Role } from "../../data/roles";
-import { SystemManager } from "../SystemManager";
+import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
+import type { Role } from "../../../data/roles";
+import type { SystemManager } from "../../SystemManager";
 
 export class RoleRegister {
     private constructor(private readonly systemManager: SystemManager) {}

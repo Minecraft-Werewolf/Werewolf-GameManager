@@ -1,13 +1,16 @@
-import type { EventManager } from "./EventManager";
+import type { BaseEventManager } from "./BaseEventManager";
 
-export abstract class BaseEventHandler<TBefore = undefined, TAfter = undefined> {
+export abstract class BaseEventHandler<
+    TBefore = undefined,
+    TAfter = undefined,
+    TManager extends BaseEventManager = BaseEventManager
+> {
     protected isSubscribed = false;
 
-    // bind 済みの関数を保持
-    private boundHandleBefore?: ((ev: TBefore) => void) | undefined;
-    private boundHandleAfter?: ((ev: TAfter) => void) | undefined;
+    private boundHandleBefore: ((ev: TBefore) => void) | undefined = undefined;
+    private boundHandleAfter: ((ev: TAfter) => void) | undefined = undefined;
 
-    protected constructor(protected readonly eventManager: EventManager) {}
+    protected constructor(protected readonly eventManager: TManager) {}
 
     protected beforeEvent?:
         | {

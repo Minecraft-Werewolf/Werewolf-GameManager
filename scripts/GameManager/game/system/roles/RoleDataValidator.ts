@@ -1,5 +1,6 @@
-import { RoleFactionValues, type Role } from "../../data/roles";
-import type { SystemManager } from "../SystemManager";
+import { RoleFactionValues, type Role } from "../../../data/roles";
+import type { OutGameManager } from "../../outgame/OutGameManager";
+import type { SystemManager } from "../../SystemManager";
 
 /**
  * 役職データは文字列で送られてくるため、
