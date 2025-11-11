@@ -12,6 +12,7 @@ Kairo.onActivate = () => {
      */
 
     SystemManager.getInstance().subscribeEvents();
+    SystemManager.getInstance().init();
 };
 
 Kairo.onDeactivate = () => {

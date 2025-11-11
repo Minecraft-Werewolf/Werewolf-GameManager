@@ -18,7 +18,7 @@ export class SystemManager {
     private readonly roleDataValidator: RoleDataValidator;
     private inGameManager: InGameManager | null = null;
     private outGameManager: OutGameManager | null = null;
-    private currentWorldState: GameWorldState = GameWorldState.OutGame;
+    private currentWorldState: GameWorldState | null = null;
 
     private readonly roles: Map<string, Role[]> = new Map();
 
@@ -27,11 +27,9 @@ export class SystemManager {
         this.systemEventManager = SystemEventManager.create(this);
         this.roleRegister = RoleRegister.create(this);
         this.roleDataValidator = RoleDataValidator.create(this);
-
-        this.init();
     }
 
-    private init(): void{
+    public init(): void{
         this.changeWorldState(GameWorldState.OutGame);
     }
 
@@ -104,6 +102,8 @@ export class SystemManager {
     }
 
     private enterOutGame(): void {
+
+        console.log("aiueo");
         this.inGameManager?.getInGameEventManager().unsubscribeAll();
         this.inGameManager = null;
 
