@@ -2,6 +2,8 @@ export class BaseEventHandler {
     constructor(eventManager) {
         this.eventManager = eventManager;
         this.isSubscribed = false;
+        this.boundHandleBefore = undefined;
+        this.boundHandleAfter = undefined;
     }
     subscribe() {
         if (this.isSubscribed)

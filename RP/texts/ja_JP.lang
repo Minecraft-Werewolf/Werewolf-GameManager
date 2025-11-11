@@ -1,2 +1,16 @@
 werewolf-gamemanager.name=Werewolf-GameManager
 werewolf-gamemanager.description=人狼ゲームの中枢を担うGameManagerとして機能する
+
+werewolf.gamemanager.title=§4マイクラ人狼§r
+werewolf.gamemanager.credits=created by shizuku86
+werewolf.gamemanager.version=ver.1.0.0
+
+werewolf.gamemanager.stage.title=§b「館」§r
+werewolf.gamemanager.stage.loading=マップをロード中...
+
+werewolf.gamemanager.game.preparation.countdown.message=§bゲーム開始まで...%ss§r
+werewolf.gamemanager.game.preparation.countdown.warning.message=§bゲーム開始まで...%ss§r
+werewolf.gamemanager.game.start.message=§aゲーム開始！§r
+
+werewolf.gamemanager.game.start.canceled.message=§cゲーム開始がキャンセルされました§r
+werewolf.gamemanager.game.forcequit.message=§cゲームが強制終了されました§r

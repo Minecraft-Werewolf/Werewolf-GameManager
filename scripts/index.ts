@@ -1,6 +1,5 @@
-import "./GameManager/index";
 import { Kairo } from "./Kairo/index";
-import { WerewolfGameManager } from "./GameManager/game/WerewolfGameManager";
+import { SystemManager } from "./GameManager/game/SystemManager";
 
 async function main(): Promise<void> {
     Kairo.init(); // client
@@ -12,7 +11,8 @@ Kairo.onActivate = () => {
      * Write the initialization logic executed when the addon becomes active
      */
 
-    WerewolfGameManager.getInstance().subscribeEvents();
+    SystemManager.getInstance().subscribeEvents();
+    SystemManager.getInstance().init();
 };
 
 Kairo.onDeactivate = () => {
@@ -23,7 +23,7 @@ Kairo.onDeactivate = () => {
      * In principle, undo/disable what was done during initialization
      */
 
-    WerewolfGameManager.getInstance().unsubscribeEvents();
+    SystemManager.getInstance().unsubscribeEvents();
 };
 
 Kairo.onScriptEvent = (message: string) => {
@@ -34,7 +34,7 @@ Kairo.onScriptEvent = (message: string) => {
      * The only available property is { message }
      */
 
-    WerewolfGameManager.getInstance().handleOnScriptEvent(message);
+    SystemManager.getInstance().handleScriptEvent(message);
 };
 
 /**
