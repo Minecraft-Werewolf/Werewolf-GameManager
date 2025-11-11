@@ -9,6 +9,7 @@ Kairo.onActivate = () => {
      * Write the initialization logic executed when the addon becomes active
      */
     SystemManager.getInstance().subscribeEvents();
+    SystemManager.getInstance().init();
 };
 Kairo.onDeactivate = () => {
     /**

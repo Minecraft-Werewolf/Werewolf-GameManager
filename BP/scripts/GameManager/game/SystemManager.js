@@ -13,13 +13,12 @@ export class SystemManager {
     constructor() {
         this.inGameManager = null;
         this.outGameManager = null;
-        this.currentWorldState = GameWorldState.OutGame;
+        this.currentWorldState = null;
         this.roles = new Map();
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.systemEventManager = SystemEventManager.create(this);
         this.roleRegister = RoleRegister.create(this);
         this.roleDataValidator = RoleDataValidator.create(this);
-        this.init();
     }
     init() {
         this.changeWorldState(GameWorldState.OutGame);
@@ -80,6 +79,7 @@ export class SystemManager {
         this.currentWorldState = GameWorldState.InGame;
     }
     enterOutGame() {
+        console.log("aiueo");
         this.inGameManager?.getInGameEventManager().unsubscribeAll();
         this.inGameManager = null;
         this.outGameManager = OutGameManager.create(this);
