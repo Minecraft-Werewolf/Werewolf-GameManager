@@ -79,7 +79,6 @@ export class SystemManager {
         this.currentWorldState = GameWorldState.InGame;
     }
     enterOutGame() {
-        console.log("aiueo");
         this.inGameManager?.getInGameEventManager().unsubscribeAll();
         this.inGameManager = null;
         this.outGameManager = OutGameManager.create(this);
