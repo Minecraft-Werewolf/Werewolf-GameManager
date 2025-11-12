@@ -1,25 +1,26 @@
 export class PlayerData {
-    constructor(playerId, state = "participant") {
-        this.playerId = playerId;
+    constructor(player, state = "participant") {
+        this.player = player;
         this.state = state;
         this.isAlive = true;
+        this.name = player.name;
     }
     get isParticipating() {
         return this.state === "participant";
     }
 }
 export class PlayersDataManager {
-    constructor(gameManager) {
-        this.gameManager = gameManager;
+    constructor(inGameManager) {
+        this.inGameManager = inGameManager;
         this.dataMap = new Map();
     }
-    static create(gameManager) {
-        return new PlayersDataManager(gameManager);
+    static create(inGameManager) {
+        return new PlayersDataManager(inGameManager);
     }
-    init(playerId, state = "participant") {
-        if (this.dataMap.has(playerId))
+    init(player, state = "participant") {
+        if (this.dataMap.has(player.id))
             return;
-        this.dataMap.set(playerId, new PlayerData(playerId, state));
+        this.dataMap.set(player.id, new PlayerData(player, state));
     }
     get(playerId) {
         return this.dataMap.get(playerId);

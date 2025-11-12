@@ -31,7 +31,7 @@ export class GameInitializer {
     }
     setPlayersData(players) {
         players.forEach((player) => {
-            this.inGameManager.getGameManager().getPlayersDataManager().init(player.id);
+            this.inGameManager.getGameManager().getPlayersDataManager().init(player, "participant");
         });
     }
 }

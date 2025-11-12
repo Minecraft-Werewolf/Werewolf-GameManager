@@ -20,11 +20,11 @@ export class InGameEntityHurtHandler extends BaseEventHandler {
         if (hurtEntity.typeId !== MINECRAFT.TYPE_ID_PLAYER)
             return;
         const hurtPlayer = hurtEntity;
-        const hurtPlayerHealth = hurtPlayer.getComponent(MINECRAFT.COMPONENT_ID_HEALTH);
+        const hurtPlayerHealthComponent = hurtPlayer.getComponent(MINECRAFT.COMPONENT_ID_HEALTH);
         const hurtPlayerData = gameManager.getPlayerData(hurtPlayer.id);
-        if (!hurtPlayerData || !hurtPlayerHealth)
+        if (!hurtPlayerData || !hurtPlayerHealthComponent)
             return;
-        if (hurtPlayerHealth.currentValue === 0) {
+        if (hurtPlayerHealthComponent.currentValue === 0) {
             hurtPlayerData.isAlive = false;
             hurtPlayer.setGameMode(GameMode.Spectator);
         }
