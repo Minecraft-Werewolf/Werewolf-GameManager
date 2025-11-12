@@ -28,7 +28,15 @@ export class GameTerminator {
         await this.gameResultPresentation.runGameResultPresentaionAsync(players);
     }
 
+    public getWaitController(): CancelableWait {
+        return this.waitController;
+    }
+
     public get isCancelled(): boolean {
         return this._isCancelled;
+    }
+
+    public getInGameManager(): InGameManager {
+        return this.inGameManager;
     }
 }
