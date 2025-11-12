@@ -1,7 +1,8 @@
-import { HudElement, HudVisibility, InputPermissionCategory, system, world, type Player } from "@minecraft/server";
+import { EntityInventoryComponent, HudElement, HudVisibility, InputPermissionCategory, system, world, type Player } from "@minecraft/server";
 import type { GameInitializer } from "./GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
+import { MINECRAFT } from "../../../../constants/minecraft";
 
 export class InitPresentation {
     private constructor(private readonly gameInitializer: GameInitializer) {}
@@ -29,7 +30,8 @@ export class InitPresentation {
         players.forEach((player) => {
             this.hideHudForPlayer(player);
             this.showGameTitleForPlayer(player);
-            player.getComponent("inventory")?.container.clearAll();
+            const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY) as EntityInventoryComponent;
+            inventoryComponent.container.clearAll();
             player.playSound(SYSTEMS.SHOW_TITLE_SOUND, {
                 location: player.location,
                 pitch: SYSTEMS.SHOW_TITLE_SOUND_PITCH,
