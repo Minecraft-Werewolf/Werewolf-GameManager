@@ -27,8 +27,6 @@ export class GamePreparationManager {
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [ HudElement.Crosshair ]);
         });
 
-        this.setPlayersData(players);
-
         try {
             await this.countdownManager.startAsync({
                 onNormalTick: (seconds) => {
@@ -81,11 +79,5 @@ export class GamePreparationManager {
 
     public stopPreparation(): void {
         this.countdownManager.stop();
-    }
-
-    private setPlayersData(players: Player[]): void {
-        players.forEach((player) => {
-            this.inGameManager.getGameManager().getPlayersDataManager().init(player.id);
-        });
     }
 }

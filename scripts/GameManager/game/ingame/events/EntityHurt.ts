@@ -1,8 +1,8 @@
-import { EntityHealthComponent, world, type EntityHurtAfterEvent } from "@minecraft/server";
+import { EntityHealthComponent, GameMode, Player, world, type EntityHurtAfterEvent } from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { InGameEventManager } from "./InGameEventManager";
 import { GamePhase } from "../InGameManager";
-import { SYSTEMS } from "../../../constants/systems";
+import { MINECRAFT } from "../../../constants/minecraft";
 
 export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityHurtAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {
@@ -16,19 +16,20 @@ export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityH
 
     protected handleAfter(ev: EntityHurtAfterEvent): void {
         const { damage, damageSource, hurtEntity } = ev;
-        if (hurtEntity.typeId !== SYSTEMS.TYPE_ID_PLAYER) return;
-
         const currentGamePhase = this.inGameEventManager.getInGameManager().getCurrentPhase();
         if (currentGamePhase !== GamePhase.InGame) return;
 
         const gameManager = this.inGameEventManager.getInGameManager().getGameManager();
 
-        const hurtEntityHealth = hurtEntity.getComponent(SYSTEMS.COMPONENT_ID_HEALTH) as EntityHealthComponent;
-        const hurtEntityData = gameManager.getPlayerData(hurtEntity.id);
-        if (!hurtEntityData || !hurtEntityHealth) return;
+        if (hurtEntity.typeId !== MINECRAFT.TYPE_ID_PLAYER) return;
+        const hurtPlayer = hurtEntity as Player;
+        const hurtPlayerHealth = hurtPlayer.getComponent(MINECRAFT.COMPONENT_ID_HEALTH) as EntityHealthComponent;
+        const hurtPlayerData = gameManager.getPlayerData(hurtPlayer.id);
+        if (!hurtPlayerData || !hurtPlayerHealth) return;
 
-        if (hurtEntityHealth.currentValue === 0) {
-            hurtEntityData.isAlive = false;
+        if (hurtPlayerHealth.currentValue === 0) {
+            hurtPlayerData.isAlive = false;
+            hurtPlayer.setGameMode(GameMode.Spectator);
         }
     }
 }

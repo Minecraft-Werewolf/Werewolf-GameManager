@@ -1,11 +1,12 @@
 import { world } from "@minecraft/server";
 import { GamePreparationManager } from "./GamePreparationManager";
 import { GameManager } from "./game/GameManager";
-import { GameInitializer } from "./init/GameInitializer";
+import { GameInitializer } from "./game/init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
 import type { SystemManager } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
+import { GameTerminator } from "./game/terminate/GameTerminator";
 
 export enum GamePhase {
     Initializing,
@@ -21,6 +22,7 @@ export class InGameManager {
     private readonly gameInitializer: GameInitializer;
     private readonly gamePreparationManager: GamePreparationManager;
     private readonly gameManager: GameManager;
+    private readonly gameTerminator: GameTerminator;
     private readonly inGameEventManager: InGameEventManager;
 
     private isResetRequested = false;
@@ -29,6 +31,7 @@ export class InGameManager {
         this.gameInitializer = GameInitializer.create(this);
         this.gamePreparationManager = GamePreparationManager.create(this);
         this.gameManager = GameManager.create(this);
+        this.gameTerminator = GameTerminator.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
     }
 
@@ -43,6 +46,7 @@ export class InGameManager {
             await this.runStep(async () => this.gameInitializer.runInitializationAsync());
             await this.runStep(async () => this.gamePreparationManager.runPreparationAsync());
             await this.runStep(async () => this.gameManager.startGameAsync());
+            await this.runStep(async () => this.gameTerminator.runTerminationAsync());
         } catch (e) {
             console.warn(`[GameManager] Game start interrupted: ${String(e)}`);
         }
