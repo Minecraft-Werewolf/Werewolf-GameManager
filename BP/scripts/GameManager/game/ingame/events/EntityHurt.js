@@ -1,7 +1,7 @@
-import { EntityHealthComponent, world } from "@minecraft/server";
+import { EntityHealthComponent, GameMode, Player, world } from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import { GamePhase } from "../InGameManager";
-import { SYSTEMS } from "../../../constants/systems";
+import { MINECRAFT } from "../../../constants/minecraft";
 export class InGameEntityHurtHandler extends BaseEventHandler {
     constructor(inGameEventManager) {
         super(inGameEventManager);
@@ -13,18 +13,20 @@ export class InGameEntityHurtHandler extends BaseEventHandler {
     }
     handleAfter(ev) {
         const { damage, damageSource, hurtEntity } = ev;
-        if (hurtEntity.typeId !== SYSTEMS.TYPE_ID_PLAYER)
-            return;
         const currentGamePhase = this.inGameEventManager.getInGameManager().getCurrentPhase();
         if (currentGamePhase !== GamePhase.InGame)
             return;
         const gameManager = this.inGameEventManager.getInGameManager().getGameManager();
-        const hurtEntityHealth = hurtEntity.getComponent(SYSTEMS.COMPONENT_ID_HEALTH);
-        const hurtEntityData = gameManager.getPlayerData(hurtEntity.id);
-        if (!hurtEntityData || !hurtEntityHealth)
+        if (hurtEntity.typeId !== MINECRAFT.TYPE_ID_PLAYER)
             return;
-        if (hurtEntityHealth.currentValue === 0) {
-            hurtEntityData.isAlive = false;
+        const hurtPlayer = hurtEntity;
+        const hurtPlayerHealth = hurtPlayer.getComponent(MINECRAFT.COMPONENT_ID_HEALTH);
+        const hurtPlayerData = gameManager.getPlayerData(hurtPlayer.id);
+        if (!hurtPlayerData || !hurtPlayerHealth)
+            return;
+        if (hurtPlayerHealth.currentValue === 0) {
+            hurtPlayerData.isAlive = false;
+            hurtPlayer.setGameMode(GameMode.Spectator);
         }
     }
 }

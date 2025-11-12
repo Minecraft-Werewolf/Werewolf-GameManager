@@ -20,7 +20,6 @@ export class GamePreparationManager {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, true);
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [HudElement.Crosshair]);
         });
-        this.setPlayersData(players);
         try {
             await this.countdownManager.startAsync({
                 onNormalTick: (seconds) => {
@@ -68,10 +67,5 @@ export class GamePreparationManager {
     }
     stopPreparation() {
         this.countdownManager.stop();
-    }
-    setPlayersData(players) {
-        players.forEach((player) => {
-            this.inGameManager.getGameManager().getPlayersDataManager().init(player.id);
-        });
     }
 }

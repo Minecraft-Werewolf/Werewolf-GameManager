@@ -1,10 +1,11 @@
 import { world } from "@minecraft/server";
 import { GamePreparationManager } from "./GamePreparationManager";
 import { GameManager } from "./game/GameManager";
-import { GameInitializer } from "./init/GameInitializer";
+import { GameInitializer } from "./game/init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
 import { InGameEventManager } from "./events/InGameEventManager";
+import { GameTerminator } from "./game/terminate/GameTerminator";
 export var GamePhase;
 (function (GamePhase) {
     GamePhase[GamePhase["Initializing"] = 0] = "Initializing";
@@ -21,6 +22,7 @@ export class InGameManager {
         this.gameInitializer = GameInitializer.create(this);
         this.gamePreparationManager = GamePreparationManager.create(this);
         this.gameManager = GameManager.create(this);
+        this.gameTerminator = GameTerminator.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
     }
     static create(systemManager) {
@@ -32,6 +34,8 @@ export class InGameManager {
             await this.runStep(async () => this.gameInitializer.runInitializationAsync());
             await this.runStep(async () => this.gamePreparationManager.runPreparationAsync());
             await this.runStep(async () => this.gameManager.startGameAsync());
+            console.log("aiue");
+            await this.runStep(async () => this.gameTerminator.runTerminationAsync());
         }
         catch (e) {
             console.warn(`[GameManager] Game start interrupted: ${String(e)}`);
