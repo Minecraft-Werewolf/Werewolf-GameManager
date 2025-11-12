@@ -1,5 +1,8 @@
-import { GamePhase, InGameManager } from "./InGameManager";
-import { IntervalManager } from "./utils/IntervalManager";
+import { world } from "@minecraft/server";
+import { GamePhase, InGameManager } from "../InGameManager";
+import { IntervalManager } from "../utils/IntervalManager";
+import { ItemManager } from "./ItemManager";
+import { PlayerData, PlayersDataManager } from "./PlayersDataManager";
 export class GameManager {
     constructor(inGameManager) {
         this.inGameManager = inGameManager;
@@ -9,12 +12,16 @@ export class GameManager {
         this.onTickUpdate = () => {
             if (!this.isRunning)
                 return;
+            const players = world.getPlayers();
+            this.itemManager.replaceItemToPlayers(players);
         };
         this.onSecondUpdate = () => {
             if (!this.isRunning)
                 return;
         };
         this.intervalManager = IntervalManager.create();
+        this.itemManager = ItemManager.create(this);
+        this.playersDataManager = PlayersDataManager.create(this);
     }
     static create(inGameManager) {
         return new GameManager(inGameManager);
@@ -49,5 +56,14 @@ export class GameManager {
         this.isRunning = false;
         this.resolveFn = null;
         this.rejectFn = null;
+    }
+    getPlayerData(playerId) {
+        return this.playersDataManager.get(playerId);
+    }
+    getPlayersData() {
+        return this.playersDataManager.getPlayersData();
+    }
+    getPlayersDataManager() {
+        return this.playersDataManager;
     }
 }

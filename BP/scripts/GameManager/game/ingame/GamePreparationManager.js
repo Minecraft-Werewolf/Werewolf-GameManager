@@ -1,25 +1,26 @@
-import { HudElement, HudVisibility, InputPermissionCategory, world } from "@minecraft/server";
+import { HudElement, HudVisibility, InputPermissionCategory, Player, world } from "@minecraft/server";
 import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { CountdownManager } from "./utils/CountdownManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
 import { GamePhase } from "./InGameManager";
 export class GamePreparationManager {
-    constructor(gameManager) {
-        this.gameManager = gameManager;
+    constructor(inGameManager) {
+        this.inGameManager = inGameManager;
         this.countdownManager = CountdownManager.create(DEFAULT_SETTINGS.GAME_PREPARATION_TIME, DEFAULT_SETTINGS.VERBOSE_COUNTDOWN);
     }
-    static create(gameManager) {
-        return new GamePreparationManager(gameManager);
+    static create(inGameManager) {
+        return new GamePreparationManager(inGameManager);
     }
     async runPreparationAsync() {
-        this.gameManager.setCurrentPhase(GamePhase.Preparing);
+        this.inGameManager.setCurrentPhase(GamePhase.Preparing);
         const players = world.getPlayers();
         players.forEach((player) => {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, true);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, true);
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [HudElement.Crosshair]);
         });
+        this.setPlayersData(players);
         try {
             await this.countdownManager.startAsync({
                 onNormalTick: (seconds) => {
@@ -67,5 +68,10 @@ export class GamePreparationManager {
     }
     stopPreparation() {
         this.countdownManager.stop();
+    }
+    setPlayersData(players) {
+        players.forEach((player) => {
+            this.inGameManager.getGameManager().getPlayersDataManager().init(player.id);
+        });
     }
 }
