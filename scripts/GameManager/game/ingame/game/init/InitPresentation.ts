@@ -1,7 +1,7 @@
 import { HudElement, HudVisibility, InputPermissionCategory, system, world, type Player } from "@minecraft/server";
 import type { GameInitializer } from "./GameInitializer";
-import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
-import { SYSTEMS } from "../../../constants/systems";
+import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
+import { SYSTEMS } from "../../../../constants/systems";
 
 export class InitPresentation {
     private constructor(private readonly gameInitializer: GameInitializer) {}
