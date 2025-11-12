@@ -1,12 +1,28 @@
 import { HudElement, HudVisibility, InputPermissionCategory, system, world } from "@minecraft/server";
-import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
-import { SYSTEMS } from "../../../constants/systems";
+import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
+import { SYSTEMS } from "../../../../constants/systems";
 export class InitPresentation {
     constructor(gameInitializer) {
         this.gameInitializer = gameInitializer;
     }
     static create(gameInitializer) {
         return new InitPresentation(gameInitializer);
+    }
+    async runInitPresentationAsync(players) {
+        try {
+            await this.runStep(async () => this.showGameTitle(players));
+            await this.runStep(async () => this.cameraBlackoutEffect(players));
+            await this.runStep(() => this.teleportPlayers(players));
+            await this.runStep(async () => this.showStageTitle(players));
+        }
+        catch (e) {
+            console.warn(`[GameInitializer] Initialization interrupted: ${String(e)}`);
+        }
+    }
+    async runStep(stepFn) {
+        if (this.gameInitializer.isCancelled)
+            throw new Error("Initialization cancelled");
+        await stepFn();
     }
     async showGameTitle(players) {
         players.forEach((player) => {
@@ -26,6 +42,17 @@ export class InitPresentation {
             this.cameraBlackoutEffectForPlayer(player);
         });
         await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_TITLE_FADEOUT_DURATION);
+    }
+    teleportPlayers(players) {
+        players.forEach((player) => {
+            player.teleport({ x: 0.5, y: -58.94, z: 24.5 }, {
+                checkForBlocks: false,
+                dimension: world.getDimension("overworld"),
+                // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
+                keepVelocity: false,
+                rotation: { x: 16, y: 180 },
+            });
+        });
     }
     async showStageTitle(players) {
         players.forEach((player) => {

@@ -1,14 +1,24 @@
-import { GamePhase, InGameManager } from "./InGameManager";
-import { IntervalManager } from "./utils/IntervalManager";
+import { world } from "@minecraft/server";
+import { GamePhase, InGameManager } from "../InGameManager";
+import { IntervalManager } from "../utils/IntervalManager";
+import { ItemManager } from "./ItemManager";
+import { PlayerData, PlayersDataManager } from "./PlayersDataManager";
+import { GameTerminationEvaluator, TerminationReason } from "./GameTerminationEvaluator";
 
 export class GameManager {
     private readonly intervalManager: IntervalManager;
+    private readonly itemManager: ItemManager;
+    private readonly gameTerminationEvaluator: GameTerminationEvaluator;
+    private readonly playersDataManager: PlayersDataManager;
     private isRunning = false;
     private resolveFn: (() => void) | null = null;
     private rejectFn: ((reason?: any) => void) | null = null;
 
     private constructor(private readonly inGameManager: InGameManager) {
         this.intervalManager = IntervalManager.create();
+        this.itemManager = ItemManager.create(this);
+        this.gameTerminationEvaluator = GameTerminationEvaluator.create(this);
+        this.playersDataManager = PlayersDataManager.create(this);
     }
 
     public static create(inGameManager: InGameManager): GameManager {
@@ -33,18 +43,28 @@ export class GameManager {
 
     public stopGame(): void {
         if (!this.isRunning) return;
-        this.cleanup();
         this.rejectFn?.(new Error("Game cancelled"));
+        this.cleanup();
     }
 
     public finishGame(): void {
         if (!this.isRunning) return;
-        this.cleanup();
         this.resolveFn?.();
+        this.cleanup();
     }
 
     private onTickUpdate = (): void => {
         if (!this.isRunning) return;
+        const players = world.getPlayers();
+        const playersData = this.getPlayersData();
+
+        this.itemManager.replaceItemToPlayers(players);
+
+        // 終了判定
+        const evaluateResult = this.gameTerminationEvaluator.evaluate(playersData);
+        if (evaluateResult === TerminationReason.None) return;
+
+        this.finishGame();
     };
 
     private onSecondUpdate = (): void => {
@@ -56,5 +76,17 @@ export class GameManager {
         this.isRunning = false;
         this.resolveFn = null;
         this.rejectFn = null;
+    }
+
+    public getPlayerData(playerId: string) {
+        return this.playersDataManager.get(playerId);
+    }
+
+    public getPlayersData(): readonly PlayerData[] {
+        return this.playersDataManager.getPlayersData();
+    }
+
+    public getPlayersDataManager(): PlayersDataManager {
+        return this.playersDataManager;
     }
 }

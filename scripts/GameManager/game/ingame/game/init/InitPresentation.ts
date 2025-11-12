@@ -1,7 +1,7 @@
 import { HudElement, HudVisibility, InputPermissionCategory, system, world, type Player } from "@minecraft/server";
 import type { GameInitializer } from "./GameInitializer";
-import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
-import { SYSTEMS } from "../../../constants/systems";
+import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
+import { SYSTEMS } from "../../../../constants/systems";
 
 export class InitPresentation {
     private constructor(private readonly gameInitializer: GameInitializer) {}
@@ -9,7 +9,23 @@ export class InitPresentation {
         return new InitPresentation(gameInitializer);
     }
 
-    public async showGameTitle(players: Player[]): Promise<void> {
+    public async runInitPresentationAsync(players: Player[]): Promise<void> {
+        try {
+            await this.runStep(async () => this.showGameTitle(players));
+            await this.runStep(async () => this.cameraBlackoutEffect(players));
+            await this.runStep(() => this.teleportPlayers(players));
+            await this.runStep(async () => this.showStageTitle(players));
+        } catch (e) {
+            console.warn(`[GameInitializer] Initialization interrupted: ${String(e)}`);
+        }
+    }
+
+    private async runStep(stepFn: () => Promise<void> | void): Promise<void> {
+        if (this.gameInitializer.isCancelled) throw new Error("Initialization cancelled");
+        await stepFn();
+    }
+
+    private async showGameTitle(players: Player[]): Promise<void> {
         players.forEach((player) => {
             this.hideHudForPlayer(player);
             this.showGameTitleForPlayer(player);
@@ -24,7 +40,7 @@ export class InitPresentation {
         await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_TITLE_STAY_DURATION);
     }
 
-    public async cameraBlackoutEffect(players: Player[]): Promise<void> {
+    private async cameraBlackoutEffect(players: Player[]): Promise<void> {
         players.forEach((player) => {
             this.cameraBlackoutEffectForPlayer(player);
         });
@@ -32,7 +48,22 @@ export class InitPresentation {
         await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_TITLE_FADEOUT_DURATION);
     }
 
-    public async showStageTitle(players: Player[]): Promise<void> {
+    private teleportPlayers(players: Player[]): void {
+        players.forEach((player) => {
+            player.teleport(
+                { x: 0.5, y: -58.94, z: 24.5 },
+                {
+                    checkForBlocks: false,
+                    dimension: world.getDimension("overworld"),
+                    // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
+                    keepVelocity: false,
+                    rotation: { x: 16, y: 180 },
+                }
+            );
+        });
+    }
+
+    private async showStageTitle(players: Player[]): Promise<void> {
         players.forEach((player) => {
             this.showStageTitleForPlayer(player);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, false);

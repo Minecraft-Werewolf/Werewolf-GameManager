@@ -1,4 +1,4 @@
-import { HudElement, HudVisibility, InputPermissionCategory, world } from "@minecraft/server";
+import { HudElement, HudVisibility, InputPermissionCategory, Player, world } from "@minecraft/server";
 import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { CountdownManager } from "./utils/CountdownManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
@@ -7,18 +7,18 @@ import { GamePhase, type InGameManager } from "./InGameManager";
 
 export class GamePreparationManager {
     private readonly countdownManager: CountdownManager;
-    private constructor(private readonly gameManager: InGameManager) {
+    private constructor(private readonly inGameManager: InGameManager) {
         this.countdownManager = CountdownManager.create(
             DEFAULT_SETTINGS.GAME_PREPARATION_TIME,
             DEFAULT_SETTINGS.VERBOSE_COUNTDOWN
         );
     }
-    public static create(gameManager: InGameManager): GamePreparationManager {
-        return new GamePreparationManager(gameManager);
+    public static create(inGameManager: InGameManager): GamePreparationManager {
+        return new GamePreparationManager(inGameManager);
     }
 
     public async runPreparationAsync(): Promise<void> {
-        this.gameManager.setCurrentPhase(GamePhase.Preparing);
+        this.inGameManager.setCurrentPhase(GamePhase.Preparing);
         const players = world.getPlayers();
 
         players.forEach((player) => {
