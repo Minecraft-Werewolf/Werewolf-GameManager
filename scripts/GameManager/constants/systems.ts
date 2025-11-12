@@ -1,6 +1,10 @@
 import { TicksPerSecond } from "@minecraft/server"
 
 export const SYSTEMS = {
+    TYPE_ID_PLAYER: "minecraft:player",
+
+    COMPONENT_ID_HEALTH: "minecraft:health",
+
     INTERVAL_EVERY_TICK: 1,
 
     // https://learn.microsoft.com/ja-jp/minecraft/creator/scriptapi/minecraft/server/minecraft-server?view=minecraft-bedrock-stable#tickspersecond

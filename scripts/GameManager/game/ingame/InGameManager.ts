@@ -1,6 +1,6 @@
 import { world } from "@minecraft/server";
 import { GamePreparationManager } from "./GamePreparationManager";
-import { GameManager } from "./GameManager";
+import { GameManager } from "./game/GameManager";
 import { GameInitializer } from "./init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
@@ -101,6 +101,10 @@ export class InGameManager {
 
     public isResetPending(): boolean {
         return this.isResetRequested;
+    }
+
+    public getGameManager(): GameManager {
+        return this.gameManager;
     }
 
     public getInGameEventManager(): InGameEventManager {
