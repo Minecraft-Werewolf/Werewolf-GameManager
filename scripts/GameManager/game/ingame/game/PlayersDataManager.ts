@@ -1,12 +1,16 @@
 import type { Player } from "@minecraft/server";
-import type { GameManager } from "./GameManager";
+import type { InGameManager } from "../InGameManager";
 
 export type ParticipationState = "participant" | "spectator";
 
 export class PlayerData {
+    public name: string;
     public isAlive: boolean = true;
+    public isVictory: boolean = false;
 
-    constructor(public readonly playerId: string, public state: ParticipationState = "participant") {}
+    constructor(public readonly player: Player, public state: ParticipationState = "participant") {
+        this.name = player.name;
+    }
 
     public get isParticipating(): boolean {
         return this.state === "participant";
@@ -16,14 +20,14 @@ export class PlayerData {
 export class PlayersDataManager {
     private dataMap: Map<string, PlayerData> = new Map();
 
-    private constructor(private readonly gameManager: GameManager) {}
-    public static create(gameManager: GameManager): PlayersDataManager {
-        return new PlayersDataManager(gameManager);
+    private constructor(private readonly inGameManager: InGameManager) {}
+    public static create(inGameManager: InGameManager): PlayersDataManager {
+        return new PlayersDataManager(inGameManager);
     }
 
-    public init(playerId: string, state: ParticipationState = "participant"): void {
-        if (this.dataMap.has(playerId)) return;
-        this.dataMap.set(playerId, new PlayerData(playerId, state));
+    public init(player: Player, state: ParticipationState = "participant"): void {
+        if (this.dataMap.has(player.id)) return;
+        this.dataMap.set(player.id, new PlayerData(player, state));
     }
 
     public get(playerId: string): PlayerData {

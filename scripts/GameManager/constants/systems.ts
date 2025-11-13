@@ -1,6 +1,7 @@
 import { TicksPerSecond } from "@minecraft/server"
 
 export const SYSTEMS = {
+    SEPARATOR_SPACE: ' ',
     INTERVAL_EVERY_TICK: 1,
 
     // https://learn.microsoft.com/ja-jp/minecraft/creator/scriptapi/minecraft/server/minecraft-server?view=minecraft-bedrock-stable#tickspersecond
@@ -40,4 +41,21 @@ export const SYSTEMS = {
     GAME_FORCE_QUIT_SOUND: "note.bass",
     GAME_FORCE_QUIT_SOUND_PITCH: 1,
     GAME_FORCE_QUIT_SOUND_VOLUME: 1,
+
+    GAME_TERMINATION_SOUND: "random.anvil_use",
+    GAME_TERMINATION_SOUND_PITCH: 1,
+    GAME_TERMINATION_SOUND_VOLUME: 1,
+
+    GAME_TERMINATION_TITLE_FADEIN_DURATION: 0,
+    GAME_TERMINATION_TITLE_STAY_DURATION: 60,
+    GAME_TERMINATION_TITLE_FADEOUT_DURATION: 10,
+
+    GAME_SHOW_RESULT_DURATION: 100,
+
+    GAME_VICTORY_SOUND: "random.levelup",
+    GAME_VICTORY_SOUND_PITCH: 1,
+    GAME_VICTORY_SOUND_VOLUME: 1,
+    GAME_DEFEAT_SOUND: "random.explode",
+    GAME_DEFEAT_SOUND_PITCH: 1,
+    GAME_DEFEAT_SOUND_VOLUME: 1,
 }

@@ -15,3 +15,10 @@ werewolf.gamemanager.game.start.message=§aThe game is starting!§r
 
 werewolf.gamemanager.game.start.canceled.message=§cThe game start has been canceled.§r
 werewolf.gamemanager.game.forcequit.message=§cThe game has been forcefully terminated.§r
+
+werewolf.gamemanager.game.termination.title=§eGame Over!§r
+werewolf.gamemanager.game.termination.message=§eThe game has ended!§r
+
+werewolf.gamemanager.game.result.alive=§a(Survived)§r
+werewolf.gamemanager.game.result.dead=§c(Dead)§r
+werewolf.gamemanager.game.result.left=§c(Left)§r

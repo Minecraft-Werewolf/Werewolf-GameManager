@@ -14,3 +14,10 @@ werewolf.gamemanager.game.start.message=§aゲーム開始！§r
 
 werewolf.gamemanager.game.start.canceled.message=§cゲーム開始がキャンセルされました§r
 werewolf.gamemanager.game.forcequit.message=§cゲームが強制終了されました§r
+
+werewolf.gamemanager.game.termination.title=§eゲーム終了！§r
+werewolf.gamemanager.game.termination.message=§eゲーム終了！§r
+
+werewolf.gamemanager.game.result.alive=§a(生存)§r
+werewolf.gamemanager.game.result.dead=§c(死亡)§r
+werewolf.gamemanager.game.result.left=§c(退出)§r

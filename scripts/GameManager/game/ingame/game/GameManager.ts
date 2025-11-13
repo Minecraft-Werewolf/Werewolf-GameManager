@@ -9,7 +9,7 @@ export class GameManager {
     private readonly intervalManager: IntervalManager;
     private readonly itemManager: ItemManager;
     private readonly gameTerminationEvaluator: GameTerminationEvaluator;
-    private readonly playersDataManager: PlayersDataManager;
+    
     private isRunning = false;
     private resolveFn: (() => void) | null = null;
     private rejectFn: ((reason?: any) => void) | null = null;
@@ -18,7 +18,6 @@ export class GameManager {
         this.intervalManager = IntervalManager.create();
         this.itemManager = ItemManager.create(this);
         this.gameTerminationEvaluator = GameTerminationEvaluator.create(this);
-        this.playersDataManager = PlayersDataManager.create(this);
     }
 
     public static create(inGameManager: InGameManager): GameManager {
@@ -79,14 +78,14 @@ export class GameManager {
     }
 
     public getPlayerData(playerId: string) {
-        return this.playersDataManager.get(playerId);
+        return this.inGameManager.getPlayerData(playerId);
     }
 
     public getPlayersData(): readonly PlayerData[] {
-        return this.playersDataManager.getPlayersData();
+        return this.inGameManager.getPlayersData();
     }
 
     public getPlayersDataManager(): PlayersDataManager {
-        return this.playersDataManager;
+        return this.inGameManager.getPlayersDataManager();
     }
 }

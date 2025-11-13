@@ -1,6 +1,7 @@
-import { HudElement, HudVisibility, InputPermissionCategory, system, world } from "@minecraft/server";
+import { EntityInventoryComponent, HudElement, HudVisibility, InputPermissionCategory, system, world } from "@minecraft/server";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
+import { MINECRAFT } from "../../../../constants/minecraft";
 export class InitPresentation {
     constructor(gameInitializer) {
         this.gameInitializer = gameInitializer;
@@ -28,7 +29,8 @@ export class InitPresentation {
         players.forEach((player) => {
             this.hideHudForPlayer(player);
             this.showGameTitleForPlayer(player);
-            player.getComponent("inventory")?.container.clearAll();
+            const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY);
+            inventoryComponent.container.clearAll();
             player.playSound(SYSTEMS.SHOW_TITLE_SOUND, {
                 location: player.location,
                 pitch: SYSTEMS.SHOW_TITLE_SOUND_PITCH,
@@ -57,13 +59,13 @@ export class InitPresentation {
     async showStageTitle(players) {
         players.forEach((player) => {
             this.showStageTitleForPlayer(player);
-            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, false);
-            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, false);
             player.playSound(SYSTEMS.SHOW_STAGE_TITLE_SOUND, {
                 location: player.location,
                 pitch: SYSTEMS.SHOW_STAGE_TITLE_SOUND_PITCH,
                 volume: SYSTEMS.SHOW_STAGE_TITLE_SOUND_VOLUME,
             });
+            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, false);
+            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, false);
         });
         await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL_EVERY_SECOND);
     }

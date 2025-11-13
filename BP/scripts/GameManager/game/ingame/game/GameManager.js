@@ -29,7 +29,6 @@ export class GameManager {
         this.intervalManager = IntervalManager.create();
         this.itemManager = ItemManager.create(this);
         this.gameTerminationEvaluator = GameTerminationEvaluator.create(this);
-        this.playersDataManager = PlayersDataManager.create(this);
     }
     static create(inGameManager) {
         return new GameManager(inGameManager);
@@ -66,12 +65,12 @@ export class GameManager {
         this.rejectFn = null;
     }
     getPlayerData(playerId) {
-        return this.playersDataManager.get(playerId);
+        return this.inGameManager.getPlayerData(playerId);
     }
     getPlayersData() {
-        return this.playersDataManager.getPlayersData();
+        return this.inGameManager.getPlayersData();
     }
     getPlayersDataManager() {
-        return this.playersDataManager;
+        return this.inGameManager.getPlayersDataManager();
     }
 }

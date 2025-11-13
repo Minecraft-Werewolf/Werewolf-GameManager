@@ -7,6 +7,7 @@ import { SYSTEMS } from "../../constants/systems";
 import type { SystemManager } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
+import { PlayerData, PlayersDataManager } from "./game/PlayersDataManager";
 
 export enum GamePhase {
     Initializing,
@@ -24,6 +25,7 @@ export class InGameManager {
     private readonly gameManager: GameManager;
     private readonly gameTerminator: GameTerminator;
     private readonly inGameEventManager: InGameEventManager;
+    private readonly playersDataManager: PlayersDataManager;
 
     private isResetRequested = false;
 
@@ -33,6 +35,7 @@ export class InGameManager {
         this.gameManager = GameManager.create(this);
         this.gameTerminator = GameTerminator.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
+        this.playersDataManager = PlayersDataManager.create(this);
     }
 
     public static create(systemManager: SystemManager): InGameManager {
@@ -113,5 +116,17 @@ export class InGameManager {
 
     public getInGameEventManager(): InGameEventManager {
         return this.inGameEventManager;
+    }
+    
+    public getPlayerData(playerId: string) {
+        return this.playersDataManager.get(playerId);
+    }
+
+    public getPlayersData(): readonly PlayerData[] {
+        return this.playersDataManager.getPlayersData();
+    }
+
+    public getPlayersDataManager(): PlayersDataManager {
+        return this.playersDataManager;
     }
 }

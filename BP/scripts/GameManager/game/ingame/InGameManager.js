@@ -6,6 +6,7 @@ import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
+import { PlayerData, PlayersDataManager } from "./game/PlayersDataManager";
 export var GamePhase;
 (function (GamePhase) {
     GamePhase[GamePhase["Initializing"] = 0] = "Initializing";
@@ -24,6 +25,7 @@ export class InGameManager {
         this.gameManager = GameManager.create(this);
         this.gameTerminator = GameTerminator.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
+        this.playersDataManager = PlayersDataManager.create(this);
     }
     static create(systemManager) {
         return new InGameManager(systemManager);
@@ -34,7 +36,6 @@ export class InGameManager {
             await this.runStep(async () => this.gameInitializer.runInitializationAsync());
             await this.runStep(async () => this.gamePreparationManager.runPreparationAsync());
             await this.runStep(async () => this.gameManager.startGameAsync());
-            console.log("aiue");
             await this.runStep(async () => this.gameTerminator.runTerminationAsync());
         }
         catch (e) {
@@ -93,5 +94,14 @@ export class InGameManager {
     }
     getInGameEventManager() {
         return this.inGameEventManager;
+    }
+    getPlayerData(playerId) {
+        return this.playersDataManager.get(playerId);
+    }
+    getPlayersData() {
+        return this.playersDataManager.getPlayersData();
+    }
+    getPlayersDataManager() {
+        return this.playersDataManager;
     }
 }
