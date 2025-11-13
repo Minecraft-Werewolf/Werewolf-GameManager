@@ -17,3 +17,7 @@ werewolf.gamemanager.game.forcequit.message=§cゲームが強制終了されま
 
 werewolf.gamemanager.game.termination.title=§eゲーム終了！§r
 werewolf.gamemanager.game.termination.message=§eゲーム終了！§r
+
+werewolf.gamemanager.game.result.alive=§a(生存)§r
+werewolf.gamemanager.game.result.dead=§c(死亡)§r
+werewolf.gamemanager.game.result.left=§c(退出)§r

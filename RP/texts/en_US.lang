@@ -18,3 +18,7 @@ werewolf.gamemanager.game.forcequit.message=§cThe game has been forcefully term
 
 werewolf.gamemanager.game.termination.title=§eGame Over!§r
 werewolf.gamemanager.game.termination.message=§eThe game has ended!§r
+
+werewolf.gamemanager.game.result.alive=§a(Survived)§r
+werewolf.gamemanager.game.result.dead=§c(Dead)§r
+werewolf.gamemanager.game.result.left=§c(Left)§r

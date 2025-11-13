@@ -4,8 +4,9 @@ import type { InGameManager } from "../InGameManager";
 export type ParticipationState = "participant" | "spectator";
 
 export class PlayerData {
-    public isAlive: boolean = true;
     public name: string;
+    public isAlive: boolean = true;
+    public isVictory: boolean = false;
 
     constructor(public readonly player: Player, public state: ParticipationState = "participant") {
         this.name = player.name;
