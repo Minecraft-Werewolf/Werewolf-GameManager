@@ -47,12 +47,19 @@ export class InitPresentation {
     }
     teleportPlayers(players) {
         players.forEach((player) => {
-            player.teleport({ x: 0.5, y: -58.94, z: 24.5 }, {
-                checkForBlocks: false,
-                dimension: world.getDimension("overworld"),
+            player.teleport({
+                x: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_X,
+                y: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_Y,
+                z: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_Z,
+            }, {
+                checkForBlocks: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_CHECK_FOR_BLOCKS,
+                dimension: world.getDimension(SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_DIMENSION),
                 // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
-                keepVelocity: false,
-                rotation: { x: 16, y: 180 },
+                keepVelocity: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_KEEP_VELOCITY,
+                rotation: {
+                    x: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_X,
+                    y: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_Y,
+                },
             });
         });
     }

@@ -4,9 +4,11 @@ import { GameManager } from "./game/GameManager";
 import { GameInitializer } from "./game/init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
+import { GameWorldState } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
 import { PlayerData, PlayersDataManager } from "./game/PlayersDataManager";
+import { GameFinalizer } from "./game/GameFinalizer";
 export var GamePhase;
 (function (GamePhase) {
     GamePhase[GamePhase["Initializing"] = 0] = "Initializing";
@@ -24,6 +26,7 @@ export class InGameManager {
         this.gamePreparationManager = GamePreparationManager.create(this);
         this.gameManager = GameManager.create(this);
         this.gameTerminator = GameTerminator.create(this);
+        this.gameFinalizer = GameFinalizer.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
         this.playersDataManager = PlayersDataManager.create(this);
     }
@@ -37,10 +40,14 @@ export class InGameManager {
             await this.runStep(async () => this.gamePreparationManager.runPreparationAsync());
             await this.runStep(async () => this.gameManager.startGameAsync());
             await this.runStep(async () => this.gameTerminator.runTerminationAsync());
+            this.runStep(() => this.gameFinalizer.runFinalization());
         }
         catch (e) {
             console.warn(`[GameManager] Game start interrupted: ${String(e)}`);
         }
+    }
+    gameFinalize() {
+        this.systemManager.changeWorldState(GameWorldState.OutGame);
     }
     async runStep(stepFn) {
         if (this.isResetRequested) {
@@ -79,6 +86,7 @@ export class InGameManager {
                 volume: SYSTEMS.GAME_FORCE_QUIT_SOUND_VOLUME
             });
         });
+        this.gameFinalizer.runFinalization();
     }
     getCurrentPhase() {
         return this.currentPhase;
