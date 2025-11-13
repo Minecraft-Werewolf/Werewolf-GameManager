@@ -1,0 +1,11 @@
+{
+  "format_version": "1.21.120",
+  "minecraft:item": {
+    "description": {
+      "identifier": "werewolf:personal_settings"
+    },
+    "components": {
+      "minecraft:icon": "werewolf:personal_settings"
+    }
+  }
+}
