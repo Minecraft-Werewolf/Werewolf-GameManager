@@ -4,6 +4,14 @@ export const SYSTEMS = {
     INTERVAL_EVERY_TICK: 1,
     // https://learn.microsoft.com/ja-jp/minecraft/creator/scriptapi/minecraft/server/minecraft-server?view=minecraft-bedrock-stable#tickspersecond
     INTERVAL_EVERY_SECOND: TicksPerSecond,
+    DEFAULT_STAGE_SPAWNPOINT_X: 0.5,
+    DEFAULT_STAGE_SPAWNPOINT_Y: -58.94,
+    DEFAULT_STAGE_SPAWNPOINT_Z: 24.5,
+    DEFAULT_STAGE_TELEPORT_OPTIONS_CHECK_FOR_BLOCKS: false,
+    DEFAULT_STAGE_TELEPORT_OPTIONS_DIMENSION: "overworld",
+    DEFAULT_STAGE_TELEPORT_OPTIONS_KEEP_VELOCITY: false,
+    DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_X: 8,
+    DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_Y: 180,
     // in ticks
     SHOW_TITLE_FADEIN_DURATION: 0,
     SHOW_TITLE_STAY_DURATION: 60,
