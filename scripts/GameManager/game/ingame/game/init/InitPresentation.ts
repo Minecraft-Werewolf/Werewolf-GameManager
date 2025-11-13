@@ -68,13 +68,13 @@ export class InitPresentation {
     private async showStageTitle(players: Player[]): Promise<void> {
         players.forEach((player) => {
             this.showStageTitleForPlayer(player);
-            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, false);
-            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, false);
             player.playSound(SYSTEMS.SHOW_STAGE_TITLE_SOUND, {
                 location: player.location,
                 pitch: SYSTEMS.SHOW_STAGE_TITLE_SOUND_PITCH,
                 volume: SYSTEMS.SHOW_STAGE_TITLE_SOUND_VOLUME,
             });
+            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, false);
+            player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, false);
         });
 
         await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL_EVERY_SECOND);

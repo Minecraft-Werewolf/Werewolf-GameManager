@@ -3,6 +3,7 @@ export class PlayerData {
         this.player = player;
         this.state = state;
         this.isAlive = true;
+        this.isVictory = false;
         this.name = player.name;
     }
     get isParticipating() {

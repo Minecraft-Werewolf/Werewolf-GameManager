@@ -11,4 +11,7 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_GAME_FORCE_QUIT_MESSAGE: "werewolf.gamemanager.game.forcequit.message",
     WEREWOLF_GAME_TERMINATION_TITLE: "werewolf.gamemanager.game.termination.title",
     WEREWOLF_GAME_TERMINATION_MESSAGE: "werewolf.gamemanager.game.termination.message",
+    WEREWOLF_GAME_RESULT_ALIVE: "werewolf.gamemanager.game.result.alive",
+    WEREWOLF_GAME_RESULT_DEAD: "werewolf.gamemanager.game.result.dead",
+    WEREWOLF_GAME_RESULT_LEFT: "werewolf.gamemanager.game.result.left",
 };

@@ -12,7 +12,7 @@ export class GameResultPresentation {
     async runGameResultPresentaionAsync(players) {
         try {
             await this.runStep(async () => this.showGameTerminatedTitle(players));
-            await this.runStep(async () => this.showGameResult());
+            await this.runStep(async () => this.showGameResult(players));
         }
         catch (e) {
             console.warn(`[GameTerminator] Termination interrupted: ${String(e)}`);
@@ -37,10 +37,40 @@ export class GameResultPresentation {
         });
         await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_TERMINATION_TITLE_STAY_DURATION);
     }
-    async showGameResult() {
+    async showGameResult(players) {
         const playersData = this.gameTerminator.getInGameManager().getPlayersData();
         playersData.forEach((playerData) => {
-            world.sendMessage(`§a${playerData.name}§r: ${playerData.isAlive}`);
+            if (playerData.isAlive) {
+                world.sendMessage({ rawtext: [
+                        { text: playerData.name },
+                        { text: SYSTEMS.SEPARATOR_SPACE },
+                        { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ALIVE }
+                    ] });
+            }
+            else {
+                world.sendMessage({ rawtext: [
+                        { text: playerData.name },
+                        { text: SYSTEMS.SEPARATOR_SPACE },
+                        { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEAD }
+                    ] });
+            }
+        });
+        players.forEach((player) => {
+            const playerData = this.gameTerminator.getInGameManager().getPlayerData(player.id);
+            if (playerData.isVictory) {
+                player.playSound(SYSTEMS.GAME_VICTORY_SOUND, {
+                    location: player.location,
+                    pitch: SYSTEMS.GAME_VICTORY_SOUND_PITCH,
+                    volume: SYSTEMS.GAME_VICTORY_SOUND_VOLUME
+                });
+            }
+            else {
+                player.playSound(SYSTEMS.GAME_DEFEAT_SOUND, {
+                    location: player.location,
+                    pitch: SYSTEMS.GAME_DEFEAT_SOUND_PITCH,
+                    volume: SYSTEMS.GAME_DEFEAT_SOUND_VOLUME
+                });
+            }
         });
         await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_SHOW_RESULT_DURATION);
     }
