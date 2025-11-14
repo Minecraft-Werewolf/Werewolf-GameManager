@@ -1,7 +1,8 @@
 import { world } from "@minecraft/server";
 import { MINECRAFT } from "../../../../constants/minecraft";
-import { SYSTEMS } from "../../../../constants/systems";
+import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
+import { TerminationReason } from "../GameTerminationEvaluator";
 export class GameResultPresentation {
     constructor(gameTerminator) {
         this.gameTerminator = gameTerminator;
@@ -38,41 +39,86 @@ export class GameResultPresentation {
         await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_TERMINATION_TITLE_STAY_DURATION);
     }
     async showGameResult(players) {
-        const playersData = this.gameTerminator.getInGameManager().getPlayersData();
-        playersData.forEach((playerData) => {
-            if (playerData.isAlive) {
-                world.sendMessage({ rawtext: [
-                        { text: playerData.name },
-                        { text: SYSTEMS.SEPARATOR_SPACE },
-                        { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ALIVE }
-                    ] });
-            }
-            else {
-                world.sendMessage({ rawtext: [
-                        { text: playerData.name },
-                        { text: SYSTEMS.SEPARATOR_SPACE },
-                        { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEAD }
-                    ] });
-            }
-        });
+        const terminator = this.gameTerminator;
+        const inGameManager = terminator.getInGameManager();
+        const evaluateResult = inGameManager.getGameManager().evaluateResult;
+        const winningFactionTitleId = this.getWinningFactionTitleTranslateId(evaluateResult);
+        world.sendMessage({ translate: winningFactionTitleId });
         players.forEach((player) => {
-            const playerData = this.gameTerminator.getInGameManager().getPlayerData(player.id);
-            if (playerData.isVictory) {
-                player.playSound(SYSTEMS.GAME_VICTORY_SOUND, {
-                    location: player.location,
-                    pitch: SYSTEMS.GAME_VICTORY_SOUND_PITCH,
-                    volume: SYSTEMS.GAME_VICTORY_SOUND_VOLUME
-                });
-            }
-            else {
-                player.playSound(SYSTEMS.GAME_DEFEAT_SOUND, {
-                    location: player.location,
-                    pitch: SYSTEMS.GAME_DEFEAT_SOUND_PITCH,
-                    volume: SYSTEMS.GAME_DEFEAT_SOUND_VOLUME
-                });
-            }
+            const playerData = inGameManager.getPlayerData(player.id);
+            this.playResultSound(player, playerData.isVictory);
+            const { subtitleId, messageId } = this.getPlayerResultTextIds(evaluateResult, playerData.isVictory);
+            player.onScreenDisplay.setTitle({ translate: winningFactionTitleId }, {
+                subtitle: { translate: subtitleId },
+                ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
+            });
+            player.sendMessage({ translate: messageId });
         });
-        await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_SHOW_RESULT_DURATION);
+        this.broadcastPlayersAliveState(inGameManager.getPlayersData());
+        await terminator.getWaitController().waitTicks(SYSTEMS.GAME_SHOW_RESULT_DURATION);
+    }
+    playResultSound(player, isVictory) {
+        const sound = isVictory ? SYSTEMS.GAME_VICTORY_SOUND : SYSTEMS.GAME_DEFEAT_SOUND;
+        const pitch = isVictory ? SYSTEMS.GAME_VICTORY_SOUND_PITCH : SYSTEMS.GAME_DEFEAT_SOUND_PITCH;
+        const volume = isVictory ? SYSTEMS.GAME_VICTORY_SOUND_VOLUME : SYSTEMS.GAME_DEFEAT_SOUND_VOLUME;
+        player.playSound(sound, { location: player.location, pitch, volume });
+    }
+    getPlayerResultTextIds(result, isVictory) {
+        const isDraw = result === TerminationReason.Annihilation ||
+            result === TerminationReason.Timeup;
+        if (isDraw) {
+            return {
+                subtitleId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DRAW,
+                messageId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DRAW_MESSAGE,
+            };
+        }
+        if (isVictory) {
+            return {
+                subtitleId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VICTORY,
+                messageId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VICTORY_MESSAGE,
+            };
+        }
+        return {
+            subtitleId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEFEAT,
+            messageId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEFEAT_MESSAGE,
+        };
+    }
+    broadcastPlayersAliveState(playersData) {
+        const lines = [];
+        playersData.forEach((playerData) => {
+            const translateId = playerData.isAlive
+                ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ALIVE
+                : WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEAD;
+            lines.push({
+                rawtext: [
+                    { text: playerData.name },
+                    { text: SYSTEMS.SEPARATOR_SPACE },
+                    { translate: translateId }
+                ]
+            });
+        });
+        world.sendMessage({
+            rawtext: lines.flatMap(line => [
+                ...line.rawtext,
+                { text: "\n" }
+            ])
+        });
+    }
+    getWinningFactionTitleTranslateId(result) {
+        switch (result) {
+            case TerminationReason.Annihilation:
+                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ANNIHILATION;
+            case TerminationReason.Timeup:
+                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_TIMEUP;
+            case TerminationReason.VillagerVictory:
+                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VILLAGER_FACTION_WIN;
+            case TerminationReason.WerewolfVictory:
+                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_WIN;
+            case TerminationReason.FoxVictory:
+                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_FOX_FACTION_WIN;
+            default:
+                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ANNIHILATION;
+        }
     }
     showGameTerminatedTitleForPlayer(player) {
         player.onScreenDisplay.setTitle({

@@ -5,7 +5,7 @@ export var TerminationReason;
     TerminationReason[TerminationReason["Timeup"] = 2] = "Timeup";
     TerminationReason[TerminationReason["VillagerVictory"] = 3] = "VillagerVictory";
     TerminationReason[TerminationReason["WerewolfVictory"] = 4] = "WerewolfVictory";
-    TerminationReason[TerminationReason["FoxesVictory"] = 5] = "FoxesVictory";
+    TerminationReason[TerminationReason["FoxVictory"] = 5] = "FoxVictory";
 })(TerminationReason || (TerminationReason = {}));
 export class GameTerminationEvaluator {
     constructor(gameManager) {

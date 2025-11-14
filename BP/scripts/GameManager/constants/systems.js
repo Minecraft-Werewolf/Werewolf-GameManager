@@ -1,6 +1,7 @@
 import { TicksPerSecond } from "@minecraft/server";
 export const SYSTEMS = {
     SEPARATOR_SPACE: ' ',
+    SEPARATOR_LINE: '-'.repeat(20),
     INTERVAL_EVERY_TICK: 1,
     // https://learn.microsoft.com/ja-jp/minecraft/creator/scriptapi/minecraft/server/minecraft-server?view=minecraft-bedrock-stable#tickspersecond
     INTERVAL_EVERY_SECOND: TicksPerSecond,
@@ -55,4 +56,11 @@ export const SYSTEMS = {
     GAME_DEFEAT_SOUND: "random.explode",
     GAME_DEFEAT_SOUND_PITCH: 1,
     GAME_DEFEAT_SOUND_VOLUME: 1,
+};
+export const GAMES = {
+    UI_RESULT_WINNING_FACTION_TITLE_ANIMATION: {
+        fadeInDuration: 0,
+        stayDuration: 100,
+        fadeOutDuration: 10,
+    },
 };
