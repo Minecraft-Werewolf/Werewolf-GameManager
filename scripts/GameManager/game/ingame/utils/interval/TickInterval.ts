@@ -4,6 +4,6 @@ import type { IntervalManager } from "../IntervalManager";
 
 export class TickInterval extends BaseInterval {
     public constructor(private readonly intervalManager: IntervalManager) {
-        super(SYSTEMS.INTERVAL_EVERY_TICK);
+        super(SYSTEMS.INTERVAL.EVERY_TICK);
     }
 }

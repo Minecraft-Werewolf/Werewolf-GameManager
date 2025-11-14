@@ -97,10 +97,10 @@ export class InGameManager {
         this.setCurrentPhase(GamePhase.Waiting);
 
         world.getPlayers().forEach((player) => {
-            player.playSound(SYSTEMS.GAME_FORCE_QUIT_SOUND, {
+            player.playSound(SYSTEMS.GAME_FORCE_QUIT.SOUND_ID, {
                 location: player.location,
-                pitch: SYSTEMS.GAME_FORCE_QUIT_SOUND_PITCH,
-                volume: SYSTEMS.GAME_FORCE_QUIT_SOUND_VOLUME
+                pitch: SYSTEMS.GAME_FORCE_QUIT.SOUND_PITCH,
+                volume: SYSTEMS.GAME_FORCE_QUIT.SOUND_VOLUME
             });
         
         });
