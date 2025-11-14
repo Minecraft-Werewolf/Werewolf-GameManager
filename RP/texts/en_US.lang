@@ -22,3 +22,17 @@ werewolf.gamemanager.game.termination.message=§eThe game has ended!§r
 werewolf.gamemanager.game.result.alive=§a(Survived)§r
 werewolf.gamemanager.game.result.dead=§c(Dead)§r
 werewolf.gamemanager.game.result.left=§c(Left)§r
+
+werewolf.gamemanager.game.result.villagerfaction.win=§aVillager Faction Wins§r
+werewolf.gamemanager.game.result.werewolffaction.win=§4Werewolf Faction Wins!§r
+werewolf.gamemanager.game.result.foxfaction.win=§gFox Faction Wins!§r
+werewolf.gamemanager.game.result.annihilation=§3Total Annihilation§r
+werewolf.gamemanager.game.result.timeup=§3Time's Up§r
+
+werewolf.gamemanager.game.result.victory=§aVictory!§r
+werewolf.gamemanager.game.result.defeat=§cDefeat...§r
+werewolf.gamemanager.game.result.draw=§7Draw§r
+
+werewolf.gamemanager.game.result.victory.message=§aYou have achieved victory!§r
+werewolf.gamemanager.game.result.defeat.message=§cYou have been defeated...§r
+werewolf.gamemanager.game.result.draw.message=§7The game ended in a draw.§r

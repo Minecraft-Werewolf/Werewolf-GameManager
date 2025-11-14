@@ -14,6 +14,8 @@ export class GameManager {
     private resolveFn: (() => void) | null = null;
     private rejectFn: ((reason?: any) => void) | null = null;
 
+    private _evaluateResult: TerminationReason = TerminationReason.None;
+
     private constructor(private readonly inGameManager: InGameManager) {
         this.intervalManager = IntervalManager.create();
         this.itemManager = ItemManager.create(this);
@@ -63,6 +65,7 @@ export class GameManager {
         const evaluateResult = this.gameTerminationEvaluator.evaluate(playersData);
         if (evaluateResult === TerminationReason.None) return;
 
+        this._evaluateResult = evaluateResult;
         this.finishGame();
     };
 
@@ -87,5 +90,9 @@ export class GameManager {
 
     public getPlayersDataManager(): PlayersDataManager {
         return this.inGameManager.getPlayersDataManager();
+    }
+
+    public get evaluateResult(): TerminationReason {
+        return this._evaluateResult;
     }
 }

@@ -18,4 +18,18 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_GAME_RESULT_ALIVE: "werewolf.gamemanager.game.result.alive",
     WEREWOLF_GAME_RESULT_DEAD: "werewolf.gamemanager.game.result.dead",
     WEREWOLF_GAME_RESULT_LEFT: "werewolf.gamemanager.game.result.left",
+
+    WEREWOLF_GAME_RESULT_VICTORY: "werewolf.gamemanager.game.result.victory",
+    WEREWOLF_GAME_RESULT_DEFEAT: "werewolf.gamemanager.game.result.defeat",
+    WEREWOLF_GAME_RESULT_DRAW: "werewolf.gamemanager.game.result.draw",
+
+    WEREWOLF_GAME_RESULT_VICTORY_MESSAGE: "werewolf.gamemanager.game.result.victory.message",
+    WEREWOLF_GAME_RESULT_DEFEAT_MESSAGE: "werewolf.gamemanager.game.result.defeat.message",
+    WEREWOLF_GAME_RESULT_DRAW_MESSAGE: "werewolf.gamemanager.game.result.draw.message",
+
+    WEREWOLF_GAME_RESULT_ANNIHILATION: "werewolf.gamemanager.game.result.annihilation",
+    WEREWOLF_GAME_RESULT_TIMEUP: "werewolf.gamemanager.game.result.timeup",
+    WEREWOLF_GAME_RESULT_VILLAGER_FACTION_WIN: "werewolf.gamemanager.game.result.villagerfaction.win",
+    WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_WIN: "werewolf.gamemanager.game.result.werewolffaction.win",
+    WEREWOLF_GAME_RESULT_FOX_FACTION_WIN: "werewolf.gamemanager.game.result.foxfaction.win",
 }
