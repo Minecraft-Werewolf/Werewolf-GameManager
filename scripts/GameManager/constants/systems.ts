@@ -1,10 +1,10 @@
-import { TicksPerSecond } from "@minecraft/server"
+import { TicksPerSecond } from "@minecraft/server";
 
 export const SYSTEMS = {
     SEPARATOR: {
-        SPACE: ' ',
-        LINE_CYAN: "§3" + '-'.repeat(20) + "§r",
-        LINE_YELLOW: "§e" + '-'.repeat(20) + "§r",
+        SPACE: " ",
+        LINE_CYAN: "§3" + "-".repeat(20) + "§r",
+        LINE_YELLOW: "§e" + "-".repeat(20) + "§r",
     },
     INTERVAL: {
         EVERY_TICK: 1,

@@ -23,8 +23,8 @@ export abstract class BaseInterval {
     }
 
     public restart(): void {
-       this.stop();
-       this.start();
+        this.stop();
+        this.start();
     }
 
     /** 登録 */

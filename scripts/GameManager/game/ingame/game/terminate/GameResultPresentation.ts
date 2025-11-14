@@ -1,6 +1,10 @@
-import { world, type EntityInventoryComponent, type Player } from "@minecraft/server";
+import {
+    EntityComponentTypes,
+    world,
+    type EntityInventoryComponent,
+    type Player,
+} from "@minecraft/server";
 import type { GameTerminator } from "./GameTerminator";
-import { MINECRAFT } from "../../../../constants/minecraft";
 import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { TerminationReason } from "../GameTerminationEvaluator";
@@ -27,11 +31,12 @@ export class GameResultPresentation {
     }
 
     private async showGameTerminatedTitle(players: Player[]): Promise<void> {
-        world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_MESSAGE });
+        world.sendMessage({
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_MESSAGE,
+        });
         players.forEach((player) => {
             this.showGameTerminatedTitleForPlayer(player);
-            const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY) as EntityInventoryComponent;
-            inventoryComponent.container.clearAll();
+            player.getComponent(EntityComponentTypes.Inventory)?.container.clearAll();
             player.playSound(SYSTEMS.GAME_TERMINATION.SOUND_ID, {
                 location: player.location,
                 pitch: SYSTEMS.GAME_TERMINATION.SOUND_PITCH,
@@ -39,7 +44,9 @@ export class GameResultPresentation {
             });
         });
 
-        await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION);
+        await this.gameTerminator
+            .getWaitController()
+            .waitTicks(SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION);
     }
 
     private async showGameResult(players: Player[]): Promise<void> {
@@ -57,7 +64,7 @@ export class GameResultPresentation {
 
             const { subtitleId, messageId } = this.getPlayerResultTextIds(
                 evaluateResult,
-                playerData.isVictory
+                playerData.isVictory,
             );
 
             player.onScreenDisplay.setTitle(
@@ -65,7 +72,7 @@ export class GameResultPresentation {
                 {
                     subtitle: { translate: subtitleId },
                     ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
-                }
+                },
             );
 
             player.sendMessage({ translate: messageId });
@@ -78,19 +85,22 @@ export class GameResultPresentation {
 
     private playResultSound(player: Player, isVictory: boolean): void {
         const sound = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_ID : SYSTEMS.GAME_DEFEAT.SOUND_ID;
-        const pitch = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_PITCH : SYSTEMS.GAME_DEFEAT.SOUND_PITCH;
-        const volume = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_VOLUME : SYSTEMS.GAME_DEFEAT.SOUND_VOLUME;
+        const pitch = isVictory
+            ? SYSTEMS.GAME_VICTORY.SOUND_PITCH
+            : SYSTEMS.GAME_DEFEAT.SOUND_PITCH;
+        const volume = isVictory
+            ? SYSTEMS.GAME_VICTORY.SOUND_VOLUME
+            : SYSTEMS.GAME_DEFEAT.SOUND_VOLUME;
 
         player.playSound(sound, { location: player.location, pitch, volume });
     }
 
     private getPlayerResultTextIds(
         result: TerminationReason,
-        isVictory: boolean
+        isVictory: boolean,
     ): { subtitleId: string; messageId: string } {
         const isDraw =
-            result === TerminationReason.Annihilation ||
-            result === TerminationReason.Timeup;
+            result === TerminationReason.Annihilation || result === TerminationReason.Timeup;
 
         if (isDraw) {
             return {
@@ -124,16 +134,13 @@ export class GameResultPresentation {
                 rawtext: [
                     { text: playerData.name },
                     { text: SYSTEMS.SEPARATOR.SPACE },
-                    { translate: translateId }
-                ]
+                    { translate: translateId },
+                ],
             });
         });
 
         world.sendMessage({
-            rawtext: lines.flatMap(line => [
-                ...line.rawtext,
-                { text: "\n" }
-            ])
+            rawtext: lines.flatMap((line) => [...line.rawtext, { text: "\n" }]),
         });
     }
 
@@ -155,12 +162,15 @@ export class GameResultPresentation {
     }
 
     private showGameTerminatedTitleForPlayer(player: Player): void {
-        player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_TITLE
-        }, {
-            fadeInDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEIN_DURATION,
-            stayDuration: SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION,
-            fadeOutDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEOUT_DURATION
-        });
+        player.onScreenDisplay.setTitle(
+            {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_TITLE,
+            },
+            {
+                fadeInDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEIN_DURATION,
+                stayDuration: SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION,
+                fadeOutDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEOUT_DURATION,
+            },
+        );
     }
 }

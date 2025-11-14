@@ -42,7 +42,7 @@ export class GameFinalizer {
                         x: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_X,
                         y: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_Y,
                     },
-                }
+                },
             );
         });
     }

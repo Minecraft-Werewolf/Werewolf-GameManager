@@ -15,7 +15,7 @@ export class OutGameEventManager extends BaseEventManager {
     public static create(outGameManager: OutGameManager): OutGameEventManager {
         return new OutGameEventManager(outGameManager);
     }
-    
+
     public override subscribeAll(): void {
         this.itemUse.subscribe();
         this.scriptEventReceive.subscribe();

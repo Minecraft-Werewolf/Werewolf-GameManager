@@ -9,7 +9,7 @@ export class GameManager {
     private readonly intervalManager: IntervalManager;
     private readonly itemManager: ItemManager;
     private readonly gameTerminationEvaluator: GameTerminationEvaluator;
-    
+
     private isRunning = false;
     private resolveFn: (() => void) | null = null;
     private rejectFn: ((reason?: any) => void) | null = null;

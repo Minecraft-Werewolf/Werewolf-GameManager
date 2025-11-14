@@ -1,8 +1,16 @@
-import { EntityInventoryComponent, HudElement, HudVisibility, InputPermissionCategory, system, world, type Player } from "@minecraft/server";
+import {
+    EntityComponentTypes,
+    EntityInventoryComponent,
+    HudElement,
+    HudVisibility,
+    InputPermissionCategory,
+    system,
+    world,
+    type Player,
+} from "@minecraft/server";
 import type { GameInitializer } from "./GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
-import { MINECRAFT } from "../../../../constants/minecraft";
 
 export class InitPresentation {
     private constructor(private readonly gameInitializer: GameInitializer) {}
@@ -30,8 +38,7 @@ export class InitPresentation {
         players.forEach((player) => {
             this.hideHudForPlayer(player);
             this.showGameTitleForPlayer(player);
-            const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY) as EntityInventoryComponent;
-            inventoryComponent.container.clearAll();
+            player.getComponent(EntityComponentTypes.Inventory)?.container.clearAll();
             player.playSound(SYSTEMS.SHOW_GAME_TITLE.SOUND_ID, {
                 location: player.location,
                 pitch: SYSTEMS.SHOW_GAME_TITLE.SOUND_PITCH,
@@ -39,7 +46,9 @@ export class InitPresentation {
             });
         });
 
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION);
+        await this.gameInitializer
+            .getWaitController()
+            .waitTicks(SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION);
     }
 
     private async cameraBlackoutEffect(players: Player[]): Promise<void> {
@@ -47,7 +56,9 @@ export class InitPresentation {
             this.cameraBlackoutEffectForPlayer(player);
         });
 
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION);
+        await this.gameInitializer
+            .getWaitController()
+            .waitTicks(SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION);
     }
 
     private teleportPlayers(players: Player[]): void {
@@ -67,7 +78,7 @@ export class InitPresentation {
                         x: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_X,
                         y: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_Y,
                     },
-                }
+                },
             );
         });
     }
@@ -84,39 +95,43 @@ export class InitPresentation {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, false);
         });
 
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL.EVERY_SECOND);
+        await this.gameInitializer
+            .getWaitController()
+            .waitTicks(
+                SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL.EVERY_SECOND,
+            );
     }
 
     private hideHudForPlayer(player: Player): void {
-        player.onScreenDisplay.setHudVisibility(
-            HudVisibility.Hide,
-            [
-                HudElement.PaperDoll,
-                HudElement.Armor,
-                HudElement.ToolTips,
-                // HudElement.TouchControls,
-                HudElement.Crosshair,
-                HudElement.Hotbar,
-                HudElement.Health,
-                HudElement.ProgressBar,
-                HudElement.Hunger,
-                HudElement.AirBubbles,
-                HudElement.HorseHealth,
-                HudElement.StatusEffects,
-                HudElement.ItemText,
-            ]
-        );
+        player.onScreenDisplay.setHudVisibility(HudVisibility.Hide, [
+            HudElement.PaperDoll,
+            HudElement.Armor,
+            HudElement.ToolTips,
+            // HudElement.TouchControls,
+            HudElement.Crosshair,
+            HudElement.Hotbar,
+            HudElement.Health,
+            HudElement.ProgressBar,
+            HudElement.Hunger,
+            HudElement.AirBubbles,
+            HudElement.HorseHealth,
+            HudElement.StatusEffects,
+            HudElement.ItemText,
+        ]);
     }
 
     private showGameTitleForPlayer(player: Player): void {
-        player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TITLE
-        }, {
-            subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_VERSION },
-            fadeInDuration: SYSTEMS.SHOW_GAME_TITLE.FADEIN_DURATION,
-            stayDuration: SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION,
-            fadeOutDuration: SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION,
-        });
+        player.onScreenDisplay.setTitle(
+            {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TITLE,
+            },
+            {
+                subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_VERSION },
+                fadeInDuration: SYSTEMS.SHOW_GAME_TITLE.FADEIN_DURATION,
+                stayDuration: SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION,
+                fadeOutDuration: SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION,
+            },
+        );
     }
 
     private cameraBlackoutEffectForPlayer(player: Player): void {
@@ -130,18 +145,21 @@ export class InitPresentation {
                 fadeInTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_FADEIN_TIME,
                 holdTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME,
                 fadeOutTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_FADEOUT_TIME,
-            }
+            },
         });
     }
 
     private showStageTitleForPlayer(player: Player): void {
-        player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_TITLE
-        }, {
-            subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_LOADING },
-            fadeInDuration: SYSTEMS.SHOW_STAGE_TITLE.FADEIN_DURATION,
-            stayDuration: SYSTEMS.SHOW_STAGE_TITLE.STAY_DURATION,
-            fadeOutDuration: SYSTEMS.SHOW_STAGE_TITLE.FADEOUT_DURATION,
-        });
+        player.onScreenDisplay.setTitle(
+            {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_TITLE,
+            },
+            {
+                subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_LOADING },
+                fadeInDuration: SYSTEMS.SHOW_STAGE_TITLE.FADEIN_DURATION,
+                stayDuration: SYSTEMS.SHOW_STAGE_TITLE.STAY_DURATION,
+                fadeOutDuration: SYSTEMS.SHOW_STAGE_TITLE.FADEOUT_DURATION,
+            },
+        );
     }
 }

@@ -1,8 +1,13 @@
-import { EntityHealthComponent, GameMode, Player, world, type EntityHurtAfterEvent } from "@minecraft/server";
+import {
+    EntityComponentTypes,
+    GameMode,
+    Player,
+    world,
+    type EntityHurtAfterEvent,
+} from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { InGameEventManager } from "./InGameEventManager";
 import { GamePhase } from "../InGameManager";
-import { MINECRAFT } from "../../../constants/minecraft";
 
 export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityHurtAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {
@@ -21,9 +26,9 @@ export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityH
 
         const gameManager = this.inGameEventManager.getInGameManager().getGameManager();
 
-        if (hurtEntity.typeId !== MINECRAFT.TYPE_ID_PLAYER) return;
+        if (!(hurtEntity instanceof Player)) return;
         const hurtPlayer = hurtEntity as Player;
-        const hurtPlayerHealthComponent = hurtPlayer.getComponent(MINECRAFT.COMPONENT_ID_HEALTH) as EntityHealthComponent;
+        const hurtPlayerHealthComponent = hurtPlayer.getComponent(EntityComponentTypes.Health);
         const hurtPlayerData = gameManager.getPlayerData(hurtPlayer.id);
         if (!hurtPlayerData || !hurtPlayerHealthComponent) return;
 

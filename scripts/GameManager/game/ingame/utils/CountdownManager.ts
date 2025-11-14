@@ -17,7 +17,7 @@ export class CountdownManager {
 
     private constructor(
         private readonly totalTime: number,
-        private readonly verbose = true
+        private readonly verbose = true,
     ) {
         this.remainingTime = totalTime;
         this.intervalManager = IntervalManager.create();
@@ -85,10 +85,7 @@ export class CountdownManager {
         this.isCancelled = true;
     }
 
-    private stopInternal(
-        reject: (reason?: any) => void,
-        reason: Error
-    ): void {
+    private stopInternal(reject: (reason?: any) => void, reason: Error): void {
         this.cleanup();
         reject(reason);
     }

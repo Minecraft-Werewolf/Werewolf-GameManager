@@ -28,7 +28,8 @@ export class RoleDataValidator {
         if (count.step !== undefined && typeof count.step !== "number") return false;
 
         if (data.color !== undefined && !this.isColorType(data.color)) return false;
-        if (data.divinationResult !== undefined && !this.isResultType(data.divinationResult)) return false;
+        if (data.divinationResult !== undefined && !this.isResultType(data.divinationResult))
+            return false;
         if (data.mediumResult !== undefined && !this.isResultType(data.mediumResult)) return false;
         if (data.knownRoles !== undefined && !this.isStringArray(data.knownRoles)) return false;
 
@@ -53,18 +54,15 @@ export class RoleDataValidator {
     }
 
     private isStringArray(x: unknown): x is string[] {
-        return Array.isArray(x) && x.every(v => typeof v === "string");
+        return Array.isArray(x) && x.every((v) => typeof v === "string");
     }
 
     private isRoleRef(x: unknown): x is { addonId: string; roleId: string } {
-        return this.isObject(x)
-            && typeof x.addonId === "string"
-            && typeof x.roleId === "string";
+        return this.isObject(x) && typeof x.addonId === "string" && typeof x.roleId === "string";
     }
 
     private isFaction(x: unknown): x is (typeof RoleFactionValues)[number] {
-        return typeof x === "string"
-            && (RoleFactionValues as readonly string[]).includes(x);
+        return typeof x === "string" && (RoleFactionValues as readonly string[]).includes(x);
     }
 
     private isResultType(x: unknown): x is string {

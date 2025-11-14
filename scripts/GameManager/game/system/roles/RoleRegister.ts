@@ -9,19 +9,24 @@ export class RoleRegister {
     }
 
     public registerRoles(args: string[]): void {
-        const roles: Role[] = args.slice(1).map((arg: string) =>{
-            let data;
-            try {
-                data = JSON.parse(arg);
-            } catch (e) {
-                ConsoleManager.error("Failed to parse role registration data: Invalid JSON format.");
-            }
+        const roles: Role[] = args
+            .slice(1)
+            .map((arg: string) => {
+                let data;
+                try {
+                    data = JSON.parse(arg);
+                } catch (e) {
+                    ConsoleManager.error(
+                        "Failed to parse role registration data: Invalid JSON format.",
+                    );
+                }
 
-            if (data && this.systemManager.isRole(data)) {
-                return data as Role;
-            }
-            return null;
-        }).filter((role): role is Role => role !== null);
+                if (data && this.systemManager.isRole(data)) {
+                    return data as Role;
+                }
+                return null;
+            })
+            .filter((role): role is Role => role !== null);
 
         this.systemManager.setRoles(args[0] as string, roles);
     }

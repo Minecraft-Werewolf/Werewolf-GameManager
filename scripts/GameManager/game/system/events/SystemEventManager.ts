@@ -10,11 +10,9 @@ export class SystemEventManager extends BaseEventManager {
         return new SystemEventManager(systemManager);
     }
 
-    public override subscribeAll(): void {
-    }
+    public override subscribeAll(): void {}
 
-    public override unsubscribeAll(): void {
-    }
+    public override unsubscribeAll(): void {}
 
     public getSystemManager(): SystemManager {
         return this.systemManager;

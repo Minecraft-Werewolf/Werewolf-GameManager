@@ -26,7 +26,10 @@ export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, 
 
         switch (itemStack.typeId) {
             case ITEM_USE.GAME_START_ITEM_ID:
-                system.sendScriptEvent(SCRIPT_EVENT_IDS.WEREWOLF_GAME_START, SCRIPT_EVENT_MESSAGES.NONE);
+                system.sendScriptEvent(
+                    SCRIPT_EVENT_IDS.WEREWOLF_GAME_START,
+                    SCRIPT_EVENT_MESSAGES.NONE,
+                );
                 break;
         }
     }

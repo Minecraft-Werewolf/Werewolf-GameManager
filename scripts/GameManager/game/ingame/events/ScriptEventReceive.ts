@@ -3,7 +3,10 @@ import { InGameEventManager } from "./InGameEventManager";
 import { SCRIPT_EVENT_IDS } from "../../../constants/scriptevent";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 
-export class InGameScriptEventReceiveHandler extends BaseEventHandler<undefined, ScriptEventCommandMessageAfterEvent> {
+export class InGameScriptEventReceiveHandler extends BaseEventHandler<
+    undefined,
+    ScriptEventCommandMessageAfterEvent
+> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {
         super(inGameEventManager);
     }

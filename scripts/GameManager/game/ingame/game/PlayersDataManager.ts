@@ -8,7 +8,10 @@ export class PlayerData {
     public isAlive: boolean = true;
     public isVictory: boolean = false;
 
-    constructor(public readonly player: Player, public state: ParticipationState = "participant") {
+    constructor(
+        public readonly player: Player,
+        public state: ParticipationState = "participant",
+    ) {
         this.name = player.name;
     }
 

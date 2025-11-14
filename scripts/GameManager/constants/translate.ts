@@ -5,8 +5,10 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_STAGE_TITLE: "werewolf.gamemanager.stage.title",
     WEREWOLF_STAGE_LOADING: "werewolf.gamemanager.stage.loading",
 
-    WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE: "werewolf.gamemanager.game.preparation.countdown.message",
-    WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE: "werewolf.gamemanager.game.preparation.countdown.warning.message",
+    WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE:
+        "werewolf.gamemanager.game.preparation.countdown.message",
+    WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE:
+        "werewolf.gamemanager.game.preparation.countdown.warning.message",
     WEREWOLF_GAME_START_MESSAGE: "werewolf.gamemanager.game.start.message",
 
     WEREWOLF_GAME_START_CANCELD_MESSAGE: "werewolf.gamemanager.game.start.canceled.message",
@@ -29,7 +31,9 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
 
     WEREWOLF_GAME_RESULT_ANNIHILATION: "werewolf.gamemanager.game.result.annihilation",
     WEREWOLF_GAME_RESULT_TIMEUP: "werewolf.gamemanager.game.result.timeup",
-    WEREWOLF_GAME_RESULT_VILLAGER_FACTION_WIN: "werewolf.gamemanager.game.result.villagerfaction.win",
-    WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_WIN: "werewolf.gamemanager.game.result.werewolffaction.win",
+    WEREWOLF_GAME_RESULT_VILLAGER_FACTION_WIN:
+        "werewolf.gamemanager.game.result.villagerfaction.win",
+    WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_WIN:
+        "werewolf.gamemanager.game.result.werewolffaction.win",
     WEREWOLF_GAME_RESULT_FOX_FACTION_WIN: "werewolf.gamemanager.game.result.foxfaction.win",
-}
+};

@@ -29,7 +29,7 @@ export class SystemManager {
         this.roleDataValidator = RoleDataValidator.create(this);
     }
 
-    public init(): void{
+    public init(): void {
         this.changeWorldState(GameWorldState.OutGame);
     }
 
@@ -77,10 +77,10 @@ export class SystemManager {
         this.inGameManager?.gameReset();
         this.changeWorldState(GameWorldState.OutGame);
     }
-    
+
     public changeWorldState(nextState: GameWorldState): void {
         if (this.currentWorldState === nextState) return;
-    
+
         switch (nextState) {
             case GameWorldState.InGame:
                 this.enterInGame();

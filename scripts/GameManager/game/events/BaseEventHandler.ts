@@ -3,7 +3,7 @@ import type { BaseEventManager } from "./BaseEventManager";
 export abstract class BaseEventHandler<
     TBefore = undefined,
     TAfter = undefined,
-    TManager extends BaseEventManager = BaseEventManager
+    TManager extends BaseEventManager = BaseEventManager,
 > {
     protected isSubscribed = false;
 

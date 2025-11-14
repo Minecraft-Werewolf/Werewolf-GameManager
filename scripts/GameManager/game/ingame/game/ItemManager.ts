@@ -16,7 +16,5 @@ export class ItemManager {
         return new ItemManager(gameManager);
     }
 
-    public replaceItemToPlayers(players: Player[]): void {
-
-    }
+    public replaceItemToPlayers(players: Player[]): void {}
 }

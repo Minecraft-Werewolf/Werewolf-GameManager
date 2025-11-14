@@ -1,16 +1,7 @@
-export const RoleFactionValues = [
-    "villager",
-    "werewolf",
-    "fox",
-    "neutral",
-] as const;
+export const RoleFactionValues = ["villager", "werewolf", "fox", "neutral"] as const;
 type RoleFaction = (typeof RoleFactionValues)[number];
 
-export const ResultTypeValues = [
-    "villager",
-    "werewolf",
-    "fox",
-] as const;
+export const ResultTypeValues = ["villager", "werewolf", "fox"] as const;
 type ResultType = (typeof ResultTypeValues)[number];
 
 export const ColorTypeValues = [
@@ -54,6 +45,6 @@ export interface Role {
         toSelf?: RoleRef; // 自分目線の表示 (呪われし者とか)
         toOthers?: RoleRef; // 他人目線の表示 (テレパシストとか)
         toWerewolves?: RoleRef; // 人狼目線の表示 (スパイとか)
-    }
+    };
     sortIndex: number; // ソート順
 }

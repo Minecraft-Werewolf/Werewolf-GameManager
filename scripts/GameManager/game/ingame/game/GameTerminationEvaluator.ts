@@ -17,7 +17,9 @@ export class GameTerminationEvaluator {
     }
 
     public evaluate(playersData: readonly PlayerData[]): TerminationReason {
-        const aliveParticipants = playersData.filter((data) => data.isParticipating && data.isAlive);
+        const aliveParticipants = playersData.filter(
+            (data) => data.isParticipating && data.isAlive,
+        );
 
         if (aliveParticipants.length === 0) {
             return TerminationReason.Annihilation;

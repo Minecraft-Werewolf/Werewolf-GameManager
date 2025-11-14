@@ -3,11 +3,16 @@ import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { OutGameEventManager } from "./OutGameEventManager";
 import { SCRIPT_EVENT_IDS } from "../../../constants/scriptevent";
 
-export class OutGameScriptEventReceiveHandler extends BaseEventHandler<undefined, ScriptEventCommandMessageAfterEvent> {
+export class OutGameScriptEventReceiveHandler extends BaseEventHandler<
+    undefined,
+    ScriptEventCommandMessageAfterEvent
+> {
     private constructor(private readonly outGameEventManager: OutGameEventManager) {
         super(outGameEventManager);
     }
-    public static create(outGameEventManager: OutGameEventManager): OutGameScriptEventReceiveHandler {
+    public static create(
+        outGameEventManager: OutGameEventManager,
+    ): OutGameScriptEventReceiveHandler {
         return new OutGameScriptEventReceiveHandler(outGameEventManager);
     }
 
