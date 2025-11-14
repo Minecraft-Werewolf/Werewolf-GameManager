@@ -31,34 +31,34 @@ export class InitPresentation {
             this.showGameTitleForPlayer(player);
             const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY);
             inventoryComponent.container.clearAll();
-            player.playSound(SYSTEMS.SHOW_TITLE_SOUND, {
+            player.playSound(SYSTEMS.SHOW_GAME_TITLE.SOUND_ID, {
                 location: player.location,
-                pitch: SYSTEMS.SHOW_TITLE_SOUND_PITCH,
-                volume: SYSTEMS.SHOW_TITLE_SOUND_VOLUME,
+                pitch: SYSTEMS.SHOW_GAME_TITLE.SOUND_PITCH,
+                volume: SYSTEMS.SHOW_GAME_TITLE.SOUND_VOLUME,
             });
         });
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_TITLE_STAY_DURATION);
+        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION);
     }
     async cameraBlackoutEffect(players) {
         players.forEach((player) => {
             this.cameraBlackoutEffectForPlayer(player);
         });
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_TITLE_FADEOUT_DURATION);
+        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION);
     }
     teleportPlayers(players) {
         players.forEach((player) => {
             player.teleport({
-                x: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_X,
-                y: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_Y,
-                z: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_Z,
+                x: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT.X,
+                y: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT.Y,
+                z: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT.Z,
             }, {
-                checkForBlocks: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_CHECK_FOR_BLOCKS,
-                dimension: world.getDimension(SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_DIMENSION),
+                checkForBlocks: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.CHECK_FOR_BLOCKS,
+                dimension: world.getDimension(SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.DIMENSION),
                 // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
-                keepVelocity: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_KEEP_VELOCITY,
+                keepVelocity: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.KEEP_VELOCITY,
                 rotation: {
-                    x: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_X,
-                    y: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_Y,
+                    x: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_X,
+                    y: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_Y,
                 },
             });
         });
@@ -66,15 +66,15 @@ export class InitPresentation {
     async showStageTitle(players) {
         players.forEach((player) => {
             this.showStageTitleForPlayer(player);
-            player.playSound(SYSTEMS.SHOW_STAGE_TITLE_SOUND, {
+            player.playSound(SYSTEMS.SHOW_STAGE_TITLE.SOUND_ID, {
                 location: player.location,
-                pitch: SYSTEMS.SHOW_STAGE_TITLE_SOUND_PITCH,
-                volume: SYSTEMS.SHOW_STAGE_TITLE_SOUND_VOLUME,
+                pitch: SYSTEMS.SHOW_STAGE_TITLE.SOUND_PITCH,
+                volume: SYSTEMS.SHOW_STAGE_TITLE.SOUND_VOLUME,
             });
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, false);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, false);
         });
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL_EVERY_SECOND);
+        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL.EVERY_SECOND);
     }
     hideHudForPlayer(player) {
         player.onScreenDisplay.setHudVisibility(HudVisibility.Hide, [
@@ -98,9 +98,9 @@ export class InitPresentation {
             translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TITLE
         }, {
             subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_VERSION },
-            fadeInDuration: SYSTEMS.SHOW_TITLE_FADEIN_DURATION,
-            stayDuration: SYSTEMS.SHOW_TITLE_STAY_DURATION,
-            fadeOutDuration: SYSTEMS.SHOW_TITLE_FADEOUT_DURATION,
+            fadeInDuration: SYSTEMS.SHOW_GAME_TITLE.FADEIN_DURATION,
+            stayDuration: SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION,
+            fadeOutDuration: SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION,
         });
     }
     cameraBlackoutEffectForPlayer(player) {
@@ -111,9 +111,9 @@ export class InitPresentation {
                 red: 0,
             },
             fadeTime: {
-                fadeInTime: SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_FADEIN_TIME,
-                holdTime: SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_HOLD_TIME,
-                fadeOutTime: SYSTEMS.SHOW_STAGE_TITLE_BACKGROUND_FADEOUT_TIME,
+                fadeInTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_FADEIN_TIME,
+                holdTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME,
+                fadeOutTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_FADEOUT_TIME,
             }
         });
     }
@@ -122,9 +122,9 @@ export class InitPresentation {
             translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_TITLE
         }, {
             subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_LOADING },
-            fadeInDuration: SYSTEMS.SHOW_STAGE_TITLE_FADEIN_DURATION,
-            stayDuration: SYSTEMS.SHOW_STAGE_TITLE_STAY_DURATION,
-            fadeOutDuration: SYSTEMS.SHOW_STAGE_TITLE_FADEOUT_DURATION,
+            fadeInDuration: SYSTEMS.SHOW_STAGE_TITLE.FADEIN_DURATION,
+            stayDuration: SYSTEMS.SHOW_STAGE_TITLE.STAY_DURATION,
+            fadeOutDuration: SYSTEMS.SHOW_STAGE_TITLE.FADEOUT_DURATION,
         });
     }
 }

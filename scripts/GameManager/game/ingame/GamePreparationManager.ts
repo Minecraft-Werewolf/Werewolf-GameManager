@@ -32,30 +32,30 @@ export class GamePreparationManager {
                 onNormalTick: (seconds) => {
                     world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE, with: [seconds.toString()] });
                     players.forEach((player) => {
-                        player.playSound(SYSTEMS.GAME_PREPARATION_COUNTDOWN_SOUND, {
+                        player.playSound(SYSTEMS.GAME_PREPARATION_COUNTDOWN.SOUND_ID, {
                             location: player.location,
-                            pitch: SYSTEMS.GAME_PREPARATION_COUNTDOWN_SOUND_PITCH,
-                            volume: SYSTEMS.GAME_PREPARATION_COUNTDOWN_SOUND_VOLUME
+                            pitch: SYSTEMS.GAME_PREPARATION_COUNTDOWN.SOUND_PITCH,
+                            volume: SYSTEMS.GAME_PREPARATION_COUNTDOWN.SOUND_VOLUME
                         });
                     });
                 },
                 onWarningTick: (seconds) => {
                     world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE, with: [seconds.toString()] });
                     players.forEach((player) => {
-                        player.playSound(SYSTEMS.GAME_PREPARATION_COUNTDOWN_WARNING_SOUND, {
+                        player.playSound(SYSTEMS.GAME_PREPARATION_COUNTDOWN.WARNING_SOUND_ID, {
                             location: player.location,
-                            pitch: SYSTEMS.GAME_PREPARATION_COUNTDOWN_WARNING_SOUND_PITCH,
-                            volume: SYSTEMS.GAME_PREPARATION_COUNTDOWN_WARNING_SOUND_VOLUME
+                            pitch: SYSTEMS.GAME_PREPARATION_COUNTDOWN.WARNING_SOUND_PITCH,
+                            volume: SYSTEMS.GAME_PREPARATION_COUNTDOWN.WARNING_SOUND_VOLUME
                         });
                     });
                 },
                 onComplete: () => {
                     world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_MESSAGE });
                     players.forEach((player) => {
-                        player.playSound(SYSTEMS.GAME_START_SOUND, {
+                        player.playSound(SYSTEMS.GAME_START.SOUND_ID, {
                             location: player.location,
-                            pitch: SYSTEMS.GAME_START_SOUND_PITCH,
-                            volume: SYSTEMS.GAME_START_SOUND_VOLUME
+                            pitch: SYSTEMS.GAME_START.SOUND_PITCH,
+                            volume: SYSTEMS.GAME_START.SOUND_VOLUME
                         });
                     });
                 }

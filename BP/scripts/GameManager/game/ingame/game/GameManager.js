@@ -10,6 +10,7 @@ export class GameManager {
         this.isRunning = false;
         this.resolveFn = null;
         this.rejectFn = null;
+        this._evaluateResult = TerminationReason.None;
         this.onTickUpdate = () => {
             if (!this.isRunning)
                 return;
@@ -20,6 +21,7 @@ export class GameManager {
             const evaluateResult = this.gameTerminationEvaluator.evaluate(playersData);
             if (evaluateResult === TerminationReason.None)
                 return;
+            this._evaluateResult = evaluateResult;
             this.finishGame();
         };
         this.onSecondUpdate = () => {
@@ -72,5 +74,8 @@ export class GameManager {
     }
     getPlayersDataManager() {
         return this.inGameManager.getPlayersDataManager();
+    }
+    get evaluateResult() {
+        return this._evaluateResult;
     }
 }
