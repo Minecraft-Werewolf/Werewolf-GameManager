@@ -7,7 +7,7 @@ export enum TerminationReason {
     Timeup,
     VillagerVictory,
     WerewolfVictory,
-    FoxesVictory,
+    FoxVictory,
 }
 
 export class GameTerminationEvaluator {
