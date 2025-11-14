@@ -1,0 +1,15 @@
+{
+  "format_version": "1.21.120",
+  "minecraft:item": {
+    "description": {
+      "identifier": "werewolf:spectate_register"
+    },
+    "components": {
+      "minecraft:icon": "werewolf:spectate_register",
+      "minecraft:max_stack_size": 1,
+      "minecraft:display_name": {
+        "value": "werewolf.gamemanager.item.name.spectate_register"
+      }
+    }
+  }
+}

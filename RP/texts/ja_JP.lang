@@ -21,3 +21,10 @@ werewolf.gamemanager.game.termination.message=§eゲーム終了！§r
 werewolf.gamemanager.game.result.alive=§a(生存)§r
 werewolf.gamemanager.game.result.dead=§c(死亡)§r
 werewolf.gamemanager.game.result.left=§c(退出)§r
+
+werewolf.gamemanager.item.name.game_starter=§eゲーム開始§r
+werewolf.gamemanager.item.name.game_force_terminator=§c強制終了§r
+werewolf.gamemanager.item.name.game_settings=§bゲーム設定§r
+werewolf.gamemanager.item.name.join_register=§a参加§r
+werewolf.gamemanager.item.name.spectate_register=§3観戦§r
+werewolf.gamemanager.item.name.personal_settings=§b個人設定§r
