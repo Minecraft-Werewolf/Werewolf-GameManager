@@ -22,3 +22,10 @@ werewolf.gamemanager.game.termination.message=§eThe game has ended!§r
 werewolf.gamemanager.game.result.alive=§a(Survived)§r
 werewolf.gamemanager.game.result.dead=§c(Dead)§r
 werewolf.gamemanager.game.result.left=§c(Left)§r
+
+werewolf.gamemanager.item.name.game_starter=§eStart Game§r
+werewolf.gamemanager.item.name.game_force_terminator=§cForce Stop§r
+werewolf.gamemanager.item.name.game_settings=§bGame Settings§r
+werewolf.gamemanager.item.name.join_register=§aJoin§r
+werewolf.gamemanager.item.name.spectate_register=§3Spectate§r
+werewolf.gamemanager.item.name.personal_settings=§bYour Settings§r

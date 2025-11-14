@@ -1,0 +1,22 @@
+{
+  "texture_data": {
+    "werewolf:game_starter": {
+      "textures": "textures/werewolf-gamemanager/items/game_starter"
+    },
+    "werewolf:game_force_terminator": {
+      "textures": "textures/werewolf-gamemanager/items/game_force_terminator"
+    },
+    "werewolf:game_settings": {
+      "textures": "textures/werewolf-gamemanager/items/game_settings"
+    },
+    "werewolf:join_register": {
+      "textures": "textures/werewolf-gamemanager/items/join_register"
+    },
+    "werewolf:personal_settings": {
+      "textures": "textures/werewolf-gamemanager/items/personal_settings"
+    },
+    "werewolf:spectate_register": {
+      "textures": "textures/werewolf-gamemanager/items/spectate_register"
+    }
+  }
+}
