@@ -23,17 +23,17 @@ export class GameFinalizer {
     teleportPlayers(players) {
         players.forEach((player) => {
             player.teleport({
-                x: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_X,
-                y: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_Y,
-                z: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT_Z,
+                x: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT.X,
+                y: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT.Y,
+                z: SYSTEMS.DEFAULT_STAGE_SPAWNPOINT.Z,
             }, {
-                checkForBlocks: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_CHECK_FOR_BLOCKS,
-                dimension: world.getDimension(SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_DIMENSION),
+                checkForBlocks: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.CHECK_FOR_BLOCKS,
+                dimension: world.getDimension(SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.DIMENSION),
                 // facingLocation: { x: 0, y: -58, z: 0 }, // rotationを指定しているため不要
-                keepVelocity: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_KEEP_VELOCITY,
+                keepVelocity: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.KEEP_VELOCITY,
                 rotation: {
-                    x: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_X,
-                    y: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS_ROTATION_Y,
+                    x: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_X,
+                    y: SYSTEMS.DEFAULT_STAGE_TELEPORT_OPTIONS.ROTATION_Y,
                 },
             });
         });

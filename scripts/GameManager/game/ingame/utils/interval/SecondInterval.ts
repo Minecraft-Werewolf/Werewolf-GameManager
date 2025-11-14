@@ -4,6 +4,6 @@ import type { IntervalManager } from "../IntervalManager";
 
 export class SecondInterval extends BaseInterval {
     public constructor(private readonly intervalManager: IntervalManager) {
-        super(SYSTEMS.INTERVAL_EVERY_SECOND);
+        super(SYSTEMS.INTERVAL.EVERY_SECOND);
     }
 }

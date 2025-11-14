@@ -30,13 +30,13 @@ export class GameResultPresentation {
             this.showGameTerminatedTitleForPlayer(player);
             const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY);
             inventoryComponent.container.clearAll();
-            player.playSound(SYSTEMS.GAME_TERMINATION_SOUND, {
+            player.playSound(SYSTEMS.GAME_TERMINATION.SOUND_ID, {
                 location: player.location,
-                pitch: SYSTEMS.GAME_TERMINATION_SOUND_PITCH,
-                volume: SYSTEMS.GAME_TERMINATION_SOUND_VOLUME,
+                pitch: SYSTEMS.GAME_TERMINATION.SOUND_PITCH,
+                volume: SYSTEMS.GAME_TERMINATION.SOUND_VOLUME,
             });
         });
-        await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_TERMINATION_TITLE_STAY_DURATION);
+        await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION);
     }
     async showGameResult(players) {
         const terminator = this.gameTerminator;
@@ -55,12 +55,12 @@ export class GameResultPresentation {
             player.sendMessage({ translate: messageId });
         });
         this.broadcastPlayersAliveState(inGameManager.getPlayersData());
-        await terminator.getWaitController().waitTicks(SYSTEMS.GAME_SHOW_RESULT_DURATION);
+        await terminator.getWaitController().waitTicks(SYSTEMS.GAME_SHOW_RESULT.DURATION);
     }
     playResultSound(player, isVictory) {
-        const sound = isVictory ? SYSTEMS.GAME_VICTORY_SOUND : SYSTEMS.GAME_DEFEAT_SOUND;
-        const pitch = isVictory ? SYSTEMS.GAME_VICTORY_SOUND_PITCH : SYSTEMS.GAME_DEFEAT_SOUND_PITCH;
-        const volume = isVictory ? SYSTEMS.GAME_VICTORY_SOUND_VOLUME : SYSTEMS.GAME_DEFEAT_SOUND_VOLUME;
+        const sound = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_ID : SYSTEMS.GAME_DEFEAT.SOUND_ID;
+        const pitch = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_PITCH : SYSTEMS.GAME_DEFEAT.SOUND_PITCH;
+        const volume = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_VOLUME : SYSTEMS.GAME_DEFEAT.SOUND_VOLUME;
         player.playSound(sound, { location: player.location, pitch, volume });
     }
     getPlayerResultTextIds(result, isVictory) {
@@ -92,7 +92,7 @@ export class GameResultPresentation {
             lines.push({
                 rawtext: [
                     { text: playerData.name },
-                    { text: SYSTEMS.SEPARATOR_SPACE },
+                    { text: SYSTEMS.SEPARATOR.SPACE },
                     { translate: translateId }
                 ]
             });
@@ -124,9 +124,9 @@ export class GameResultPresentation {
         player.onScreenDisplay.setTitle({
             translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_TITLE
         }, {
-            fadeInDuration: SYSTEMS.GAME_TERMINATION_TITLE_FADEIN_DURATION,
-            stayDuration: SYSTEMS.GAME_TERMINATION_TITLE_STAY_DURATION,
-            fadeOutDuration: SYSTEMS.GAME_TERMINATION_TITLE_FADEOUT_DURATION
+            fadeInDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEIN_DURATION,
+            stayDuration: SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION,
+            fadeOutDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEOUT_DURATION
         });
     }
 }
