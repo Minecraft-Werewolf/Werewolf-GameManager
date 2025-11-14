@@ -7,7 +7,9 @@ export class RoleRegister {
         return new RoleRegister(systemManager);
     }
     registerRoles(args) {
-        const roles = args.slice(1).map((arg) => {
+        const roles = args
+            .slice(1)
+            .map((arg) => {
             let data;
             try {
                 data = JSON.parse(arg);
@@ -19,7 +21,8 @@ export class RoleRegister {
                 return data;
             }
             return null;
-        }).filter((role) => role !== null);
+        })
+            .filter((role) => role !== null);
         this.systemManager.setRoles(args[0], roles);
     }
 }

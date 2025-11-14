@@ -1,14 +1,5 @@
-export const RoleFactionValues = [
-    "villager",
-    "werewolf",
-    "fox",
-    "neutral",
-];
-export const ResultTypeValues = [
-    "villager",
-    "werewolf",
-    "fox",
-];
+export const RoleFactionValues = ["villager", "werewolf", "fox", "neutral"];
+export const ResultTypeValues = ["villager", "werewolf", "fox"];
 export const ColorTypeValues = [
     "villager_lime",
     "werewolf_red",

@@ -62,18 +62,26 @@ export class InGameManager {
         switch (this.currentPhase) {
             case GamePhase.Initializing:
                 this.gameInitializer.cancel();
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE });
+                world.sendMessage({
+                    translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE,
+                });
                 break;
             case GamePhase.Preparing:
                 this.gamePreparationManager.stopPreparation();
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE });
+                world.sendMessage({
+                    translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_START_CANCELD_MESSAGE,
+                });
                 break;
             case GamePhase.InGame:
                 this.gameManager.stopGame();
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE });
+                world.sendMessage({
+                    translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE,
+                });
                 break;
             case GamePhase.Result:
-                world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE });
+                world.sendMessage({
+                    translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_FORCE_QUIT_MESSAGE,
+                });
                 break;
             case GamePhase.Waiting:
                 break;
@@ -83,7 +91,7 @@ export class InGameManager {
             player.playSound(SYSTEMS.GAME_FORCE_QUIT.SOUND_ID, {
                 location: player.location,
                 pitch: SYSTEMS.GAME_FORCE_QUIT.SOUND_PITCH,
-                volume: SYSTEMS.GAME_FORCE_QUIT.SOUND_VOLUME
+                volume: SYSTEMS.GAME_FORCE_QUIT.SOUND_VOLUME,
             });
         });
         this.gameFinalizer.runFinalization();

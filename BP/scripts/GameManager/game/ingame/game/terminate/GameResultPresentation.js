@@ -1,5 +1,4 @@
-import { world } from "@minecraft/server";
-import { MINECRAFT } from "../../../../constants/minecraft";
+import { EntityComponentTypes, world, } from "@minecraft/server";
 import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { TerminationReason } from "../GameTerminationEvaluator";
@@ -25,18 +24,21 @@ export class GameResultPresentation {
         await stepFn();
     }
     async showGameTerminatedTitle(players) {
-        world.sendMessage({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_MESSAGE });
+        world.sendMessage({
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_MESSAGE,
+        });
         players.forEach((player) => {
             this.showGameTerminatedTitleForPlayer(player);
-            const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY);
-            inventoryComponent.container.clearAll();
+            player.getComponent(EntityComponentTypes.Inventory)?.container.clearAll();
             player.playSound(SYSTEMS.GAME_TERMINATION.SOUND_ID, {
                 location: player.location,
                 pitch: SYSTEMS.GAME_TERMINATION.SOUND_PITCH,
                 volume: SYSTEMS.GAME_TERMINATION.SOUND_VOLUME,
             });
         });
-        await this.gameTerminator.getWaitController().waitTicks(SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION);
+        await this.gameTerminator
+            .getWaitController()
+            .waitTicks(SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION);
     }
     async showGameResult(players) {
         const terminator = this.gameTerminator;
@@ -59,13 +61,16 @@ export class GameResultPresentation {
     }
     playResultSound(player, isVictory) {
         const sound = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_ID : SYSTEMS.GAME_DEFEAT.SOUND_ID;
-        const pitch = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_PITCH : SYSTEMS.GAME_DEFEAT.SOUND_PITCH;
-        const volume = isVictory ? SYSTEMS.GAME_VICTORY.SOUND_VOLUME : SYSTEMS.GAME_DEFEAT.SOUND_VOLUME;
+        const pitch = isVictory
+            ? SYSTEMS.GAME_VICTORY.SOUND_PITCH
+            : SYSTEMS.GAME_DEFEAT.SOUND_PITCH;
+        const volume = isVictory
+            ? SYSTEMS.GAME_VICTORY.SOUND_VOLUME
+            : SYSTEMS.GAME_DEFEAT.SOUND_VOLUME;
         player.playSound(sound, { location: player.location, pitch, volume });
     }
     getPlayerResultTextIds(result, isVictory) {
-        const isDraw = result === TerminationReason.Annihilation ||
-            result === TerminationReason.Timeup;
+        const isDraw = result === TerminationReason.Annihilation || result === TerminationReason.Timeup;
         if (isDraw) {
             return {
                 subtitleId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DRAW,
@@ -93,15 +98,12 @@ export class GameResultPresentation {
                 rawtext: [
                     { text: playerData.name },
                     { text: SYSTEMS.SEPARATOR.SPACE },
-                    { translate: translateId }
-                ]
+                    { translate: translateId },
+                ],
             });
         });
         world.sendMessage({
-            rawtext: lines.flatMap(line => [
-                ...line.rawtext,
-                { text: "\n" }
-            ])
+            rawtext: lines.flatMap((line) => [...line.rawtext, { text: "\n" }]),
         });
     }
     getWinningFactionTitleTranslateId(result) {
@@ -122,11 +124,11 @@ export class GameResultPresentation {
     }
     showGameTerminatedTitleForPlayer(player) {
         player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_TITLE
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TERMINATION_TITLE,
         }, {
             fadeInDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEIN_DURATION,
             stayDuration: SYSTEMS.GAME_TERMINATION_TITLE.STAY_DURATION,
-            fadeOutDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEOUT_DURATION
+            fadeOutDuration: SYSTEMS.GAME_TERMINATION_TITLE.FADEOUT_DURATION,
         });
     }
 }

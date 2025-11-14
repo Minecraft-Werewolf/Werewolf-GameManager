@@ -5,6 +5,5 @@ export class ItemManager {
     static create(gameManager) {
         return new ItemManager(gameManager);
     }
-    replaceItemToPlayers(players) {
-    }
+    replaceItemToPlayers(players) { }
 }

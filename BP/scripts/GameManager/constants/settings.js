@@ -12,5 +12,5 @@ export const IN_GAME_PLAYER_HELD_ITEMS = [
         typeId: "minecraft:arrow",
         slot: 9,
         amount: 1,
-    }
+    },
 ];

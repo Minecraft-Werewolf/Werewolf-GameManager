@@ -7,10 +7,8 @@ export class SystemEventManager extends BaseEventManager {
     static create(systemManager) {
         return new SystemEventManager(systemManager);
     }
-    subscribeAll() {
-    }
-    unsubscribeAll() {
-    }
+    subscribeAll() { }
+    unsubscribeAll() { }
     getSystemManager() {
         return this.systemManager;
     }

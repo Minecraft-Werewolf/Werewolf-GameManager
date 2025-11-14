@@ -1,7 +1,6 @@
-import { EntityInventoryComponent, HudElement, HudVisibility, InputPermissionCategory, system, world } from "@minecraft/server";
+import { EntityComponentTypes, EntityInventoryComponent, HudElement, HudVisibility, InputPermissionCategory, system, world, } from "@minecraft/server";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
-import { MINECRAFT } from "../../../../constants/minecraft";
 export class InitPresentation {
     constructor(gameInitializer) {
         this.gameInitializer = gameInitializer;
@@ -29,21 +28,24 @@ export class InitPresentation {
         players.forEach((player) => {
             this.hideHudForPlayer(player);
             this.showGameTitleForPlayer(player);
-            const inventoryComponent = player.getComponent(MINECRAFT.COMPONENT_ID_INVENTORY);
-            inventoryComponent.container.clearAll();
+            player.getComponent(EntityComponentTypes.Inventory)?.container.clearAll();
             player.playSound(SYSTEMS.SHOW_GAME_TITLE.SOUND_ID, {
                 location: player.location,
                 pitch: SYSTEMS.SHOW_GAME_TITLE.SOUND_PITCH,
                 volume: SYSTEMS.SHOW_GAME_TITLE.SOUND_VOLUME,
             });
         });
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION);
+        await this.gameInitializer
+            .getWaitController()
+            .waitTicks(SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION);
     }
     async cameraBlackoutEffect(players) {
         players.forEach((player) => {
             this.cameraBlackoutEffectForPlayer(player);
         });
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION);
+        await this.gameInitializer
+            .getWaitController()
+            .waitTicks(SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION);
     }
     teleportPlayers(players) {
         players.forEach((player) => {
@@ -74,7 +76,9 @@ export class InitPresentation {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, false);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, false);
         });
-        await this.gameInitializer.getWaitController().waitTicks(SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL.EVERY_SECOND);
+        await this.gameInitializer
+            .getWaitController()
+            .waitTicks(SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME * SYSTEMS.INTERVAL.EVERY_SECOND);
     }
     hideHudForPlayer(player) {
         player.onScreenDisplay.setHudVisibility(HudVisibility.Hide, [
@@ -95,7 +99,7 @@ export class InitPresentation {
     }
     showGameTitleForPlayer(player) {
         player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TITLE
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TITLE,
         }, {
             subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_VERSION },
             fadeInDuration: SYSTEMS.SHOW_GAME_TITLE.FADEIN_DURATION,
@@ -114,12 +118,12 @@ export class InitPresentation {
                 fadeInTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_FADEIN_TIME,
                 holdTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME,
                 fadeOutTime: SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_FADEOUT_TIME,
-            }
+            },
         });
     }
     showStageTitleForPlayer(player) {
         player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_TITLE
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_TITLE,
         }, {
             subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_STAGE_LOADING },
             fadeInDuration: SYSTEMS.SHOW_STAGE_TITLE.FADEIN_DURATION,

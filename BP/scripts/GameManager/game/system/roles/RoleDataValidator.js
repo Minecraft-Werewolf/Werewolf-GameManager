@@ -61,16 +61,13 @@ export class RoleDataValidator {
         return typeof x === "object" && x !== null && !Array.isArray(x);
     }
     isStringArray(x) {
-        return Array.isArray(x) && x.every(v => typeof v === "string");
+        return Array.isArray(x) && x.every((v) => typeof v === "string");
     }
     isRoleRef(x) {
-        return this.isObject(x)
-            && typeof x.addonId === "string"
-            && typeof x.roleId === "string";
+        return this.isObject(x) && typeof x.addonId === "string" && typeof x.roleId === "string";
     }
     isFaction(x) {
-        return typeof x === "string"
-            && RoleFactionValues.includes(x);
+        return typeof x === "string" && RoleFactionValues.includes(x);
     }
     isResultType(x) {
         return typeof x === "string";

@@ -60,9 +60,15 @@ export class Kairo {
         else
             this._pushSorted(this._seHooks, val.run, val.options);
     }
-    static addActivate(fn, opt) { this._pushSorted(this._initHooks, fn, opt); }
-    static addDeactivate(fn, opt) { this._pushSorted(this._deinitHooks, fn, opt); }
-    static addScriptEvent(fn, opt) { this._pushSorted(this._seHooks, fn, opt); }
+    static addActivate(fn, opt) {
+        this._pushSorted(this._initHooks, fn, opt);
+    }
+    static addDeactivate(fn, opt) {
+        this._pushSorted(this._deinitHooks, fn, opt);
+    }
+    static addScriptEvent(fn, opt) {
+        this._pushSorted(this._seHooks, fn, opt);
+    }
     _scriptEvent(message) {
         void Kairo._runScriptEvent(message);
     }
@@ -82,7 +88,7 @@ export class Kairo {
                 await fn();
             }
             catch (e) {
-                system.run(() => console.warn(`[Kairo.onActivate] ${e instanceof Error ? e.stack ?? e.message : String(e)}`));
+                system.run(() => console.warn(`[Kairo.onActivate] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`));
             }
         }
     }
@@ -92,7 +98,7 @@ export class Kairo {
                 await fn();
             }
             catch (e) {
-                system.run(() => console.warn(`[Kairo.onDeactivate] ${e instanceof Error ? e.stack ?? e.message : String(e)}`));
+                system.run(() => console.warn(`[Kairo.onDeactivate] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`));
             }
         }
     }
@@ -102,7 +108,7 @@ export class Kairo {
                 await fn(message);
             }
             catch (e) {
-                system.run(() => console.warn(`[Kairo.onScriptEvent] ${e instanceof Error ? e.stack ?? e.message : String(e)}`));
+                system.run(() => console.warn(`[Kairo.onScriptEvent] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`));
             }
         }
     }
