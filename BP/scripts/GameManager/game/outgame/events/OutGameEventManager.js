@@ -20,7 +20,7 @@ export class OutGameEventManager extends BaseEventManager {
         this.scriptEventReceive.subscribe();
     }
     unsubscribeAll() {
-        this.itemUse.subscribe();
+        this.itemUse.unsubscribe();
         this.playerJoin.unsubscribe();
         this.scriptEventReceive.unsubscribe();
     }
