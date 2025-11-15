@@ -23,6 +23,14 @@ export const SYSTEMS = {
         ROTATION_X: 8,
         ROTATION_Y: 180,
     },
+    OUT_GAME_ITEM_SLOT_INDEX: {
+        PERSONAL_SETTINGS: 0,
+        GAME_JOIN: 4,
+        GAME_SPECTATE: 17,
+        GAME_SETTINGS: 7,
+        GAME_STARTER: 8,
+        GAME_FORCE_TERMINATOR: 9,
+    },
 
     // in ticks
     SHOW_GAME_TITLE: {
