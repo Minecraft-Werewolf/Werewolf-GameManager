@@ -1,11 +1,11 @@
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import type { Role } from "../../../data/roles";
-import type { SystemManager } from "../../SystemManager";
+import type { RoleManager } from "./RoleManager";
 
 export class RoleRegister {
-    private constructor(private readonly systemManager: SystemManager) {}
-    public static create(systemManager: SystemManager): RoleRegister {
-        return new RoleRegister(systemManager);
+    private constructor(private readonly roleManager: RoleManager) {}
+    public static create(roleManager: RoleManager): RoleRegister {
+        return new RoleRegister(roleManager);
     }
 
     public registerRoles(args: string[]): void {
@@ -21,13 +21,13 @@ export class RoleRegister {
                     );
                 }
 
-                if (data && this.systemManager.isRole(data)) {
+                if (data && this.roleManager.isRole(data)) {
                     return data as Role;
                 }
                 return null;
             })
             .filter((role): role is Role => role !== null);
 
-        this.systemManager.setRoles(args[0] as string, roles);
+        this.roleManager.setRoles(args[0] as string, roles);
     }
 }

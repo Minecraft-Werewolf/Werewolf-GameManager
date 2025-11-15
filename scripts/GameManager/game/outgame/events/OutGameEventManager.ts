@@ -1,4 +1,3 @@
-import { system, world } from "@minecraft/server";
 import { BaseEventManager } from "../../events/BaseEventManager";
 import type { OutGameManager } from "../OutGameManager";
 import { OutGameItemUseHandler } from "./ItemUse";

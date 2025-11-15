@@ -1,16 +1,15 @@
 import { RoleFactionValues, type Role } from "../../../data/roles";
-import type { OutGameManager } from "../../outgame/OutGameManager";
-import type { SystemManager } from "../../SystemManager";
+import type { RoleManager } from "./RoleManager";
 
 /**
  * 役職データは文字列で送られてくるため、
  * データを検証する必要がある。そのためのクラス
  */
 export class RoleDataValidator {
-    private constructor(private readonly systemManager: SystemManager) {}
+    private constructor(private readonly roleManager: RoleManager) {}
 
-    public static create(systemManager: SystemManager): RoleDataValidator {
-        return new RoleDataValidator(systemManager);
+    public static create(roleManager: RoleManager): RoleDataValidator {
+        return new RoleDataValidator(roleManager);
     }
 
     public isRole(data: unknown): data is Role {

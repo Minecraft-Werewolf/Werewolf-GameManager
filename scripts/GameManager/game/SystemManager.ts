@@ -1,9 +1,7 @@
-import type { Role } from "../data/roles";
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
-import { RoleDataValidator } from "./system/roles/RoleDataValidator";
-import { RoleRegister } from "./system/roles/RoleRegister";
+import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 
 export enum GameWorldState {
@@ -14,19 +12,15 @@ export enum GameWorldState {
 export class SystemManager {
     private readonly scriptEventReceiver: ScriptEventReceiver;
     private readonly systemEventManager: SystemEventManager;
-    private readonly roleRegister: RoleRegister;
-    private readonly roleDataValidator: RoleDataValidator;
+    private readonly roleManager: RoleManager;
     private inGameManager: InGameManager | null = null;
     private outGameManager: OutGameManager | null = null;
     private currentWorldState: GameWorldState | null = null;
 
-    private readonly roles: Map<string, Role[]> = new Map();
-
     private constructor() {
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.systemEventManager = SystemEventManager.create(this);
-        this.roleRegister = RoleRegister.create(this);
-        this.roleDataValidator = RoleDataValidator.create(this);
+        this.roleManager = RoleManager.create(this);
     }
 
     public init(): void {
@@ -44,18 +38,6 @@ export class SystemManager {
 
     public handleScriptEvent(message: string): void {
         this.scriptEventReceiver.handleScriptEvent(message);
-    }
-
-    public registerRoles(args: string[]): void {
-        this.roleRegister.registerRoles(args);
-    }
-
-    public isRole(data: unknown): boolean {
-        return this.roleDataValidator.isRole(data);
-    }
-
-    public setRoles(addonId: string, roles: Role[]): void {
-        this.roles.set(addonId, roles);
     }
 
     public subscribeEvents(): void {
@@ -89,6 +71,10 @@ export class SystemManager {
                 this.enterOutGame();
                 break;
         }
+    }
+
+    public registerRoles(args: string[]): void {
+        this.roleManager.registerRoles(args);
     }
 
     private enterInGame(): void {
