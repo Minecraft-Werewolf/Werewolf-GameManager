@@ -36,6 +36,8 @@ export class AddonManager {
     private readonly receiver: AddonReceiver;
     private readonly dataVaultReceiver: DataVaultReceiver;
 
+    private _isActive: boolean = false;
+
     private constructor(private readonly kairo: Kairo) {
         this.receiver = AddonReceiver.create(this);
         this.dataVaultReceiver = DataVaultReceiver.create(this);
@@ -70,5 +72,13 @@ export class AddonManager {
 
     public getDataVaultLastDataLoaded(): { data: string; count: number } {
         return this.dataVaultReceiver.getLastDataLoaded();
+    }
+
+    public get isActive(): boolean {
+        return this._isActive;
+    }
+
+    public setActiveState(state: boolean): void {
+        this._isActive = state;
     }
 }
