@@ -40,6 +40,11 @@ export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, 
                     JSON.stringify(data),
                 );
                 break;
+            case ITEM_USE.GAME_SETTINGS_ITEM_ID:
+                this.outGameEventManager.getOutGameManager().openSettingsForm(source);
+                break;
+            default:
+                break;
         }
     }
 }

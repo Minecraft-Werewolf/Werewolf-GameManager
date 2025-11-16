@@ -1,5 +1,6 @@
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
+import type { GameSettingManager } from "./outgame/settings/GameSettingManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
 import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";

@@ -1,43 +1,47 @@
 werewolf-gamemanager.name=Werewolf-GameManager
 werewolf-gamemanager.description=人狼ゲームの中枢を担うGameManagerとして機能する
 
-werewolf.gamemanager.title=§4マイクラ人狼§r
-werewolf.gamemanager.credits=created by shizuku86
-werewolf.gamemanager.version=ver.1.0.0
+werewolf-gamemanager.title=§4マイクラ人狼§r
+werewolf-gamemanager.credits=created by shizuku86
+werewolf-gamemanager.version=ver.1.0.0
 
-werewolf.gamemanager.stage.title=§b「館」§r
-werewolf.gamemanager.stage.loading=マップをロード中...
+werewolf-gamemanager.stage.title=§b「館」§r
+werewolf-gamemanager.stage.loading=マップをロード中...
 
-werewolf.gamemanager.game.preparation.countdown.message=§bゲーム開始まで...%ss§r
-werewolf.gamemanager.game.preparation.countdown.warning.message=§bゲーム開始まで...%ss§r
-werewolf.gamemanager.game.start.message=§aゲーム開始！§r
+werewolf-gamemanager.game.preparation.countdown.message=§bゲーム開始まで...%ss§r
+werewolf-gamemanager.game.preparation.countdown.warning.message=§bゲーム開始まで...%ss§r
+werewolf-gamemanager.game.start.message=§aゲーム開始！§r
 
-werewolf.gamemanager.game.start.canceled.message=§cゲーム開始がキャンセルされました§r
-werewolf.gamemanager.game.forcequit.message=§cゲームが強制終了されました§r
+werewolf-gamemanager.game.start.canceled.message=§cゲーム開始がキャンセルされました§r
+werewolf-gamemanager.game.forcequit.message=§cゲームが強制終了されました§r
 
-werewolf.gamemanager.game.termination.title=§eゲーム終了！§r
-werewolf.gamemanager.game.termination.message=§eゲーム終了！§r
+werewolf-gamemanager.game.termination.title=§eゲーム終了！§r
+werewolf-gamemanager.game.termination.message=§eゲーム終了！§r
 
-werewolf.gamemanager.game.result.alive=§a(生存)§r
-werewolf.gamemanager.game.result.dead=§c(死亡)§r
-werewolf.gamemanager.game.result.left=§c(退出)§r
+werewolf-gamemanager.game.result.alive=§a(生存)§r
+werewolf-gamemanager.game.result.dead=§c(死亡)§r
+werewolf-gamemanager.game.result.left=§c(退出)§r
 
-werewolf.gamemanager.game.result.villagerfaction.win=§a村人陣営の勝利！§r
-werewolf.gamemanager.game.result.werewolffaction.win=§4人狼陣営の勝利！§r
-werewolf.gamemanager.game.result.foxfaction.win=§g妖狐陣営の勝利！§r
-werewolf.gamemanager.game.result.annihilation=§3全滅§r
-werewolf.gamemanager.game.result.timeup=§3タイムアップ§r
+werewolf-gamemanager.game.result.villagerfaction.win=§a村人陣営の勝利！§r
+werewolf-gamemanager.game.result.werewolffaction.win=§4人狼陣営の勝利！§r
+werewolf-gamemanager.game.result.foxfaction.win=§g妖狐陣営の勝利！§r
+werewolf-gamemanager.game.result.annihilation=§3全滅§r
+werewolf-gamemanager.game.result.timeup=§3タイムアップ§r
 
-werewolf.gamemanager.game.result.victory=§aVictory!§r
-werewolf.gamemanager.game.result.defeat=§cDefeat...§r
-werewolf.gamemanager.game.result.draw=§7Draw§r
+werewolf-gamemanager.game.result.victory=§aVictory!§r
+werewolf-gamemanager.game.result.defeat=§cDefeat...§r
+werewolf-gamemanager.game.result.draw=§7Draw§r
 
-werewolf.gamemanager.game.result.victory.message=§a勝利！§r
-werewolf.gamemanager.game.result.defeat.message=§c敗北...§r
-werewolf.gamemanager.game.result.draw.message=§7引き分け§r
-werewolf.gamemanager.item.name.game_starter=§eゲーム開始§r
-werewolf.gamemanager.item.name.game_force_terminator=§c強制終了§r
-werewolf.gamemanager.item.name.game_settings=§bゲーム設定§r
-werewolf.gamemanager.item.name.join_register=§a参加する§r
-werewolf.gamemanager.item.name.spectate_register=§3観戦する§r
-werewolf.gamemanager.item.name.personal_settings=§b個人設定§r
+werewolf-gamemanager.game.result.victory.message=§a勝利！§r
+werewolf-gamemanager.game.result.defeat.message=§c敗北...§r
+werewolf-gamemanager.game.result.draw.message=§7引き分け§r
+werewolf-gamemanager.item.name.game_starter=§eゲーム開始§r
+werewolf-gamemanager.item.name.game_force_terminator=§c強制終了§r
+werewolf-gamemanager.item.name.game_settings=§bゲーム設定§r
+werewolf-gamemanager.item.name.join_register=§a参加する§r
+werewolf-gamemanager.item.name.spectate_register=§3観戦する§r
+werewolf-gamemanager.item.name.personal_settings=§b個人設定§r
+
+werewolf-gamemanager.setting.game.title=ゲーム設定
+werewolf-gamemanager.setting.role.title=役職設定
+werewolf-gamemanager.setting.roleAssignment.title=役職構成
