@@ -2,7 +2,8 @@ import { ItemUseAfterEvent, ItemUseBeforeEvent, system, world } from "@minecraft
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { OutGameEventManager } from "./OutGameEventManager";
 import { ITEM_USE } from "../../../constants/itemuse";
-import { SCRIPT_EVENT_IDS, SCRIPT_EVENT_MESSAGES } from "../../../constants/scriptevent";
+import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_ID_SUFFIX } from "../../../constants/scriptevent";
+import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
 
 export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     private constructor(private readonly outGameEventManager: OutGameEventManager) {
@@ -27,8 +28,8 @@ export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, 
         switch (itemStack.typeId) {
             case ITEM_USE.GAME_STARTER_ITEM_ID:
                 system.sendScriptEvent(
-                    SCRIPT_EVENT_IDS.WEREWOLF_GAME_START,
-                    SCRIPT_EVENT_MESSAGES.NONE,
+                    `${SCRIPT_EVENT_ID_PREFIX.KAIRO}:${SCRIPT_EVENT_ID_SUFFIX.WEREWOLF_GAMEMANAGER}`,
+                    SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START,
                 );
                 break;
         }
