@@ -65,9 +65,9 @@ export class Kairo {
         system.sendScriptEvent(SCRIPT_EVENT_IDS.UNSUBSCRIBE_INITIALIZE, "");
     }
 
-    public static dataVaultHandleOnScriptEvent(message: string): void {
+    public static dataVaultHandleOnScriptEvent = (message: string): void => {
         this.getInstance().addonManager.dataVaultHandleOnScriptEvent(message);
-    }
+    };
 
     public getDataVaultLastDataLoaded(): { data: string; count: number } {
         return this.addonManager.getDataVaultLastDataLoaded();
@@ -125,6 +125,8 @@ export class Kairo {
                 );
             }
         }
+
+        this.getInstance().addonManager.setActiveState(true);
     }
 
     private static async _runDeactivateHooks() {
@@ -139,6 +141,8 @@ export class Kairo {
                 );
             }
         }
+
+        this.getInstance().addonManager.setActiveState(false);
     }
 
     private static async _runScriptEvent(message: string) {

@@ -1,20 +1,16 @@
-import { system, world } from "@minecraft/server";
 import { BaseEventManager } from "../../events/BaseEventManager";
 import type { OutGameManager } from "../OutGameManager";
 import { OutGameItemUseHandler } from "./ItemUse";
-import { OutGameScriptEventReceiveHandler } from "./ScriptEventReceive";
 import { OutGamePlayerJoinHandler } from "./PlayerJoin";
 
 export class OutGameEventManager extends BaseEventManager {
     private readonly itemUse: OutGameItemUseHandler;
     private readonly playerJoin: OutGamePlayerJoinHandler;
-    private readonly scriptEventReceive: OutGameScriptEventReceiveHandler;
 
     private constructor(private readonly outGameManager: OutGameManager) {
         super();
         this.itemUse = OutGameItemUseHandler.create(this);
         this.playerJoin = OutGamePlayerJoinHandler.create(this);
-        this.scriptEventReceive = OutGameScriptEventReceiveHandler.create(this);
     }
     public static create(outGameManager: OutGameManager): OutGameEventManager {
         return new OutGameEventManager(outGameManager);
@@ -23,13 +19,11 @@ export class OutGameEventManager extends BaseEventManager {
     public override subscribeAll(): void {
         this.itemUse.subscribe();
         this.playerJoin.subscribe();
-        this.scriptEventReceive.subscribe();
     }
 
     public override unsubscribeAll(): void {
         this.itemUse.unsubscribe();
         this.playerJoin.unsubscribe();
-        this.scriptEventReceive.unsubscribe();
     }
 
     public getOutGameManager(): OutGameManager {

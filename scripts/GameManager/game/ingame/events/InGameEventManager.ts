@@ -1,15 +1,15 @@
 import { BaseEventManager } from "../../events/BaseEventManager";
 import type { InGameManager } from "../InGameManager";
 import { InGameEntityHurtHandler } from "./EntityHurt";
-import { InGameScriptEventReceiveHandler } from "./ScriptEventReceive";
+import { InGameItemUseHandler } from "./ItemUse";
 
 export class InGameEventManager extends BaseEventManager {
     private entityHurt: InGameEntityHurtHandler;
-    private scriptEventReceive: InGameScriptEventReceiveHandler;
+    private itemUse: InGameItemUseHandler;
     private constructor(private readonly inGameManager: InGameManager) {
         super();
         this.entityHurt = InGameEntityHurtHandler.create(this);
-        this.scriptEventReceive = InGameScriptEventReceiveHandler.create(this);
+        this.itemUse = InGameItemUseHandler.create(this);
     }
 
     public static create(inGameManager: InGameManager): InGameEventManager {
@@ -18,12 +18,12 @@ export class InGameEventManager extends BaseEventManager {
 
     public override subscribeAll(): void {
         this.entityHurt.subscribe();
-        this.scriptEventReceive.subscribe();
+        this.itemUse.subscribe();
     }
 
     public override unsubscribeAll(): void {
         this.entityHurt.unsubscribe();
-        this.scriptEventReceive.unsubscribe();
+        this.itemUse.unsubscribe();
     }
 
     public getInGameManager(): InGameManager {

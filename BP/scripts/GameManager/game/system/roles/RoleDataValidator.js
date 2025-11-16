@@ -4,31 +4,22 @@ import { RoleFactionValues } from "../../../data/roles";
  * データを検証する必要がある。そのためのクラス
  */
 export class RoleDataValidator {
-    constructor(systemManager) {
-        this.systemManager = systemManager;
+    constructor(roleManager) {
+        this.roleManager = roleManager;
     }
-    static create(systemManager) {
-        return new RoleDataValidator(systemManager);
+    static create(roleManager) {
+        return new RoleDataValidator(roleManager);
     }
     isRole(data) {
         if (!this.isObject(data))
             return false;
         if (typeof data.id !== "string")
             return false;
-        if (typeof data.name !== "string")
-            return false;
-        if (typeof data.description !== "string")
-            return false;
         if (!this.isFaction(data.faction))
             return false;
         if (typeof data.sortIndex !== "number")
             return false;
-        if (!this.isObject(data.count))
-            return false;
-        const count = data.count;
-        if (count.max !== undefined && typeof count.max !== "number")
-            return false;
-        if (count.step !== undefined && typeof count.step !== "number")
+        if (data.count !== undefined && !this.isValidCount(data.count))
             return false;
         if (data.color !== undefined && !this.isColorType(data.color))
             return false;
@@ -59,6 +50,16 @@ export class RoleDataValidator {
     }
     isObject(x) {
         return typeof x === "object" && x !== null && !Array.isArray(x);
+    }
+    isValidCount(x) {
+        if (!this.isObject(x))
+            return false;
+        const count = x;
+        if (count.max !== undefined && typeof count.max !== "number")
+            return false;
+        if (count.step !== undefined && typeof count.step !== "number")
+            return false;
+        return true;
     }
     isStringArray(x) {
         return Array.isArray(x) && x.every((v) => typeof v === "string");

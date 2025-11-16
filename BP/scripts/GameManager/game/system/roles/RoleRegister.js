@@ -1,28 +1,21 @@
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 export class RoleRegister {
-    constructor(systemManager) {
-        this.systemManager = systemManager;
+    constructor(roleManager) {
+        this.roleManager = roleManager;
     }
-    static create(systemManager) {
-        return new RoleRegister(systemManager);
+    static create(roleManager) {
+        return new RoleRegister(roleManager);
     }
-    registerRoles(args) {
-        const roles = args
-            .slice(1)
-            .map((arg) => {
-            let data;
-            try {
-                data = JSON.parse(arg);
+    registerRoles(addonId, roles) {
+        const rolesArray = roles
+            .map((role) => {
+            if (this.roleManager.isRole(role)) {
+                return role;
             }
-            catch (e) {
-                ConsoleManager.error("Failed to parse role registration data: Invalid JSON format.");
-            }
-            if (data && this.systemManager.isRole(data)) {
-                return data;
-            }
+            console.log("aieo");
             return null;
         })
             .filter((role) => role !== null);
-        this.systemManager.setRoles(args[0], roles);
+        this.roleManager.setRoles(addonId, rolesArray);
     }
 }
