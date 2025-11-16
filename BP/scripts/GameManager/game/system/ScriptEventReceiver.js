@@ -10,6 +10,12 @@ export class ScriptEventReceiver {
         const command = message.split(" ")[0];
         const args = message.split(" ").slice(1).join("").split(",");
         switch (command) {
+            case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START:
+                this.systemManager.startGame();
+                break;
+            case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_RESET:
+                this.systemManager.resetGame();
+                break;
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION:
                 // registrationRoles(addonId: string, roles: Role[])
                 this.systemManager.registerRoles(args);

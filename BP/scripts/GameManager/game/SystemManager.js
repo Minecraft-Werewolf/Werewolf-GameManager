@@ -1,24 +1,25 @@
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
-import { RoleDataValidator } from "./system/roles/RoleDataValidator";
-import { RoleRegister } from "./system/roles/RoleRegister";
+import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
+import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
+import { WorldStateChanger } from "./system/WorldStateChanger";
 export var GameWorldState;
 (function (GameWorldState) {
-    GameWorldState[GameWorldState["InGame"] = 0] = "InGame";
-    GameWorldState[GameWorldState["OutGame"] = 1] = "OutGame";
+    GameWorldState[GameWorldState["OutGame"] = 0] = "OutGame";
+    GameWorldState[GameWorldState["InGame"] = 1] = "InGame";
 })(GameWorldState || (GameWorldState = {}));
 export class SystemManager {
     constructor() {
         this.inGameManager = null;
         this.outGameManager = null;
         this.currentWorldState = null;
-        this.roles = new Map();
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.systemEventManager = SystemEventManager.create(this);
-        this.roleRegister = RoleRegister.create(this);
-        this.roleDataValidator = RoleDataValidator.create(this);
+        this.worldStateChanger = WorldStateChanger.create(this);
+        this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
+        this.roleManager = RoleManager.create(this);
     }
     init() {
         this.changeWorldState(GameWorldState.OutGame);
@@ -31,15 +32,6 @@ export class SystemManager {
     }
     handleScriptEvent(message) {
         this.scriptEventReceiver.handleScriptEvent(message);
-    }
-    registerRoles(args) {
-        this.roleRegister.registerRoles(args);
-    }
-    isRole(data) {
-        return this.roleDataValidator.isRole(data);
-    }
-    setRoles(addonId, roles) {
-        this.roles.set(addonId, roles);
     }
     subscribeEvents() {
         this.systemEventManager.subscribeAll();
@@ -60,30 +52,37 @@ export class SystemManager {
         this.changeWorldState(GameWorldState.OutGame);
     }
     changeWorldState(nextState) {
-        if (this.currentWorldState === nextState)
-            return;
-        switch (nextState) {
-            case GameWorldState.InGame:
-                this.enterInGame();
-                break;
-            case GameWorldState.OutGame:
-                this.enterOutGame();
-                break;
-        }
+        this.worldStateChanger.change(nextState);
     }
-    enterInGame() {
-        this.outGameManager?.getOutGameEventManager().unsubscribeAll();
-        this.outGameManager = null;
-        this.inGameManager = InGameManager.create(this);
-        this.inGameManager.getInGameEventManager().subscribeAll();
-        this.currentWorldState = GameWorldState.InGame;
+    registerRoles(args) {
+        this.roleManager.registerRoles(args);
     }
-    enterOutGame() {
-        this.inGameManager?.getInGameEventManager().unsubscribeAll();
-        this.inGameManager = null;
-        this.outGameManager = OutGameManager.create(this);
-        this.outGameManager.getOutGameEventManager().subscribeAll();
-        this.currentWorldState = GameWorldState.OutGame;
+    getWorldState() {
+        return this.currentWorldState;
+    }
+    setWorldState(state) {
+        this.currentWorldState = state;
+    }
+    getInGameManager() {
+        return this.inGameManager;
+    }
+    setInGameManager(v) {
+        this.inGameManager = v;
+    }
+    getOutGameManager() {
+        return this.outGameManager;
+    }
+    setOutGameManager(v) {
+        this.outGameManager = v;
+    }
+    createInGameManager() {
+        return InGameManager.create(this);
+    }
+    createOutGameManager() {
+        return OutGameManager.create(this);
+    }
+    broadcastWorldStateChange(next) {
+        this.worldStateChangeBroadcaster.broadcast(next);
     }
 }
 SystemManager.instance = null;
