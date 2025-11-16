@@ -3,6 +3,8 @@ import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import type { RoleManager } from "./RoleManager";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_ID_SUFFIX } from "../../../constants/scriptevent";
 import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
+import { properties } from "../../../../properties";
+import type { Command } from "../ScriptEventReceiver";
 
 export class RoleRegistrationRequester {
     private constructor(private readonly roleManager: RoleManager) {}
@@ -10,11 +12,16 @@ export class RoleRegistrationRequester {
         return new RoleRegistrationRequester(roleManager);
     }
 
-    public requestRoleRegistration(): void {
+    public request(): void {
+        const data: Command = {
+            commandId: SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_REQUEST,
+            addonId: properties.id,
+        };
+
         ConsoleManager.log("Requesting role registration...");
         system.sendScriptEvent(
             `${SCRIPT_EVENT_ID_PREFIX.KAIRO}:${SCRIPT_EVENT_ID_SUFFIX.BROADCAST}`,
-            SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_REQUEST,
+            JSON.stringify(data),
         );
     }
 }

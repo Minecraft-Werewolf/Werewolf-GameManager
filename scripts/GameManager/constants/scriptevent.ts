@@ -3,7 +3,7 @@ export const SCRIPT_EVENT_COMMAND_IDS = {
     WEREWOLF_GAME_RESET: "werewolf_game_reset",
     WORLD_STATE_CHANGE: "world_state_change",
     ROLE_REGISTRATION_REQUEST: "role_registration_request",
-    ROLE_REGISTRATION: "role_registration",
+    ROLE_REGISTRATION_RESPONSE: "role_registration_response",
 };
 
 export const SCRIPT_EVENT_ID_SUFFIX = {

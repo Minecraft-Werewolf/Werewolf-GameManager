@@ -12,13 +12,17 @@ export class RoleManager {
     static create(systemManager) {
         return new RoleManager(systemManager);
     }
-    registerRoles(args) {
-        this.roleRegister.registerRoles(args);
+    registerRoles(addonId, roles) {
+        this.roleRegister.registerRoles(addonId, roles);
     }
     isRole(data) {
         return this.roleDataValidator.isRole(data);
     }
     setRoles(addonId, roles) {
         this.roles.set(addonId, roles);
+        console.log(JSON.stringify(this.roles.get("werewolf-standardroles")));
+    }
+    requestRoleRegistration() {
+        this.roleRegistrationRequester.request();
     }
 }

@@ -20,8 +20,8 @@ export class RoleManager {
         return new RoleManager(systemManager);
     }
 
-    public registerRoles(args: string[]): void {
-        this.roleRegister.registerRoles(args);
+    public registerRoles(addonId: string, roles: Object[]): void {
+        this.roleRegister.registerRoles(addonId, roles);
     }
 
     public isRole(data: unknown): boolean {
@@ -30,5 +30,10 @@ export class RoleManager {
 
     public setRoles(addonId: string, roles: Role[]): void {
         this.roles.set(addonId, roles);
+        console.log(JSON.stringify(this.roles.get("werewolf-standardroles")));
+    }
+
+    public requestRoleRegistration(): void {
+        this.roleRegistrationRequester.request();
     }
 }

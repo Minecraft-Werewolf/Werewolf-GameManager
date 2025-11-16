@@ -16,15 +16,10 @@ export class RoleDataValidator {
         if (!this.isObject(data)) return false;
 
         if (typeof data.id !== "string") return false;
-        if (typeof data.name !== "string") return false;
-        if (typeof data.description !== "string") return false;
         if (!this.isFaction(data.faction)) return false;
         if (typeof data.sortIndex !== "number") return false;
 
-        if (!this.isObject(data.count)) return false;
-        const count = data.count as Record<string, unknown>;
-        if (count.max !== undefined && typeof count.max !== "number") return false;
-        if (count.step !== undefined && typeof count.step !== "number") return false;
+        if (data.count !== undefined && !this.isValidCount(data.count)) return false;
 
         if (data.color !== undefined && !this.isColorType(data.color)) return false;
         if (data.divinationResult !== undefined && !this.isResultType(data.divinationResult))
@@ -50,6 +45,16 @@ export class RoleDataValidator {
 
     private isObject(x: unknown): x is Record<string, unknown> {
         return typeof x === "object" && x !== null && !Array.isArray(x);
+    }
+
+    private isValidCount(x: unknown): boolean {
+        if (!this.isObject(x)) return false;
+
+        const count = x as Record<string, unknown>;
+        if (count.max !== undefined && typeof count.max !== "number") return false;
+        if (count.step !== undefined && typeof count.step !== "number") return false;
+
+        return true;
     }
 
     private isStringArray(x: unknown): x is string[] {
