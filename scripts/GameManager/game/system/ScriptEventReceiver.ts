@@ -2,7 +2,7 @@ import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 import type { SystemManager } from "../SystemManager";
 
-export interface Command {
+export interface KairoCommand {
     commandId: string;
     addonId: string;
     [key: string]: any;

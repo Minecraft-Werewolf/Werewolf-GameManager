@@ -4,7 +4,7 @@ import type { RoleManager } from "./RoleManager";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_ID_SUFFIX } from "../../../constants/scriptevent";
 import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
 import { properties } from "../../../../properties";
-import type { Command } from "../ScriptEventReceiver";
+import type { KairoCommand } from "../ScriptEventReceiver";
 
 export class RoleRegistrationRequester {
     private constructor(private readonly roleManager: RoleManager) {}
@@ -13,7 +13,7 @@ export class RoleRegistrationRequester {
     }
 
     public request(): void {
-        const data: Command = {
+        const data: KairoCommand = {
             commandId: SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_REQUEST,
             addonId: properties.id,
         };

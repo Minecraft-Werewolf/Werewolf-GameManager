@@ -1,19 +1,19 @@
 import { ItemUseAfterEvent, ItemUseBeforeEvent, system, world } from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
-import type { OutGameEventManager } from "./OutGameEventManager";
 import { ITEM_USE } from "../../../constants/itemuse";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_ID_SUFFIX } from "../../../constants/scriptevent";
 import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
 import { properties } from "../../../../properties";
 import type { KairoCommand } from "../../system/ScriptEventReceiver";
+import type { InGameEventManager } from "./InGameEventManager";
 
-export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
-    private constructor(private readonly outGameEventManager: OutGameEventManager) {
-        super(outGameEventManager);
+export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
+    private constructor(private readonly inGameEventManager: InGameEventManager) {
+        super(inGameEventManager);
     }
 
-    public static create(outGameEventManager: OutGameEventManager): OutGameItemUseHandler {
-        return new OutGameItemUseHandler(outGameEventManager);
+    public static create(inGameEventManager: InGameEventManager): InGameItemUseHandler {
+        return new InGameItemUseHandler(inGameEventManager);
     }
 
     protected beforeEvent = world.beforeEvents.itemUse;
@@ -33,8 +33,8 @@ export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, 
         };
 
         switch (itemStack.typeId) {
-            case ITEM_USE.GAME_STARTER_ITEM_ID:
-                data.commandId = SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START;
+            case ITEM_USE.GAME_FORCE_TERMINATOR_ITEM_ID:
+                data.commandId = SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_RESET;
                 system.sendScriptEvent(
                     `${SCRIPT_EVENT_ID_PREFIX.KAIRO}:${SCRIPT_EVENT_ID_SUFFIX.WEREWOLF_GAMEMANAGER}`,
                     JSON.stringify(data),
