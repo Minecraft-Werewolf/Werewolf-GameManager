@@ -29,6 +29,11 @@ export class OutGameItemUseHandler extends BaseEventHandler {
                 data.commandId = SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START;
                 system.sendScriptEvent(`${SCRIPT_EVENT_ID_PREFIX.KAIRO}:${SCRIPT_EVENT_ID_SUFFIX.WEREWOLF_GAMEMANAGER}`, JSON.stringify(data));
                 break;
+            case ITEM_USE.GAME_SETTINGS_ITEM_ID:
+                this.outGameEventManager.getOutGameManager().openSettingsForm(source);
+                break;
+            default:
+                break;
         }
     }
 }
