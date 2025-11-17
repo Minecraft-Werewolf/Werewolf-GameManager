@@ -4,8 +4,8 @@ import { ITEM_USE } from "../../../constants/itemuse";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_ID_SUFFIX } from "../../../constants/scriptevent";
 import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
 import { properties } from "../../../../properties";
-import type { KairoCommand } from "../../system/ScriptEventReceiver";
 import type { InGameEventManager } from "./InGameEventManager";
+import { KairoUtils, type KairoCommand } from "../../../../Kairo/utils/KairoUtils";
 
 export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {
@@ -35,10 +35,7 @@ export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, I
         switch (itemStack.typeId) {
             case ITEM_USE.GAME_FORCE_TERMINATOR_ITEM_ID:
                 data.commandId = SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_RESET;
-                system.sendScriptEvent(
-                    `${SCRIPT_EVENT_ID_PREFIX.KAIRO}:${SCRIPT_EVENT_ID_SUFFIX.WEREWOLF_GAMEMANAGER}`,
-                    JSON.stringify(data),
-                );
+                KairoUtils.sendKairoCommand(SCRIPT_EVENT_ID_SUFFIX.WEREWOLF_GAMEMANAGER, data);
                 break;
         }
     }

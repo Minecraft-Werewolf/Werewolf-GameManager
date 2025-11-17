@@ -1,7 +1,7 @@
 import type { RawMessage } from "@minecraft/server";
 import { properties } from "../../properties";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../constants/translate";
-import type { KairoCommand } from "../game/system/ScriptEventReceiver";
+import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
 
 export interface SettingNodeBase {
     id: string;
