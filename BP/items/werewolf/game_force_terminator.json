@@ -8,7 +8,7 @@
       "minecraft:icon": "werewolf:game_force_terminator",
       "minecraft:max_stack_size": 1,
       "minecraft:display_name": {
-        "value": "werewolf.gamemanager.item.name.game_force_terminator"
+        "value": "werewolf-gamemanager.item.name.game_force_terminator"
       }
     }
   }
