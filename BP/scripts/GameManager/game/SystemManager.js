@@ -90,5 +90,11 @@ export class SystemManager {
     openSettingsForm(player) {
         this.gameSettingManager.opneSettingsForm(player);
     }
+    openFormRoleAssignment(playerId) {
+        this.gameSettingManager.openFormRoleAssignment(playerId);
+    }
+    getRegisteredRoles() {
+        return this.roleManager.getRegisteredRoles();
+    }
 }
 SystemManager.instance = null;

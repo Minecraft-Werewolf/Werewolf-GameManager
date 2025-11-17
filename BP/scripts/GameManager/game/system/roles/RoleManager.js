@@ -25,4 +25,7 @@ export class RoleManager {
     requestRoleRegistration() {
         this.roleRegistrationRequester.request();
     }
+    getRegisteredRoles() {
+        return this.roles;
+    }
 }

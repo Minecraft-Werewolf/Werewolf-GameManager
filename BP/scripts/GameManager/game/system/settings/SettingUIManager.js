@@ -1,6 +1,7 @@
-import { Player, system } from "@minecraft/server";
+import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
-import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
+import { properties } from "../../../../properties";
 export class SettingUIManager {
     constructor(gameSettingManager) {
         this.gameSettingManager = gameSettingManager;
@@ -40,8 +41,13 @@ export class SettingUIManager {
             stack.push(selected);
             this.openNode(player, stack);
         }
-        else {
-            system.sendScriptEvent(`${SCRIPT_EVENT_ID_PREFIX}:${selected.command.addonId}`, JSON.stringify(selected.command));
+        else if (selected.type === "item") {
+            const command = {
+                commandId: selected.command.commandId,
+                addonId: properties.id,
+                playerId: player.id,
+            };
+            KairoUtils.sendKairoCommand(selected.command.targetAddonId, command);
         }
     }
 }

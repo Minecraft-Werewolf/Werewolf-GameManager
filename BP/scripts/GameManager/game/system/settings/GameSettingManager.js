@@ -16,7 +16,13 @@ export class GameSettingManager {
     async opneSettingsForm(player) {
         return this.settingUIManager.open(player);
     }
+    async openFormRoleAssignment(playerId) {
+        return this.roleAssignmentManager.open(playerId);
+    }
     getRoot() {
         return this.rootSettingCategory;
+    }
+    getRegisteredRoles() {
+        return this.systemManager.getRegisteredRoles();
     }
 }
