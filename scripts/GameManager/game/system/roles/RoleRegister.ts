@@ -9,6 +9,13 @@ export class RoleRegister {
     }
 
     public registerRoles(addonId: string, roles: Object[]): void {
+        if (!addonId || !Array.isArray(roles)) {
+            ConsoleManager.warn(
+                `[ScriptEventReceiver] Invalid register Roles. Data: ${JSON.stringify(roles)}`,
+            );
+            return;
+        }
+
         const rolesArray: Role[] = roles
             .map((role) => {
                 if (this.roleManager.isRole(role)) {

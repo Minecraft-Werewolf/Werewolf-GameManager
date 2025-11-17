@@ -8,7 +8,7 @@
       "minecraft:icon": "werewolf:personal_settings",
       "minecraft:max_stack_size": 1,
       "minecraft:display_name": {
-        "value": "werewolf.gamemanager.item.name.personal_settings"
+        "value": "werewolf-gamemanager.item.name.personal_settings"
       }
     }
   }

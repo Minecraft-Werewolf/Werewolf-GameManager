@@ -1,4 +1,4 @@
-import { EntityComponentTypes, EntityInventoryComponent, HudElement, HudVisibility, InputPermissionCategory, system, world, } from "@minecraft/server";
+import { EntityComponentTypes, HudElement, HudVisibility, InputPermissionCategory, world, } from "@minecraft/server";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
 export class InitPresentation {
@@ -99,9 +99,9 @@ export class InitPresentation {
     }
     showGameTitleForPlayer(player) {
         player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TITLE,
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME.TITLE,
         }, {
-            subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_VERSION },
+            subtitle: { translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME.VERSION },
             fadeInDuration: SYSTEMS.SHOW_GAME_TITLE.FADEIN_DURATION,
             stayDuration: SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION,
             fadeOutDuration: SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION,

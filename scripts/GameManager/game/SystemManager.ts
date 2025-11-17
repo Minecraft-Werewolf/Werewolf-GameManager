@@ -1,11 +1,14 @@
+import type { Player } from "@minecraft/server";
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
-import type { GameSettingManager } from "./outgame/settings/GameSettingManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
 import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
+import { GameSettingManager } from "./system/settings/GameSettingManager";
+import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
+import type { Role } from "../data/roles";
 
 export enum GameWorldState {
     OutGame,
@@ -18,6 +21,7 @@ export class SystemManager {
     private readonly worldStateChanger: WorldStateChanger;
     private readonly worldStateChangeBroadcaster: WorldStateChangeBroadcaster;
     private readonly roleManager: RoleManager;
+    private readonly gameSettingManager: GameSettingManager;
     private inGameManager: InGameManager | null = null;
     private outGameManager: OutGameManager | null = null;
     private currentWorldState: GameWorldState | null = null;
@@ -28,6 +32,7 @@ export class SystemManager {
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
         this.roleManager = RoleManager.create(this);
+        this.gameSettingManager = GameSettingManager.create(this);
     }
 
     public init(): void {
@@ -44,8 +49,8 @@ export class SystemManager {
         return this.instance;
     }
 
-    public handleScriptEvent(message: string): void {
-        this.scriptEventReceiver.handleScriptEvent(message);
+    public handleScriptEvent(data: KairoCommand): void {
+        this.scriptEventReceiver.handleScriptEvent(data);
     }
 
     public subscribeEvents(): void {
@@ -106,5 +111,17 @@ export class SystemManager {
 
     public broadcastWorldStateChange(next: GameWorldState): void {
         this.worldStateChangeBroadcaster.broadcast(next);
+    }
+
+    public openSettingsForm(player: Player): void {
+        this.gameSettingManager.opneSettingsForm(player);
+    }
+
+    public openFormRoleAssignment(playerId: string): void {
+        this.gameSettingManager.openFormRoleAssignment(playerId);
+    }
+
+    public getRegisteredRoles(): Map<string, Role[]> {
+        return this.roleManager.getRegisteredRoles();
     }
 }

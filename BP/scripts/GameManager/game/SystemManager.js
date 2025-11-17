@@ -5,6 +5,7 @@ import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
+import { GameSettingManager } from "./system/settings/GameSettingManager";
 export var GameWorldState;
 (function (GameWorldState) {
     GameWorldState[GameWorldState["OutGame"] = 0] = "OutGame";
@@ -20,6 +21,7 @@ export class SystemManager {
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
         this.roleManager = RoleManager.create(this);
+        this.gameSettingManager = GameSettingManager.create(this);
     }
     init() {
         this.changeWorldState(GameWorldState.OutGame);
@@ -31,8 +33,8 @@ export class SystemManager {
         }
         return this.instance;
     }
-    handleScriptEvent(message) {
-        this.scriptEventReceiver.handleScriptEvent(message);
+    handleScriptEvent(data) {
+        this.scriptEventReceiver.handleScriptEvent(data);
     }
     subscribeEvents() {
         this.systemEventManager.subscribeAll();
@@ -84,6 +86,15 @@ export class SystemManager {
     }
     broadcastWorldStateChange(next) {
         this.worldStateChangeBroadcaster.broadcast(next);
+    }
+    openSettingsForm(player) {
+        this.gameSettingManager.opneSettingsForm(player);
+    }
+    openFormRoleAssignment(playerId) {
+        this.gameSettingManager.openFormRoleAssignment(playerId);
+    }
+    getRegisteredRoles() {
+        return this.roleManager.getRegisteredRoles();
     }
 }
 SystemManager.instance = null;

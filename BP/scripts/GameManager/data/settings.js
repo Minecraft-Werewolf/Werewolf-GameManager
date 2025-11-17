@@ -1,5 +1,6 @@
 import { properties } from "../../properties";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../constants/translate";
+import { SCRIPT_EVENT_COMMAND_IDS } from "../constants/scriptevent";
 export const ROOT_SETTINGS = {
     id: "root",
     title: {
@@ -14,8 +15,8 @@ export const ROOT_SETTINGS = {
             },
             type: "item",
             command: {
-                commandId: "",
-                addonId: properties.id,
+                commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_ASSIGNMENT,
+                targetAddonId: properties.id,
             },
             order: 100,
         },
@@ -34,8 +35,8 @@ export const ROOT_SETTINGS = {
                     },
                     type: "item",
                     command: {
-                        commandId: "",
-                        addonId: properties.id,
+                        commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_SETTINGS,
+                        targetAddonId: properties.id,
                     },
                     order: 100,
                 },
@@ -46,12 +47,24 @@ export const ROOT_SETTINGS = {
                     },
                     type: "item",
                     command: {
-                        commandId: "",
-                        addonId: properties.id,
+                        commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_GAME_SETTINGS,
+                        targetAddonId: properties.id,
                     },
                     order: 200,
                 },
             ],
+        },
+        {
+            id: "Credit",
+            title: {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME.CREDITS.TITLE,
+            },
+            type: "item",
+            command: {
+                commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_WEREWOLF_GAME_CREDIT,
+                targetAddonId: properties.id,
+            },
+            order: 10000,
         },
     ],
 };

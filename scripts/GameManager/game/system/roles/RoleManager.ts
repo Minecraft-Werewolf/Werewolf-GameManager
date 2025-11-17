@@ -36,4 +36,8 @@ export class RoleManager {
     public requestRoleRegistration(): void {
         this.roleRegistrationRequester.request();
     }
+
+    public getRegisteredRoles(): Map<string, Role[]> {
+        return this.roles;
+    }
 }

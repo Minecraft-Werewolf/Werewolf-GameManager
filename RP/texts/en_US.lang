@@ -1,9 +1,8 @@
 werewolf-gamemanager.name=Werewolf-GameManager
 werewolf-gamemanager.description=functions as the central GameManager for the Werewolf game.
 
-
 werewolf-gamemanager.title=§4Minecraft Werewolf§r
-werewolf-gamemanager.credits=created by shizuku86
+werewolf-gamemanager.credits.title=Credits
 werewolf-gamemanager.version=ver.1.0.0
 
 werewolf-gamemanager.stage.title=§b"Mansion"§r
@@ -46,3 +45,4 @@ werewolf-gamemanager.item.name.personal_settings=§bYour Settings§r
 werewolf-gamemanager.setting.game.title=Game Settings
 werewolf-gamemanager.setting.role.title=Role Settings
 werewolf-gamemanager.setting.roleAssignment.title=Role Assignment
+werewolf-gamemanager.setting.roleAssignment.confirm=Confirm

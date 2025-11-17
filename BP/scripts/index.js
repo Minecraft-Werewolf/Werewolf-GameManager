@@ -20,14 +20,14 @@ Kairo.onDeactivate = () => {
      */
     SystemManager.getInstance().unsubscribeEvents();
 };
-Kairo.onScriptEvent = (message) => {
+Kairo.onScriptEvent = (data) => {
     /**
      * ここにはアドオンが scriptEvent を受け取った際の処理を書く
-     * 利用できるプロパティは { message } のみ
+     * 利用できるプロパティは { data: KairoCommand } のみ
      * Write the handler logic for when the addon receives a scriptEvent
-     * The only available property is { message }
+     * The only available property is { data: KairoCommand }
      */
-    SystemManager.getInstance().handleScriptEvent(message);
+    SystemManager.getInstance().handleScriptEvent(data);
 };
 /**
  * Kairo-DataVault を利用しない場合は、以下の処理は削除しても良い

@@ -1,13 +1,18 @@
 import type { RawMessage } from "@minecraft/server";
 import { properties } from "../../properties";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../constants/translate";
-import type { KairoCommand } from "../game/system/ScriptEventReceiver";
+import { SCRIPT_EVENT_COMMAND_IDS } from "../constants/scriptevent";
 
 export interface SettingNodeBase {
     id: string;
     title: RawMessage;
     iconPath?: string;
     order?: number;
+}
+
+export interface SettingCommand {
+    commandId: string;
+    targetAddonId: string;
 }
 
 export interface SettingCategoryNode extends SettingNodeBase {
@@ -17,7 +22,7 @@ export interface SettingCategoryNode extends SettingNodeBase {
 
 export interface SettingItemNode extends SettingNodeBase {
     type: "item";
-    command: KairoCommand;
+    command: SettingCommand;
 }
 
 export type SettingNode = SettingCategoryNode | SettingItemNode;
@@ -36,8 +41,8 @@ export const ROOT_SETTINGS: SettingCategoryNode = {
             },
             type: "item",
             command: {
-                commandId: "",
-                addonId: properties.id,
+                commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_ASSIGNMENT,
+                targetAddonId: properties.id,
             },
             order: 100,
         },
@@ -56,8 +61,8 @@ export const ROOT_SETTINGS: SettingCategoryNode = {
                     },
                     type: "item",
                     command: {
-                        commandId: "",
-                        addonId: properties.id,
+                        commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_SETTINGS,
+                        targetAddonId: properties.id,
                     },
                     order: 100,
                 },
@@ -68,12 +73,24 @@ export const ROOT_SETTINGS: SettingCategoryNode = {
                     },
                     type: "item",
                     command: {
-                        commandId: "",
-                        addonId: properties.id,
+                        commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_GAME_SETTINGS,
+                        targetAddonId: properties.id,
                     },
                     order: 200,
                 },
             ],
+        },
+        {
+            id: "Credit",
+            title: {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME.CREDITS.TITLE,
+            },
+            type: "item",
+            command: {
+                commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_WEREWOLF_GAME_CREDIT,
+                targetAddonId: properties.id,
+            },
+            order: 10000,
         },
     ],
 };
