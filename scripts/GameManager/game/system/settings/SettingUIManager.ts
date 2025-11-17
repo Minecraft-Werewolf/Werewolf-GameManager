@@ -1,16 +1,17 @@
-import { Player } from "@minecraft/server";
+import { Player, system } from "@minecraft/server";
 import type { SettingCategoryNode } from "../../../data/settings";
 import { ActionFormData } from "@minecraft/server-ui";
 import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
+import type { GameSettingManager } from "./GameSettingManager";
 
 export class SettingUIManager {
-    public constructor(
-        private readonly root: SettingCategoryNode,
-        private readonly scriptEventSender: (commandId: string, addonId: string) => void,
-    ) {}
+    private constructor(private readonly gameSettingManager: GameSettingManager) {}
+    public static create(gameSettingManager: GameSettingManager): SettingUIManager {
+        return new SettingUIManager(gameSettingManager);
+    }
 
     public open(player: Player): void {
-        this.openNode(player, this.root);
+        this.openNode(player, this.gameSettingManager.getRoot());
     }
 
     private async openNode(player: Player, node: SettingCategoryNode): Promise<void> {
@@ -31,7 +32,7 @@ export class SettingUIManager {
         if (selected.type === "category") {
             this.openNode(player, selected);
         } else {
-            this.scriptEventSender(
+            system.sendScriptEvent(
                 `${SCRIPT_EVENT_ID_PREFIX}:${selected.command.addonId}`,
                 JSON.stringify(selected.command),
             );

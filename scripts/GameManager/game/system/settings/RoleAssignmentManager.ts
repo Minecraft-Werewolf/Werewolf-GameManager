@@ -2,10 +2,10 @@ import type { Player } from "@minecraft/server";
 import type { GameSettingManager } from "./GameSettingManager";
 import { ActionFormData } from "@minecraft/server-ui";
 
-export class RoleSettingManager {
+export class RoleAssignmentManager {
     private constructor(private readonly gameSettingManager: GameSettingManager) {}
-    public static create(gameSettingManager: GameSettingManager): RoleSettingManager {
-        return new RoleSettingManager(gameSettingManager);
+    public static create(gameSettingManager: GameSettingManager): RoleAssignmentManager {
+        return new RoleAssignmentManager(gameSettingManager);
     }
 
     public async openRoleSettingsForm(player: Player): Promise<void> {
