@@ -4,6 +4,7 @@ import type { SystemManager } from "../../SystemManager";
 import { RoleAssignmentManager } from "./RoleAssignmentManager";
 import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
+import type { Role } from "../../../data/roles";
 
 export class GameSettingManager {
     private readonly roleAssignmentManager: RoleAssignmentManager;
@@ -25,7 +26,15 @@ export class GameSettingManager {
         return this.settingUIManager.open(player);
     }
 
+    public async openFormRoleAssignment(playerId: string): Promise<void> {
+        return this.roleAssignmentManager.open(playerId);
+    }
+
     public getRoot(): SettingCategoryNode {
         return this.rootSettingCategory;
+    }
+
+    public getRegisteredRoles(): Map<string, Role[]> {
+        return this.systemManager.getRegisteredRoles();
     }
 }

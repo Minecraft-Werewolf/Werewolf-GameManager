@@ -1,8 +1,9 @@
-import { Player, system } from "@minecraft/server";
+import { Player } from "@minecraft/server";
 import type { SettingCategoryNode } from "../../../data/settings";
 import { ActionFormData } from "@minecraft/server-ui";
-import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
 import type { GameSettingManager } from "./GameSettingManager";
+import { KairoUtils, type KairoCommand } from "../../../../Kairo/utils/KairoUtils";
+import { properties } from "../../../../properties";
 
 export class SettingUIManager {
     private constructor(private readonly gameSettingManager: GameSettingManager) {}
@@ -47,11 +48,13 @@ export class SettingUIManager {
         if (selected.type === "category") {
             stack.push(selected);
             this.openNode(player, stack);
-        } else {
-            system.sendScriptEvent(
-                `${SCRIPT_EVENT_ID_PREFIX}:${selected.command.addonId}`,
-                JSON.stringify(selected.command),
-            );
+        } else if (selected.type === "item") {
+            const command: KairoCommand = {
+                commandId: selected.command.commandId,
+                addonId: properties.id,
+                playerId: player.id,
+            };
+            KairoUtils.sendKairoCommand(selected.command.targetAddonId, command);
         }
     }
 }

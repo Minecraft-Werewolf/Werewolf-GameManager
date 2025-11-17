@@ -2,7 +2,7 @@ werewolf-gamemanager.name=Werewolf-GameManager
 werewolf-gamemanager.description=人狼ゲームの中枢を担うGameManagerとして機能する
 
 werewolf-gamemanager.title=§4マイクラ人狼§r
-werewolf-gamemanager.credits=created by shizuku86
+werewolf-gamemanager.credits.title=クレジット
 werewolf-gamemanager.version=ver.1.0.0
 
 werewolf-gamemanager.stage.title=§b「館」§r
@@ -45,3 +45,4 @@ werewolf-gamemanager.item.name.personal_settings=§b個人設定§r
 werewolf-gamemanager.setting.game.title=ゲーム設定
 werewolf-gamemanager.setting.role.title=役職設定
 werewolf-gamemanager.setting.roleAssignment.title=役職構成
+werewolf-gamemanager.setting.roleAssignment.confirm=決定

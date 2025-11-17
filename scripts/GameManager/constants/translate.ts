@@ -1,7 +1,11 @@
 export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
-    WEREWOLF_GAME_TITLE: "werewolf-gamemanager.title",
-    WEREWOLF_GAME_CREDITS: "werewolf-gamemanager.credits",
-    WEREWOLF_GAME_VERSION: "werewolf-gamemanager.version",
+    WEREWOLF_GAME: {
+        TITLE: "werewolf-gamemanager.title",
+        VERSION: "werewolf-gamemanager.version",
+        CREDITS: {
+            TITLE: "werewolf-gamemanager.credits.title"
+        },
+    },
     WEREWOLF_STAGE_TITLE: "werewolf-gamemanager.stage.title",
     WEREWOLF_STAGE_LOADING: "werewolf-gamemanager.stage.loading",
 
@@ -35,5 +39,7 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
 
     WEREWOLF_GAME_SETTING_TITLE: "werewolf-gamemanager.setting.game.title",
     WEREWOLF_ROLE_SETTING_TITLE: "werewolf-gamemanager.setting.role.title",
-    WEREWOLF_ROLE_ASSIGNMENT_TITLE: "werewolf-gamemanager.setting.roleassignment.title",
+    WEREWOLF_ROLE_ASSIGNMENT_TITLE: "werewolf-gamemanager.setting.roleAssignment.title",
+
+    WEREWOLF_ROLE_ASSIGNMENT_CONFIRM: "werewolf-gamemanager.setting.roleAssignment.confirm",
 };
