@@ -3,6 +3,7 @@ import type { AddonProperty } from "./AddonPropertyManager";
 import { system } from "@minecraft/server";
 import { AddonReceiver } from "./router/AddonReceiver";
 import { DataVaultReceiver } from "./router/DataVaultReceiver";
+import type { KairoCommand } from "../utils/KairoUtils";
 
 export type RegistrationState = "registered" | "unregistered" | "missing_requiredAddons";
 
@@ -62,12 +63,12 @@ export class AddonManager {
         this.kairo._deactivateAddon();
     }
 
-    public _scriptEvent(message: string): void {
-        this.kairo._scriptEvent(message);
+    public _scriptEvent(data: KairoCommand): void {
+        this.kairo._scriptEvent(data);
     }
 
-    public dataVaultHandleOnScriptEvent(message: string): void {
-        this.dataVaultReceiver.handleOnScriptEvent(message);
+    public dataVaultHandleOnScriptEvent(data: KairoCommand): void {
+        this.dataVaultReceiver.handleOnScriptEvent(data);
     }
 
     public getDataVaultLastDataLoaded(): { data: string; count: number } {

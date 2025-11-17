@@ -7,6 +7,7 @@ import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
+import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
 
 export enum GameWorldState {
     OutGame,
@@ -47,8 +48,8 @@ export class SystemManager {
         return this.instance;
     }
 
-    public handleScriptEvent(message: string): void {
-        this.scriptEventReceiver.handleScriptEvent(message);
+    public handleScriptEvent(data: KairoCommand): void {
+        this.scriptEventReceiver.handleScriptEvent(data);
     }
 
     public subscribeEvents(): void {
