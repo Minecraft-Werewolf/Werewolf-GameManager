@@ -1,13 +1,15 @@
-import { Player } from "@minecraft/server";
+import { Player, system } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 import { SCRIPT_EVENT_ID_PREFIX } from "../../../../Kairo/constants/scriptevent";
 export class SettingUIManager {
-    constructor(root, scriptEventSender) {
-        this.root = root;
-        this.scriptEventSender = scriptEventSender;
+    constructor(gameSettingManager) {
+        this.gameSettingManager = gameSettingManager;
+    }
+    static create(gameSettingManager) {
+        return new SettingUIManager(gameSettingManager);
     }
     open(player) {
-        this.openNode(player, this.root);
+        this.openNode(player, this.gameSettingManager.getRoot());
     }
     async openNode(player, node) {
         const form = new ActionFormData();
@@ -26,7 +28,7 @@ export class SettingUIManager {
             this.openNode(player, selected);
         }
         else {
-            this.scriptEventSender(`${SCRIPT_EVENT_ID_PREFIX}:${selected.command.addonId}`, JSON.stringify(selected.command));
+            system.sendScriptEvent(`${SCRIPT_EVENT_ID_PREFIX}:${selected.command.addonId}`, JSON.stringify(selected.command));
         }
     }
 }

@@ -1,10 +1,10 @@
 import { ActionFormData } from "@minecraft/server-ui";
-export class RoleSettingManager {
+export class RoleAssignmentManager {
     constructor(gameSettingManager) {
         this.gameSettingManager = gameSettingManager;
     }
     static create(gameSettingManager) {
-        return new RoleSettingManager(gameSettingManager);
+        return new RoleAssignmentManager(gameSettingManager);
     }
     async openRoleSettingsForm(player) {
         const form = new ActionFormData()
