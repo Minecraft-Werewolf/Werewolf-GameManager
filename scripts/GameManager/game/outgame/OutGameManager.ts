@@ -9,18 +9,9 @@ export class OutGameManager {
     private constructor(private readonly systemManager: SystemManager) {
         this.outGameEventManager = OutGameEventManager.create(this);
         this.playerInitializer = PlayerInitializer.create(this);
-
-        system.run(() => this.init());
     }
     public static create(systemManager: SystemManager): OutGameManager {
         return new OutGameManager(systemManager);
-    }
-
-    public init(): void {
-        const players = world.getPlayers();
-        players.forEach((player) => {
-            this.initializePlayer(player);
-        });
     }
 
     public startGame(): void {
