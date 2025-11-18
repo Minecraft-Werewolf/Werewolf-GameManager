@@ -7,6 +7,8 @@ import {
     SCRIPT_EVENT_MESSAGES,
 } from "../../constants/scriptevent";
 import { SCRIPT_EVENT_ID_PREFIX } from "../../../Kairo/constants/scriptevent";
+import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
+import { properties } from "../../../properties";
 
 export class WorldStateChangeBroadcaster {
     private constructor(private readonly systemManager: SystemManager) {}
@@ -22,9 +24,10 @@ export class WorldStateChangeBroadcaster {
                 ? SCRIPT_EVENT_MESSAGES.IN_GAME
                 : SCRIPT_EVENT_MESSAGES.OUT_GAME;
 
-        system.sendScriptEvent(
-            `${SCRIPT_EVENT_ID_PREFIX.KAIRO}:${SCRIPT_EVENT_ID_SUFFIX.BROADCAST}`,
-            `${SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE} ${nextState}`,
-        );
+        KairoUtils.sendKairoCommand(SCRIPT_EVENT_ID_SUFFIX.BROADCAST, {
+            commandId: SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE,
+            addonId: properties.id,
+            newState: nextState,
+        });
     }
 }

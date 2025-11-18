@@ -7,7 +7,6 @@ export class ScriptEventReceiver {
         return new ScriptEventReceiver(systemManager);
     }
     handleScriptEvent(data) {
-        console.log(data);
         switch (data.commandId) {
             case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START:
                 this.systemManager.startGame();

@@ -9,7 +9,6 @@ export class ScriptEventReceiver {
     }
 
     public handleScriptEvent(data: KairoCommand): void {
-        console.log(data);
         switch (data.commandId) {
             case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START:
                 this.systemManager.startGame();
