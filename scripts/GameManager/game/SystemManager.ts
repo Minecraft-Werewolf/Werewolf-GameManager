@@ -8,7 +8,7 @@ import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaste
 import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
 import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
-import type { Role } from "../data/roles";
+import type { RoleDefinition } from "../data/roles";
 
 export enum GameWorldState {
     OutGame,
@@ -77,7 +77,7 @@ export class SystemManager {
         this.worldStateChanger.change(nextState);
     }
 
-    public registerRoles(addonId: string, roles: Object[]): void {
+    public registerRoles(addonId: string, roles: unknown[]): void {
         this.roleManager.registerRoles(addonId, roles);
     }
 
@@ -121,7 +121,11 @@ export class SystemManager {
         this.gameSettingManager.openFormRoleAssignment(playerId);
     }
 
-    public getRegisteredRoles(): Map<string, Role[]> {
-        return this.roleManager.getRegisteredRoles();
+    public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
+        return this.roleManager.getRegisteredRoleDefinitions();
+    }
+
+    public getSelectedRolesForNextGame(): RoleDefinition[] {
+        return this.roleManager.getSelectedRolesForNextGame();
     }
 }

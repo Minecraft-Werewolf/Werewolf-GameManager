@@ -1,4 +1,4 @@
-import type { Role } from "../../../data/roles";
+import type { RoleDefinition } from "../../../data/roles";
 import type { SystemManager } from "../../SystemManager";
 import { RoleDataValidator } from "./RoleDataValidator";
 import { RoleRegister } from "./RoleRegister";
@@ -9,7 +9,8 @@ export class RoleManager {
     private readonly roleRegister: RoleRegister;
     private readonly roleRegistrationRequester: RoleRegistrationRequester;
 
-    private readonly roles: Map<string, Role[]> = new Map();
+    private readonly registeredRoleDefinitions: Map<string, RoleDefinition[]> = new Map();
+    private readonly selectedRolesForNextGame: RoleDefinition[] = [];
 
     private constructor(private readonly systemManager: SystemManager) {
         this.roleDataValidator = RoleDataValidator.create(this);
@@ -20,7 +21,7 @@ export class RoleManager {
         return new RoleManager(systemManager);
     }
 
-    public registerRoles(addonId: string, roles: Object[]): void {
+    public registerRoles(addonId: string, roles: unknown[]): void {
         this.roleRegister.registerRoles(addonId, roles);
     }
 
@@ -28,16 +29,19 @@ export class RoleManager {
         return this.roleDataValidator.isRole(data);
     }
 
-    public setRoles(addonId: string, roles: Role[]): void {
-        this.roles.set(addonId, roles);
-        console.log(JSON.stringify(this.roles.get("werewolf-standardroles")));
+    public setRoles(addonId: string, roles: RoleDefinition[]): void {
+        this.registeredRoleDefinitions.set(addonId, roles);
     }
 
     public requestRoleRegistration(): void {
         this.roleRegistrationRequester.request();
     }
 
-    public getRegisteredRoles(): Map<string, Role[]> {
-        return this.roles;
+    public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
+        return this.registeredRoleDefinitions;
+    }
+
+    public getSelectedRolesForNextGame(): RoleDefinition[] {
+        return this.selectedRolesForNextGame;
     }
 }

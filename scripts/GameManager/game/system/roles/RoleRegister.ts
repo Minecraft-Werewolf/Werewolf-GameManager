@@ -1,5 +1,5 @@
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
-import type { Role } from "../../../data/roles";
+import type { RoleDefinition } from "../../../data/roles";
 import type { RoleManager } from "./RoleManager";
 
 export class RoleRegister {
@@ -8,7 +8,7 @@ export class RoleRegister {
         return new RoleRegister(roleManager);
     }
 
-    public registerRoles(addonId: string, roles: Object[]): void {
+    public registerRoles(addonId: string, roles: unknown[]): void {
         if (!addonId || !Array.isArray(roles)) {
             ConsoleManager.warn(
                 `[ScriptEventReceiver] Invalid register Roles. Data: ${JSON.stringify(roles)}`,
@@ -16,15 +16,16 @@ export class RoleRegister {
             return;
         }
 
-        const rolesArray: Role[] = roles
-            .map((role) => {
-                if (this.roleManager.isRole(role)) {
-                    return role as Role;
+        const rolesArray: RoleDefinition[] = roles
+            .map((item) => {
+                if (this.roleManager.isRole(item)) {
+                    const role = item as RoleDefinition;
+                    role.providerAddonId = addonId;
+                    return role;
                 }
-                console.log("aieo");
                 return null;
             })
-            .filter((role): role is Role => role !== null);
+            .filter((role): role is RoleDefinition => role !== null);
 
         this.roleManager.setRoles(addonId, rolesArray);
     }

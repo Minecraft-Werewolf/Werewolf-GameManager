@@ -1,8 +1,8 @@
-import { world, type Player } from "@minecraft/server";
+import { world } from "@minecraft/server";
 import type { GameSettingManager } from "./GameSettingManager";
 import { ActionFormData } from "@minecraft/server-ui";
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
-import type { Role } from "../../../data/roles";
+import type { RoleDefinition } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 
 export class RoleAssignmentManager {
@@ -18,10 +18,14 @@ export class RoleAssignmentManager {
             return;
         }
 
-        const roles: Map<string, Role[]> = this.gameSettingManager.getRegisteredRoles();
-        const addonIds = Array.from(roles.keys()).sort((a, b) =>
+        const registeredRoleDefinitions: Map<string, RoleDefinition[]> =
+            this.gameSettingManager.getRegisteredRoleDefinitions();
+        const addonIds = Array.from(registeredRoleDefinitions.keys()).sort((a, b) =>
             a.localeCompare(b, "en", { numeric: true }),
         );
+
+        const selectedRolesForNextGame: RoleDefinition[] =
+            this.gameSettingManager.getSelectedRolesForNextGame();
 
         const form = new ActionFormData()
             .title({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_TITLE })

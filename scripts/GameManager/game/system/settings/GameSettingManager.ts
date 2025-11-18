@@ -4,7 +4,7 @@ import type { SystemManager } from "../../SystemManager";
 import { RoleAssignmentManager } from "./RoleAssignmentManager";
 import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
-import type { Role } from "../../../data/roles";
+import type { RoleDefinition } from "../../../data/roles";
 
 export class GameSettingManager {
     private readonly roleAssignmentManager: RoleAssignmentManager;
@@ -34,7 +34,11 @@ export class GameSettingManager {
         return this.rootSettingCategory;
     }
 
-    public getRegisteredRoles(): Map<string, Role[]> {
-        return this.systemManager.getRegisteredRoles();
+    public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
+        return this.systemManager.getRegisteredRoleDefinitions();
+    }
+
+    public getSelectedRolesForNextGame(): RoleDefinition[] {
+        return this.systemManager.getSelectedRolesForNextGame();
     }
 }
