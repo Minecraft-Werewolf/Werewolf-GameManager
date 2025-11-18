@@ -1,17 +1,19 @@
-import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
-export class RoleRegister {
+export class RoleRegistrationValidator {
     constructor(roleManager) {
         this.roleManager = roleManager;
     }
     static create(roleManager) {
-        return new RoleRegister(roleManager);
+        return new RoleRegistrationValidator(roleManager);
     }
-    registerRoles(addonId, roles) {
+    validateRoleRegistration(addonId, roles) {
         if (!addonId || !Array.isArray(roles)) {
-            ConsoleManager.warn(`[ScriptEventReceiver] Invalid register Roles. Data: ${JSON.stringify(roles)}`);
-            return;
+            return {
+                addonId,
+                isSuccessful: false,
+                registered: [],
+            };
         }
-        const rolesArray = roles
+        const registered = roles
             .map((item) => {
             if (this.roleManager.isRole(item)) {
                 const role = item;
@@ -21,6 +23,10 @@ export class RoleRegister {
             return null;
         })
             .filter((role) => role !== null);
-        this.roleManager.setRoles(addonId, rolesArray);
+        return {
+            addonId,
+            isSuccessful: registered.length > 0,
+            registered,
+        };
     }
 }

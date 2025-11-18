@@ -25,7 +25,6 @@ export class SystemManager {
     }
     init() {
         this.changeWorldState(GameWorldState.OutGame);
-        this.roleManager.requestRoleRegistration();
     }
     static getInstance() {
         if (this.instance === null) {
@@ -98,6 +97,9 @@ export class SystemManager {
     }
     getSelectedRolesForNextGame() {
         return this.roleManager.getSelectedRolesForNextGame();
+    }
+    requestRoleReRegistration() {
+        this.roleManager.requestRoleReRegistration();
     }
 }
 SystemManager.instance = null;

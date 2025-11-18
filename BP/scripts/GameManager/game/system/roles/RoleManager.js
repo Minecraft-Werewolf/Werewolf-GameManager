@@ -1,29 +1,42 @@
 import { RoleDataValidator } from "./RoleDataValidator";
-import { RoleRegister } from "./RoleRegister";
-import { RoleRegistrationRequester } from "./RoleRegistrationRequester";
+import { RoleRegistrationValidator, } from "./RoleRegistratonValidator.ts";
+import { RoleRegistrationNotifier } from "./RoleRegistrationNotifier";
+import { RoleReRegistrationRequester } from "./RoleReRegistrationRequester";
 export class RoleManager {
     constructor(systemManager) {
         this.systemManager = systemManager;
         this.registeredRoleDefinitions = new Map();
         this.selectedRolesForNextGame = [];
         this.roleDataValidator = RoleDataValidator.create(this);
-        this.roleRegister = RoleRegister.create(this);
-        this.roleRegistrationRequester = RoleRegistrationRequester.create(this);
+        this.roleRegistrationValidator = RoleRegistrationValidator.create(this);
+        this.roleRegistrationNotifier = RoleRegistrationNotifier.create(this);
+        this.roleReRegistrationRequester = RoleReRegistrationRequester.create(this);
     }
     static create(systemManager) {
         return new RoleManager(systemManager);
     }
     registerRoles(addonId, roles) {
-        this.roleRegister.registerRoles(addonId, roles);
-    }
-    isRole(data) {
-        return this.roleDataValidator.isRole(data);
+        const validateResult = this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
+        this.roleRegistrationNotifier.notify(validateResult);
+        if (!validateResult.isSuccessful)
+            return;
+        this.setRoles(addonId, validateResult.registered);
     }
     setRoles(addonId, roles) {
         this.registeredRoleDefinitions.set(addonId, roles);
     }
-    requestRoleRegistration() {
-        this.roleRegistrationRequester.request();
+    clearRoles() {
+        this.registeredRoleDefinitions.clear();
+    }
+    validateRoleRegistration(addonId, roles) {
+        return this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
+    }
+    isRole(data) {
+        return this.roleDataValidator.isRole(data);
+    }
+    requestRoleReRegistration() {
+        this.clearRoles();
+        this.roleReRegistrationRequester.request();
     }
     getRegisteredRoleDefinitions() {
         return this.registeredRoleDefinitions;
