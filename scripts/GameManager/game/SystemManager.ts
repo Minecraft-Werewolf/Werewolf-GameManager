@@ -37,7 +37,6 @@ export class SystemManager {
 
     public init(): void {
         this.changeWorldState(GameWorldState.OutGame);
-        this.roleManager.requestRoleRegistration();
     }
 
     private static instance: SystemManager | null = null;
@@ -127,5 +126,9 @@ export class SystemManager {
 
     public getSelectedRolesForNextGame(): RoleDefinition[] {
         return this.roleManager.getSelectedRolesForNextGame();
+    }
+
+    public requestRoleReRegistration(): void {
+        this.roleManager.requestRoleReRegistration();
     }
 }

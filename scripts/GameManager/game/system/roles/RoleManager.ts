@@ -1,40 +1,64 @@
 import type { RoleDefinition } from "../../../data/roles";
 import type { SystemManager } from "../../SystemManager";
 import { RoleDataValidator } from "./RoleDataValidator";
-import { RoleRegister } from "./RoleRegister";
-import { RoleRegistrationRequester } from "./RoleRegistrationRequester";
+import {
+    RoleRegistrationValidator,
+    type ValidateRegistrationResult,
+} from "./RoleRegistratonValidator.ts";
+import { RoleRegistrationNotifier } from "./RoleRegistrationNotifier";
+import { RoleReRegistrationRequester } from "./RoleReRegistrationRequester";
 
 export class RoleManager {
     private readonly roleDataValidator: RoleDataValidator;
-    private readonly roleRegister: RoleRegister;
-    private readonly roleRegistrationRequester: RoleRegistrationRequester;
+    private readonly roleRegistrationValidator: RoleRegistrationValidator;
+    private readonly roleRegistrationNotifier: RoleRegistrationNotifier;
+    private readonly roleReRegistrationRequester: RoleReRegistrationRequester;
 
     private readonly registeredRoleDefinitions: Map<string, RoleDefinition[]> = new Map();
     private readonly selectedRolesForNextGame: RoleDefinition[] = [];
 
     private constructor(private readonly systemManager: SystemManager) {
         this.roleDataValidator = RoleDataValidator.create(this);
-        this.roleRegister = RoleRegister.create(this);
-        this.roleRegistrationRequester = RoleRegistrationRequester.create(this);
+        this.roleRegistrationValidator = RoleRegistrationValidator.create(this);
+        this.roleRegistrationNotifier = RoleRegistrationNotifier.create(this);
+        this.roleReRegistrationRequester = RoleReRegistrationRequester.create(this);
     }
     public static create(systemManager: SystemManager): RoleManager {
         return new RoleManager(systemManager);
     }
 
     public registerRoles(addonId: string, roles: unknown[]): void {
-        this.roleRegister.registerRoles(addonId, roles);
-    }
+        const validateResult = this.roleRegistrationValidator.validateRoleRegistration(
+            addonId,
+            roles,
+        );
 
-    public isRole(data: unknown): boolean {
-        return this.roleDataValidator.isRole(data);
+        this.roleRegistrationNotifier.notify(validateResult);
+
+        if (!validateResult.isSuccessful) return;
+
+        this.setRoles(addonId, validateResult.registered);
     }
 
     public setRoles(addonId: string, roles: RoleDefinition[]): void {
         this.registeredRoleDefinitions.set(addonId, roles);
     }
 
-    public requestRoleRegistration(): void {
-        this.roleRegistrationRequester.request();
+    public clearRoles(): void {
+        this.registeredRoleDefinitions.clear();
+    }
+
+    public validateRoleRegistration(addonId: string, roles: unknown[]): ValidateRegistrationResult {
+        return this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
+    }
+
+    public isRole(data: unknown): boolean {
+        return this.roleDataValidator.isRole(data);
+    }
+
+    public requestRoleReRegistration(): void {
+        this.clearRoles();
+        this.roleReRegistrationRequester.request();
     }
 
     public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
