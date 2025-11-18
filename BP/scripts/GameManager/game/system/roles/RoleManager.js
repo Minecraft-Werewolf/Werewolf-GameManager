@@ -4,7 +4,8 @@ import { RoleRegistrationRequester } from "./RoleRegistrationRequester";
 export class RoleManager {
     constructor(systemManager) {
         this.systemManager = systemManager;
-        this.roles = new Map();
+        this.registeredRoleDefinitions = new Map();
+        this.selectedRolesForNextGame = [];
         this.roleDataValidator = RoleDataValidator.create(this);
         this.roleRegister = RoleRegister.create(this);
         this.roleRegistrationRequester = RoleRegistrationRequester.create(this);
@@ -19,13 +20,15 @@ export class RoleManager {
         return this.roleDataValidator.isRole(data);
     }
     setRoles(addonId, roles) {
-        this.roles.set(addonId, roles);
-        console.log(JSON.stringify(this.roles.get("werewolf-standardroles")));
+        this.registeredRoleDefinitions.set(addonId, roles);
     }
     requestRoleRegistration() {
         this.roleRegistrationRequester.request();
     }
-    getRegisteredRoles() {
-        return this.roles;
+    getRegisteredRoleDefinitions() {
+        return this.registeredRoleDefinitions;
+    }
+    getSelectedRolesForNextGame() {
+        return this.selectedRolesForNextGame;
     }
 }

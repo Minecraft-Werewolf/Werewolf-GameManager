@@ -1,4 +1,3 @@
-import { RoleFactionValues } from "../../../data/roles";
 /**
  * 役職データは文字列で送られてくるため、
  * データを検証する必要がある。そのためのクラス
@@ -15,7 +14,7 @@ export class RoleDataValidator {
             return false;
         if (typeof data.id !== "string")
             return false;
-        if (!this.isFaction(data.faction))
+        if (typeof data.faction !== "string")
             return false;
         if (typeof data.sortIndex !== "number")
             return false;
@@ -66,9 +65,6 @@ export class RoleDataValidator {
     }
     isRoleRef(x) {
         return this.isObject(x) && typeof x.addonId === "string" && typeof x.roleId === "string";
-    }
-    isFaction(x) {
-        return typeof x === "string" && RoleFactionValues.includes(x);
     }
     isResultType(x) {
         return typeof x === "string";

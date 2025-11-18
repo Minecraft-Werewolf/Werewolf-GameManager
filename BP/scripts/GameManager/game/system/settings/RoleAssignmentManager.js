@@ -15,8 +15,9 @@ export class RoleAssignmentManager {
             ConsoleManager.error("[RoleAssignmentManager] Player not Found");
             return;
         }
-        const roles = this.gameSettingManager.getRegisteredRoles();
-        const addonIds = Array.from(roles.keys()).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+        const registeredRoleDefinitions = this.gameSettingManager.getRegisteredRoleDefinitions();
+        const addonIds = Array.from(registeredRoleDefinitions.keys()).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+        const selectedRolesForNextGame = this.gameSettingManager.getSelectedRolesForNextGame();
         const form = new ActionFormData()
             .title({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_TITLE })
             .body("役職リスト")

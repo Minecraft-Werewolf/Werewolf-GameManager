@@ -12,11 +12,12 @@ export class RoleRegister {
             return;
         }
         const rolesArray = roles
-            .map((role) => {
-            if (this.roleManager.isRole(role)) {
+            .map((item) => {
+            if (this.roleManager.isRole(item)) {
+                const role = item;
+                role.providerAddonId = addonId;
                 return role;
             }
-            console.log("aieo");
             return null;
         })
             .filter((role) => role !== null);

@@ -93,8 +93,11 @@ export class SystemManager {
     openFormRoleAssignment(playerId) {
         this.gameSettingManager.openFormRoleAssignment(playerId);
     }
-    getRegisteredRoles() {
-        return this.roleManager.getRegisteredRoles();
+    getRegisteredRoleDefinitions() {
+        return this.roleManager.getRegisteredRoleDefinitions();
+    }
+    getSelectedRolesForNextGame() {
+        return this.roleManager.getSelectedRolesForNextGame();
     }
 }
 SystemManager.instance = null;

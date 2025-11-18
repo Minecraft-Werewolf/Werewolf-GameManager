@@ -22,7 +22,10 @@ export class GameSettingManager {
     getRoot() {
         return this.rootSettingCategory;
     }
-    getRegisteredRoles() {
-        return this.systemManager.getRegisteredRoles();
+    getRegisteredRoleDefinitions() {
+        return this.systemManager.getRegisteredRoleDefinitions();
+    }
+    getSelectedRolesForNextGame() {
+        return this.systemManager.getSelectedRolesForNextGame();
     }
 }
