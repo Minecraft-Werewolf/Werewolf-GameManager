@@ -9,6 +9,7 @@ export class ScriptEventReceiver {
     }
 
     public handleScriptEvent(data: KairoCommand): void {
+        console.log(data);
         switch (data.commandId) {
             case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START:
                 this.systemManager.startGame();
@@ -23,6 +24,7 @@ export class ScriptEventReceiver {
                 break;
             case SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_ASSIGNMENT:
                 this.systemManager.openFormRoleAssignment(data.playerId);
+                break;
 
             default:
                 break;
