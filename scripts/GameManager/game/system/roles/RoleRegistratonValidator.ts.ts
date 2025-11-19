@@ -1,10 +1,10 @@
 import type { RoleDefinition } from "../../../data/roles";
 import type { RoleManager } from "./RoleManager";
 
-export interface ValidateRegistrationResult {
+export interface ValidateRoleRegistrationResult {
     addonId: string;
     isSuccessful: boolean;
-    registered: RoleDefinition[];
+    validatedRoles: RoleDefinition[];
 }
 
 export class RoleRegistrationValidator {
@@ -13,16 +13,19 @@ export class RoleRegistrationValidator {
         return new RoleRegistrationValidator(roleManager);
     }
 
-    public validateRoleRegistration(addonId: string, roles: unknown[]): ValidateRegistrationResult {
+    public validateRoleRegistration(
+        addonId: string,
+        roles: unknown[],
+    ): ValidateRoleRegistrationResult {
         if (!addonId || !Array.isArray(roles)) {
             return {
                 addonId,
                 isSuccessful: false,
-                registered: [],
+                validatedRoles: [],
             };
         }
 
-        const registered: RoleDefinition[] = roles
+        const validatedRoles: RoleDefinition[] = roles
             .map((item) => {
                 if (this.roleManager.isRole(item)) {
                     const role = item as RoleDefinition;
@@ -35,8 +38,8 @@ export class RoleRegistrationValidator {
 
         return {
             addonId,
-            isSuccessful: registered.length > 0,
-            registered,
+            isSuccessful: validatedRoles.length > 0,
+            validatedRoles,
         };
     }
 }

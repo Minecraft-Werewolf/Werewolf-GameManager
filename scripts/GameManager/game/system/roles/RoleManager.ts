@@ -3,7 +3,7 @@ import type { SystemManager } from "../../SystemManager";
 import { RoleDataValidator } from "./RoleDataValidator";
 import {
     RoleRegistrationValidator,
-    type ValidateRegistrationResult,
+    type ValidateRoleRegistrationResult,
 } from "./RoleRegistratonValidator.ts";
 import { RoleRegistrationNotifier } from "./RoleRegistrationNotifier";
 import { RoleReRegistrationRequester } from "./RoleReRegistrationRequester";
@@ -28,16 +28,14 @@ export class RoleManager {
     }
 
     public registerRoles(addonId: string, roles: unknown[]): void {
-        const validateResult = this.roleRegistrationValidator.validateRoleRegistration(
-            addonId,
-            roles,
-        );
+        const validateResult: ValidateRoleRegistrationResult =
+            this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
 
         this.roleRegistrationNotifier.notify(validateResult);
 
         if (!validateResult.isSuccessful) return;
 
-        this.setRoles(addonId, validateResult.registered);
+        this.setRoles(addonId, validateResult.validatedRoles);
     }
 
     public setRoles(addonId: string, roles: RoleDefinition[]): void {
@@ -48,7 +46,10 @@ export class RoleManager {
         this.registeredRoleDefinitions.clear();
     }
 
-    public validateRoleRegistration(addonId: string, roles: unknown[]): ValidateRegistrationResult {
+    public validateRoleRegistration(
+        addonId: string,
+        roles: unknown[],
+    ): ValidateRoleRegistrationResult {
         return this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
     }
 

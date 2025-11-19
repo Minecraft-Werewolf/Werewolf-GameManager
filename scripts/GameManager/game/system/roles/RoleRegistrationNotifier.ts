@@ -3,7 +3,7 @@ import { KairoUtils, type KairoCommand } from "../../../../Kairo/utils/KairoUtil
 import { properties } from "../../../../properties";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
 import type { RoleManager } from "./RoleManager";
-import type { ValidateRegistrationResult } from "./RoleRegistratonValidator.ts";
+import type { ValidateRoleRegistrationResult } from "./RoleRegistratonValidator.ts";
 
 export class RoleRegistrationNotifier {
     private constructor(private readonly roleManager: RoleManager) {}
@@ -11,16 +11,18 @@ export class RoleRegistrationNotifier {
         return new RoleRegistrationNotifier(roleManager);
     }
 
-    public notify(validateResult: ValidateRegistrationResult): void {
-        const registeredIds = validateResult.registered.map((role) => role.id);
+    public notify(validateResult: ValidateRoleRegistrationResult): void {
+        const validatedRolesIds = validateResult.validatedRoles.map((role) => role.id);
 
         const data: KairoCommand = {
             commandId: SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_NOTIFY,
             addonId: properties.id,
-            registered: registeredIds,
+            registered: validatedRolesIds,
         };
 
-        ConsoleManager.log(`Role Registration Successfully: ${registeredIds.join(", ")}`);
+        ConsoleManager.log(
+            `Role Registration Successfully: "${validateResult.addonId}" { ${validatedRolesIds.join(", ")} }`,
+        );
         KairoUtils.sendKairoCommand(validateResult.addonId, data);
     }
 }
