@@ -1,8 +1,6 @@
-import { system } from "@minecraft/server";
 import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import { GameWorldState } from "../SystemManager";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
-import { SCRIPT_EVENT_ID_PREFIX } from "../../../Kairo/constants/scriptevent";
 import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
 import { properties } from "../../../properties";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../constants/systems";

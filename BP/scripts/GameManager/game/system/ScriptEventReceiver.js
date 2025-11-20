@@ -14,6 +14,12 @@ export class ScriptEventReceiver {
             case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_RESET:
                 this.systemManager.resetGame();
                 break;
+            case SCRIPT_EVENT_COMMAND_IDS.FACTION_REGISTRATION_REQUEST:
+                this.systemManager.registerFactions(data.addonId, data.factions);
+                break;
+            case SCRIPT_EVENT_COMMAND_IDS.FACTION_RE_REGISTRATION_REQUEST:
+                this.systemManager.requestFactionReRegistration();
+                break;
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_REQUEST:
                 this.systemManager.registerRoles(data.addonId, data.roles);
                 break;

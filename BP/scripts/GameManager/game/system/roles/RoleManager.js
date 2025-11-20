@@ -20,16 +20,13 @@ export class RoleManager {
         this.roleRegistrationNotifier.notify(validateResult);
         if (!validateResult.isSuccessful)
             return;
-        this.setRoles(addonId, validateResult.registered);
+        this.setRoles(addonId, validateResult.validatedRoles);
     }
     setRoles(addonId, roles) {
         this.registeredRoleDefinitions.set(addonId, roles);
     }
     clearRoles() {
         this.registeredRoleDefinitions.clear();
-    }
-    validateRoleRegistration(addonId, roles) {
-        return this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
     }
     isRole(data) {
         return this.roleDataValidator.isRole(data);

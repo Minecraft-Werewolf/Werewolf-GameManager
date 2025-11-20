@@ -10,10 +10,10 @@ export class RoleRegistrationValidator {
             return {
                 addonId,
                 isSuccessful: false,
-                registered: [],
+                validatedRoles: [],
             };
         }
-        const registered = roles
+        const validatedRoles = roles
             .map((item) => {
             if (this.roleManager.isRole(item)) {
                 const role = item;
@@ -25,8 +25,8 @@ export class RoleRegistrationValidator {
             .filter((role) => role !== null);
         return {
             addonId,
-            isSuccessful: registered.length > 0,
-            registered,
+            isSuccessful: validatedRoles.length > 0,
+            validatedRoles,
         };
     }
 }

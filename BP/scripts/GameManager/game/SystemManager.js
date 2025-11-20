@@ -6,6 +6,7 @@ import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
+import { FactionManager } from "./system/factions/FactionManager";
 export var GameWorldState;
 (function (GameWorldState) {
     GameWorldState[GameWorldState["OutGame"] = 0] = "OutGame";
@@ -20,6 +21,7 @@ export class SystemManager {
         this.systemEventManager = SystemEventManager.create(this);
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
+        this.factionManager = FactionManager.create(this);
         this.roleManager = RoleManager.create(this);
         this.gameSettingManager = GameSettingManager.create(this);
     }
@@ -55,9 +57,6 @@ export class SystemManager {
     }
     changeWorldState(nextState) {
         this.worldStateChanger.change(nextState);
-    }
-    registerRoles(addonId, roles) {
-        this.roleManager.registerRoles(addonId, roles);
     }
     getWorldState() {
         return this.currentWorldState;
@@ -97,6 +96,15 @@ export class SystemManager {
     }
     getSelectedRolesForNextGame() {
         return this.roleManager.getSelectedRolesForNextGame();
+    }
+    registerFactions(addonId, factions) {
+        this.factionManager.registerFactions(addonId, factions);
+    }
+    requestFactionReRegistration() {
+        this.factionManager.requestFactionReRegistration();
+    }
+    registerRoles(addonId, roles) {
+        this.roleManager.registerRoles(addonId, roles);
     }
     requestRoleReRegistration() {
         this.roleManager.requestRoleReRegistration();

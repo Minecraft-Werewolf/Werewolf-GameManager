@@ -10,13 +10,13 @@ export class RoleRegistrationNotifier {
         return new RoleRegistrationNotifier(roleManager);
     }
     notify(validateResult) {
-        const registeredIds = validateResult.registered.map((role) => role.id);
+        const validatedRolesIds = validateResult.validatedRoles.map((role) => role.id);
         const data = {
             commandId: SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_NOTIFY,
             addonId: properties.id,
-            registered: registeredIds,
+            registered: validatedRolesIds,
         };
-        ConsoleManager.log(`Role Registration Successfully: "${validateResult.addonId}" { ${registeredIds.join(", ")} }`);
+        ConsoleManager.log(`Role Registration Successfully: "${validateResult.addonId}" { ${validatedRolesIds.join(", ")} }`);
         KairoUtils.sendKairoCommand(validateResult.addonId, data);
     }
 }
