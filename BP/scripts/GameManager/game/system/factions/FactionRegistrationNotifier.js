@@ -16,7 +16,10 @@ export class FactionRegistrationNotifier {
             addonId: properties.id,
             registered: validatedFactionsIds,
         };
-        ConsoleManager.log(`Faction Registration Successfully: "${validateResult.addonId}" { ${validatedFactionsIds.join(", ")} }`);
+        if (validateResult.isSuccessful)
+            ConsoleManager.log(`Faction registration succeeded from "${validateResult.addonId}": [ ${validatedFactionsIds.join(", ")} ]`);
+        else
+            ConsoleManager.log(`Faction registration failed from "${validateResult.addonId}"`);
         KairoUtils.sendKairoCommand(validateResult.addonId, data);
     }
 }
