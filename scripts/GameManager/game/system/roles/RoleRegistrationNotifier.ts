@@ -20,9 +20,11 @@ export class RoleRegistrationNotifier {
             registered: validatedRolesIds,
         };
 
-        ConsoleManager.log(
-            `Role Registration Successfully: "${validateResult.addonId}" { ${validatedRolesIds.join(", ")} }`,
-        );
+        if (validateResult.isSuccessful)
+            ConsoleManager.log(
+                `Role registration succeeded from "${validateResult.addonId}": [ ${validatedRolesIds.join(", ")} ]`,
+            );
+        else ConsoleManager.log(`Role registration failed from "${validateResult.addonId}"`);
         KairoUtils.sendKairoCommand(validateResult.addonId, data);
     }
 }

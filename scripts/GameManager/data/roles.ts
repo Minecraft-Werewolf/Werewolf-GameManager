@@ -23,7 +23,7 @@ export interface RoleDefinition {
     name: RawMessage;
     description: RawMessage;
     faction: string;
-    count: {
+    count?: {
         max?: number;
         step?: number;
     };
