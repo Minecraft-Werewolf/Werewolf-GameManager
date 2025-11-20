@@ -16,7 +16,7 @@ export class RoleRegistrationNotifier {
             addonId: properties.id,
             registered: registeredIds,
         };
-        ConsoleManager.log(`Role Registration Successfully: ${registeredIds.join(", ")}`);
+        ConsoleManager.log(`Role Registration Successfully: "${validateResult.addonId}" { ${registeredIds.join(", ")} }`);
         KairoUtils.sendKairoCommand(validateResult.addonId, data);
     }
 }
