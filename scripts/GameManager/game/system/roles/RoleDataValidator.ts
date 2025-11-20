@@ -1,3 +1,4 @@
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../../../data/roles";
 import type { RoleManager } from "./RoleManager";
 
@@ -16,6 +17,8 @@ export class RoleDataValidator {
         if (!this.isObject(data)) return false;
 
         if (typeof data.id !== "string") return false;
+        if (!KairoUtils.isRawMessage(data.name)) return false;
+        if (!KairoUtils.isRawMessage(data.description)) return false;
         if (typeof data.faction !== "string") return false;
         if (typeof data.sortIndex !== "number") return false;
 

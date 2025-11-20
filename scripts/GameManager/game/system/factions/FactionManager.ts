@@ -1,8 +1,11 @@
 import type { FactionDefinition } from "../../../data/factions";
-import type { RoleManager } from "../roles/RoleManager";
+import type { SystemManager } from "../../SystemManager";
 import { FactionDataValidator } from "./FactionDataValidator";
 import { FactionRegistrationNotifier } from "./FactionRegistrationNotifier";
-import { FactionRegistrationValidator } from "./FactionRegistrationValidator.ts";
+import {
+    FactionRegistrationValidator,
+    type ValidateFactionRegistrationResult,
+} from "./FactionRegistrationValidator.ts";
 import { FactionReRegistrationRequester } from "./FactionReRegistrationRequester.ts";
 
 export class FactionManager {
@@ -10,15 +13,54 @@ export class FactionManager {
     private readonly factionRegistrationNotifier: FactionRegistrationNotifier;
     private readonly factionRegistrationValidator: FactionRegistrationValidator;
     private readonly factionReRegistrationRequester: FactionReRegistrationRequester;
+
     private readonly registeredFactionDefinitions: Map<string, FactionDefinition[]> = new Map();
     private readonly selectedFactionsForNextGame: FactionDefinition[] = [];
-    private constructor(private readonly roleManager: RoleManager) {
+
+    private constructor(private readonly systemManager: SystemManager) {
         this.factionDataValidator = FactionDataValidator.create(this);
         this.factionRegistrationNotifier = FactionRegistrationNotifier.create(this);
         this.factionRegistrationValidator = FactionRegistrationValidator.create(this);
         this.factionReRegistrationRequester = FactionReRegistrationRequester.create(this);
     }
-    public static create(roleManager: RoleManager): FactionManager {
-        return new FactionManager(roleManager);
+    public static create(systemManager: SystemManager): FactionManager {
+        return new FactionManager(systemManager);
+    }
+
+    public registerFactions(addonId: string, factions: unknown[]) {
+        const validateResult: ValidateFactionRegistrationResult =
+            this.factionRegistrationValidator.validateFactionRegistration(addonId, factions);
+
+        this.factionRegistrationNotifier.notify(validateResult);
+
+        if (!validateResult.isSuccessful) return;
+
+        this.setFactions(addonId, validateResult.validatedFactions);
+    }
+    public requestFactionReRegistration() {}
+
+    public setFactions(addonId: string, factions: FactionDefinition[]): void {
+        this.registeredFactionDefinitions.set(addonId, factions);
+    }
+
+    public clearRoles(): void {
+        this.registeredFactionDefinitions.clear();
+    }
+
+    public isFaction(data: unknown): boolean {
+        return this.factionDataValidator.isFaction(data);
+    }
+
+    public requestRoleReRegistration(): void {
+        this.clearRoles();
+        this.factionReRegistrationRequester.request();
+    }
+
+    public getRegisteredRoleDefinitions(): Map<string, FactionDefinition[]> {
+        return this.registeredFactionDefinitions;
+    }
+
+    public getSelectedRolesForNextGame(): FactionDefinition[] {
+        return this.selectedFactionsForNextGame;
     }
 }

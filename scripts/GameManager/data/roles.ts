@@ -1,3 +1,5 @@
+import type { RawMessage } from "@minecraft/server";
+
 export const GameEventTypeValues = [
     "AfterGameStart",
     "BeforeMeetingStart",
@@ -18,6 +20,8 @@ type RoleRef = RoleKey;
 export interface RoleDefinition {
     providerAddonId: string; // 登録要求時に GameManager が独自に付与する。定義側では不要
     id: string;
+    name: RawMessage;
+    description: RawMessage;
     faction: string;
     count: {
         max?: number;

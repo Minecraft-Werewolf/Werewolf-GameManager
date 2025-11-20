@@ -46,13 +46,6 @@ export class RoleManager {
         this.registeredRoleDefinitions.clear();
     }
 
-    public validateRoleRegistration(
-        addonId: string,
-        roles: unknown[],
-    ): ValidateRoleRegistrationResult {
-        return this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
-    }
-
     public isRole(data: unknown): boolean {
         return this.roleDataValidator.isRole(data);
     }

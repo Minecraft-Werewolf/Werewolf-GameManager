@@ -9,6 +9,7 @@ import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
 import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../data/roles";
+import { FactionManager } from "./system/factions/FactionManager";
 
 export enum GameWorldState {
     OutGame,
@@ -20,6 +21,7 @@ export class SystemManager {
     private readonly systemEventManager: SystemEventManager;
     private readonly worldStateChanger: WorldStateChanger;
     private readonly worldStateChangeBroadcaster: WorldStateChangeBroadcaster;
+    private readonly factionManager: FactionManager;
     private readonly roleManager: RoleManager;
     private readonly gameSettingManager: GameSettingManager;
     private inGameManager: InGameManager | null = null;
@@ -31,6 +33,7 @@ export class SystemManager {
         this.systemEventManager = SystemEventManager.create(this);
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
+        this.factionManager = FactionManager.create(this);
         this.roleManager = RoleManager.create(this);
         this.gameSettingManager = GameSettingManager.create(this);
     }
@@ -76,10 +79,6 @@ export class SystemManager {
         this.worldStateChanger.change(nextState);
     }
 
-    public registerRoles(addonId: string, roles: unknown[]): void {
-        this.roleManager.registerRoles(addonId, roles);
-    }
-
     public getWorldState(): GameWorldState | null {
         return this.currentWorldState;
     }
@@ -104,6 +103,7 @@ export class SystemManager {
     public createInGameManager(): InGameManager {
         return InGameManager.create(this);
     }
+
     public createOutGameManager(): OutGameManager {
         return OutGameManager.create(this);
     }
@@ -126,6 +126,18 @@ export class SystemManager {
 
     public getSelectedRolesForNextGame(): RoleDefinition[] {
         return this.roleManager.getSelectedRolesForNextGame();
+    }
+
+    public registerFactions(addonId: string, factions: unknown[]): void {
+        this.factionManager.registerFactions(addonId, factions);
+    }
+
+    public requestFactionReRegistration(): void {
+        this.factionManager.requestFactionReRegistration();
+    }
+
+    public registerRoles(addonId: string, roles: unknown[]): void {
+        this.roleManager.registerRoles(addonId, roles);
     }
 
     public requestRoleReRegistration(): void {
