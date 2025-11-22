@@ -23,6 +23,7 @@ export interface RoleDefinition {
     name: RawMessage;
     description: RawMessage;
     faction: string;
+    isExcludedFromSurvivalCheck?: boolean; // 主に狂人枠で使用
     count?: {
         max?: number;
         step?: number;
