@@ -1,4 +1,4 @@
-import type { Player } from "@minecraft/server";
+import { world, type Player } from "@minecraft/server";
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
@@ -38,8 +38,13 @@ export class SystemManager {
         this.gameSettingManager = GameSettingManager.create(this);
     }
 
+    // アドオン初期化時の処理
     public init(): void {
         this.changeWorldState(GameWorldState.OutGame);
+
+        world.getPlayers().forEach((player) => {
+            this.getOutGameManager()?.initializePlayer(player);
+        });
     }
 
     private static instance: SystemManager | null = null;
@@ -86,14 +91,14 @@ export class SystemManager {
         this.currentWorldState = state;
     }
 
-    public getInGameManager() {
+    public getInGameManager(): InGameManager | null {
         return this.inGameManager;
     }
     public setInGameManager(v: InGameManager | null) {
         this.inGameManager = v;
     }
 
-    public getOutGameManager() {
+    public getOutGameManager(): OutGameManager | null {
         return this.outGameManager;
     }
     public setOutGameManager(v: OutGameManager | null) {
