@@ -10,6 +10,7 @@ import { GameSettingManager } from "./system/settings/GameSettingManager";
 import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../data/roles";
 import { FactionManager } from "./system/factions/FactionManager";
+import type { FactionDefinition } from "../data/factions";
 
 export enum GameWorldState {
     OutGame,
@@ -147,5 +148,9 @@ export class SystemManager {
 
     public requestRoleReRegistration(): void {
         this.roleManager.requestRoleReRegistration();
+    }
+
+    public getFactionData(factionId: string): FactionDefinition | null {
+        return this.factionManager.getFactionData(factionId);
     }
 }

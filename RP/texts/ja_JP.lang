@@ -46,3 +46,6 @@ werewolf-gamemanager.setting.game.title=ゲーム設定
 werewolf-gamemanager.setting.role.title=役職設定
 werewolf-gamemanager.setting.roleAssignment.title=役職構成
 werewolf-gamemanager.setting.roleAssignment.confirm=決定
+werewolf-gamemanager.setting.roleAssignment.noneRoles=役職が設定されていません
+werewolf-gamemanager.setting.roleAssignment.roleList=役職一覧
+werewolf-gamemanager.setting.roleAssignment.selectedRoles=選択された役職一覧

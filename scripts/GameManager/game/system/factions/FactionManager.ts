@@ -36,6 +36,10 @@ export class FactionManager {
         if (!validateResult.isSuccessful) return;
 
         this.setFactions(addonId, validateResult.validatedFactions);
+
+        // 陣営定義は、id の重複がない場合は自動的に全部選択肢ちゃう
+        // 今はテスト用に適当にツッコんじゃう
+        this.selectedFactionsForNextGame.push(...validateResult.validatedFactions);
     }
     public requestFactionReRegistration() {}
 
@@ -62,5 +66,14 @@ export class FactionManager {
 
     public getSelectedRolesForNextGame(): FactionDefinition[] {
         return this.selectedFactionsForNextGame;
+    }
+
+    public getFactionData(factionId: string): FactionDefinition | null {
+        const factionDef = this.selectedFactionsForNextGame.find(
+            (faction) => faction.id === factionId,
+        );
+        if (factionDef === undefined) return null;
+
+        return factionDef;
     }
 }

@@ -42,4 +42,6 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_ROLE_ASSIGNMENT_TITLE: "werewolf-gamemanager.setting.roleAssignment.title",
 
     WEREWOLF_ROLE_ASSIGNMENT_CONFIRM: "werewolf-gamemanager.setting.roleAssignment.confirm",
+    WEREWOLF_ROLE_ASSIGNMENT_NONE_ROLES: "werewolf-gamemanager.setting.roleAssignment.noneRoles",
+    WEREWOLF_ROLE_ASSIGNMENT_SELECTED_ROLES: "werewolf-gamemanager.setting.roleAssignment.selectedRoles",
 };

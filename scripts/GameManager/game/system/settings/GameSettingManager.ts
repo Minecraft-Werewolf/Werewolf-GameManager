@@ -5,6 +5,7 @@ import { RoleAssignmentManager } from "./RoleAssignmentManager";
 import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
 import type { RoleDefinition } from "../../../data/roles";
+import type { FactionDefinition } from "../../../data/factions";
 
 export class GameSettingManager {
     private readonly roleAssignmentManager: RoleAssignmentManager;
@@ -40,5 +41,9 @@ export class GameSettingManager {
 
     public getSelectedRolesForNextGame(): RoleDefinition[] {
         return this.systemManager.getSelectedRolesForNextGame();
+    }
+
+    public getFactionData(factionId: string): FactionDefinition | null {
+        return this.systemManager.getFactionData(factionId);
     }
 }

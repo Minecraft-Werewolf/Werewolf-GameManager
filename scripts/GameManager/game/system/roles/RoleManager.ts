@@ -15,7 +15,6 @@ export class RoleManager {
     private readonly roleReRegistrationRequester: RoleReRegistrationRequester;
 
     private readonly registeredRoleDefinitions: Map<string, RoleDefinition[]> = new Map();
-    private readonly selectedRolesForNextGame: RoleDefinition[] = [];
 
     private constructor(private readonly systemManager: SystemManager) {
         this.roleDataValidator = RoleDataValidator.create(this);
@@ -60,6 +59,8 @@ export class RoleManager {
     }
 
     public getSelectedRolesForNextGame(): RoleDefinition[] {
-        return this.selectedRolesForNextGame;
+        return [...this.registeredRoleDefinitions.values()]
+            .flat()
+            .filter((role) => (role.count?.amount ?? 0) > 0);
     }
 }

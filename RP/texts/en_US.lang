@@ -46,3 +46,5 @@ werewolf-gamemanager.setting.game.title=Game Settings
 werewolf-gamemanager.setting.role.title=Role Settings
 werewolf-gamemanager.setting.roleAssignment.title=Role Assignment
 werewolf-gamemanager.setting.roleAssignment.confirm=Confirm
+werewolf-gamemanager.setting.roleAssignment.noneRoles=No roles have been assigned
+werewolf-gamemanager.setting.roleAssignment.selectedRoles=Selected Roles

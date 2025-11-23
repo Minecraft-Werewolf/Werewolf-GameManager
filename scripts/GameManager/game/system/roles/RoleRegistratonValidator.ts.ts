@@ -30,6 +30,10 @@ export class RoleRegistrationValidator {
                 if (this.roleManager.isRole(item)) {
                     const role = item as RoleDefinition;
                     role.providerAddonId = addonId;
+
+                    if (role.count === undefined) role.count = {};
+                    role.count.amount = 0;
+
                     return role;
                 }
                 return null;
