@@ -9,6 +9,9 @@ export const SYSTEMS = {
         LINE_CYAN: "§3" + "-".repeat(20) + "§r",
         LINE_YELLOW: "§e" + "-".repeat(20) + "§r",
     },
+    COLOR_CODE: {
+        RESET: "§r",
+    },
     INTERVAL: {
         EVERY_TICK: 1,
         EVERY_SECOND: TicksPerSecond,

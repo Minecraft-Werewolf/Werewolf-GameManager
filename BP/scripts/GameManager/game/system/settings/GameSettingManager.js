@@ -28,4 +28,7 @@ export class GameSettingManager {
     getSelectedRolesForNextGame() {
         return this.systemManager.getSelectedRolesForNextGame();
     }
+    getFactionData(factionId) {
+        return this.systemManager.getFactionData(factionId);
+    }
 }

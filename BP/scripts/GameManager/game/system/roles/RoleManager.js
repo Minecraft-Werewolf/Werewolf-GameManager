@@ -6,7 +6,6 @@ export class RoleManager {
     constructor(systemManager) {
         this.systemManager = systemManager;
         this.registeredRoleDefinitions = new Map();
-        this.selectedRolesForNextGame = [];
         this.roleDataValidator = RoleDataValidator.create(this);
         this.roleRegistrationValidator = RoleRegistrationValidator.create(this);
         this.roleRegistrationNotifier = RoleRegistrationNotifier.create(this);
@@ -39,6 +38,8 @@ export class RoleManager {
         return this.registeredRoleDefinitions;
     }
     getSelectedRolesForNextGame() {
-        return this.selectedRolesForNextGame;
+        return [...this.registeredRoleDefinitions.values()]
+            .flat()
+            .filter((role) => (role.count?.amount ?? 0) > 0);
     }
 }

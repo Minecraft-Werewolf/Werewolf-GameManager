@@ -1,3 +1,4 @@
+import { world } from "@minecraft/server";
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
@@ -25,8 +26,12 @@ export class SystemManager {
         this.roleManager = RoleManager.create(this);
         this.gameSettingManager = GameSettingManager.create(this);
     }
+    // アドオン初期化時の処理
     init() {
         this.changeWorldState(GameWorldState.OutGame);
+        world.getPlayers().forEach((player) => {
+            this.getOutGameManager()?.initializePlayer(player);
+        });
     }
     static getInstance() {
         if (this.instance === null) {
@@ -108,6 +113,9 @@ export class SystemManager {
     }
     requestRoleReRegistration() {
         this.roleManager.requestRoleReRegistration();
+    }
+    getFactionData(factionId) {
+        return this.factionManager.getFactionData(factionId);
     }
 }
 SystemManager.instance = null;

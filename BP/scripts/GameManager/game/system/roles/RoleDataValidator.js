@@ -19,7 +19,7 @@ export class RoleDataValidator {
             return false;
         if (!KairoUtils.isRawMessage(data.description))
             return false;
-        if (typeof data.faction !== "string")
+        if (typeof data.factionId !== "string")
             return false;
         if (typeof data.sortIndex !== "number")
             return false;
