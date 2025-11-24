@@ -1,5 +1,5 @@
 import { Player, world } from "@minecraft/server";
-import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
+import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
@@ -86,7 +86,7 @@ export class RoleAssignmentManager {
                 rawtext: [
                     { text: color },
                     role.name,
-                    { text: `${SYSTEMS.COLOR_CODE.RESET}\n\n` },
+                    { text: `${SYSTEMS.COLOR_CODE.RESET}\n` },
                     role.description,
                     { text: "\n\n" },
                     /**
@@ -113,8 +113,49 @@ export class RoleAssignmentManager {
         });
         return this.openOverviewForm(player, workingRoleDefinitions);
     }
-    async openCancelForm(player, workingRoleDefinitions) { }
-    applyChanges(workingRoleDefinitions) { }
+    async openCancelForm(player, workingRoleDefinitions) {
+        const form = new MessageFormData()
+            .title({
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_TITLE,
+        })
+            .body({
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_MESSAGE,
+        })
+            .button1({
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_DISCARD_BUTTON,
+        })
+            .button2({
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_BACK_BUTTON,
+        });
+        const { selection, canceled, cancelationReason } = await form.show(player);
+        if (canceled || selection === undefined) {
+            return this.openOverviewForm(player, workingRoleDefinitions);
+        }
+        switch (selection) {
+            case 0:
+                return;
+            case 1:
+                this.openOverviewForm(player, workingRoleDefinitions);
+                break;
+        }
+    }
+    applyChanges(working) {
+        const registered = this.gameSettingManager.getRegisteredRoleDefinitions();
+        for (const [addonId, registeredRoles] of registered.entries()) {
+            const workingRoles = working.get(addonId);
+            if (!workingRoles)
+                continue;
+            const workingMap = new Map(workingRoles.map((r) => [r.id, r]));
+            for (const role of registeredRoles) {
+                const w = workingMap.get(role.id);
+                if (!w)
+                    continue;
+                if (!role.count)
+                    role.count = { amount: 0 };
+                role.count.amount = w.count?.amount ?? 0;
+            }
+        }
+    }
     deepCopyRegisteredRoleDefinitions(source) {
         const copy = new Map();
         for (const [addonId, roles] of source.entries()) {
