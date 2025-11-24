@@ -48,3 +48,8 @@ werewolf-gamemanager.setting.roleAssignment.title=Role Assignment
 werewolf-gamemanager.setting.roleAssignment.confirm=Confirm
 werewolf-gamemanager.setting.roleAssignment.noneRoles=No roles have been assigned
 werewolf-gamemanager.setting.roleAssignment.selectedRoles=Selected Roles
+
+werewolf-gamemanager.setting.roleAssignment.cancelForm.title=Discard Changes
+werewolf-gamemanager.setting.roleAssignment.cancelForm.message=You have unsaved changes. Do you want to discard them?
+werewolf-gamemanager.setting.roleAssignment.cancelForm.discardButton=Discard
+werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton=Back
