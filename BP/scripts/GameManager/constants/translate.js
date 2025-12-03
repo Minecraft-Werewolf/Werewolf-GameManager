@@ -38,5 +38,6 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_TITLE: "werewolf-gamemanager.setting.roleAssignment.cancelForm.title",
     WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_MESSAGE: "werewolf-gamemanager.setting.roleAssignment.cancelForm.message",
     WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_DISCARD_BUTTON: "werewolf-gamemanager.setting.roleAssignment.cancelForm.discardButton",
-    WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_BACK_BUTTON: "werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton"
+    WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_BACK_BUTTON: "werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton",
+    WEREWOLF_ROLE_ASSIGNMENT_APPLIED_CHANGES_NOTICE: "werewolf-gamemanager.setting.roleAssignment.appliedRoleChangesNotice",
 };

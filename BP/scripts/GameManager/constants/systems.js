@@ -99,6 +99,11 @@ export const SYSTEMS = {
         SOUND_PITCH: 1,
         SOUND_VOLUME: 1,
     },
+    ROLE_ASSIGNMENT_NOTIFICATION: {
+        SOUND_ID: "random.orb",
+        SOUND_PITCH: 1,
+        SOUND_VOLUME: 1,
+    },
 };
 export const GAMES = {
     UI_RESULT_WINNING_FACTION_TITLE_ANIMATION: {

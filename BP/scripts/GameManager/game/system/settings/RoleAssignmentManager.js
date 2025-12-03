@@ -25,7 +25,9 @@ export class RoleAssignmentManager {
         const workingRolesList = this.filterRolesByCount(workingRoleDefinitions).map((role) => {
             const rawMessage = [];
             const faction = this.gameSettingManager.getFactionData(role.factionId);
-            if (faction !== null)
+            if (role.color !== undefined)
+                rawMessage.push({ text: `\n${role.color}` });
+            else if (faction !== null)
                 rawMessage.push({ text: `\n${faction.defaultColor}` });
             rawMessage.push(role.name);
             rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${role.count?.amount}` });
@@ -61,7 +63,7 @@ export class RoleAssignmentManager {
                 return;
         }
         if (selection === 0)
-            this.applyChanges(workingRoleDefinitions);
+            this.applyChanges(player, workingRoleDefinitions);
         else {
             const addonId = addonIds[selection - 1];
             if (addonId === undefined)
@@ -78,7 +80,7 @@ export class RoleAssignmentManager {
             const faction = this.gameSettingManager.getFactionData(role.factionId);
             if (faction === null)
                 continue;
-            const color = faction.defaultColor;
+            const color = role.color ?? faction.defaultColor;
             const maxValue = role.count?.max ?? 4;
             const defaultValue = role.count?.amount ?? 0;
             const valueStep = role.count?.step ?? 1;
@@ -139,7 +141,9 @@ export class RoleAssignmentManager {
                 break;
         }
     }
-    applyChanges(working) {
+    applyChanges(player, working) {
+        if (!this.hasRoleAssignmentChanged(working))
+            return;
         const registered = this.gameSettingManager.getRegisteredRoleDefinitions();
         for (const [addonId, registeredRoles] of registered.entries()) {
             const workingRoles = working.get(addonId);
@@ -155,6 +159,34 @@ export class RoleAssignmentManager {
                 role.count.amount = w.count?.amount ?? 0;
             }
         }
+        const roleDefinitionsAfterApply = this.gameSettingManager.getSelectedRolesForNextGame();
+        world.sendMessage({
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_APPLIED_CHANGES_NOTICE,
+            with: [player.name],
+        });
+        world.sendMessage(SYSTEMS.SEPARATOR.LINE_CYAN);
+        const roleListMessage = [];
+        for (const role of this.gameSettingManager.sortRoleDefinitions(roleDefinitionsAfterApply)) {
+            const rawMessage = [];
+            const faction = this.gameSettingManager.getFactionData(role.factionId);
+            if (role.color !== undefined)
+                rawMessage.push({ text: `${role.color}` });
+            else if (faction !== null)
+                rawMessage.push({ text: `${faction.defaultColor}` });
+            rawMessage.push(role.name);
+            rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${role.count?.amount}\n` });
+            roleListMessage.push({ rawtext: rawMessage });
+        }
+        world.sendMessage({ rawtext: roleListMessage });
+        world.sendMessage(SYSTEMS.SEPARATOR.LINE_CYAN);
+        for (const player of world.getPlayers()) {
+            player.playSound(SYSTEMS.ROLE_ASSIGNMENT_NOTIFICATION.SOUND_ID, {
+                pitch: SYSTEMS.ROLE_ASSIGNMENT_NOTIFICATION.SOUND_PITCH,
+                volume: SYSTEMS.ROLE_ASSIGNMENT_NOTIFICATION.SOUND_VOLUME,
+                location: player.location,
+            });
+        }
+        return;
     }
     deepCopyRegisteredRoleDefinitions(source) {
         const copy = new Map();

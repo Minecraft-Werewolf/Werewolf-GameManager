@@ -117,5 +117,8 @@ export class SystemManager {
     getFactionData(factionId) {
         return this.factionManager.getFactionData(factionId);
     }
+    sortRoleDefinitions(roles) {
+        return this.roleManager.sortRoleDefinitions(roles);
+    }
 }
 SystemManager.instance = null;

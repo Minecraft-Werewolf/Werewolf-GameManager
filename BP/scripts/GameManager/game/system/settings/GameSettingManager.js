@@ -31,4 +31,7 @@ export class GameSettingManager {
     getFactionData(factionId) {
         return this.systemManager.getFactionData(factionId);
     }
+    sortRoleDefinitions(roles) {
+        return this.systemManager.sortRoleDefinitions(roles);
+    }
 }

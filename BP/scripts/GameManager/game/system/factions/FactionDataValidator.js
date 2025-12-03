@@ -21,6 +21,8 @@ export class FactionDataValidator {
             return false;
         if (!KairoUtils.isRawMessage(data.victoryCondition.description))
             return false;
+        if (typeof data.sortIndex !== "number")
+            return false;
         return true;
     }
     isObject(x) {
