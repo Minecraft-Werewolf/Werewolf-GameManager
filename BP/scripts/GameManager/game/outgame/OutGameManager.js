@@ -6,16 +6,9 @@ export class OutGameManager {
         this.systemManager = systemManager;
         this.outGameEventManager = OutGameEventManager.create(this);
         this.playerInitializer = PlayerInitializer.create(this);
-        system.run(() => this.init());
     }
     static create(systemManager) {
         return new OutGameManager(systemManager);
-    }
-    init() {
-        const players = world.getPlayers();
-        players.forEach((player) => {
-            this.initializePlayer(player);
-        });
     }
     startGame() {
         this.systemManager.startGame();
@@ -25,5 +18,8 @@ export class OutGameManager {
     }
     initializePlayer(player) {
         this.playerInitializer.initializePlayer(player);
+    }
+    openSettingsForm(player) {
+        this.systemManager.openSettingsForm(player);
     }
 }

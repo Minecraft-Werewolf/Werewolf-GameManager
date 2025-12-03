@@ -1,10 +1,18 @@
 import { TicksPerSecond } from "@minecraft/server";
 
+export const KAIRO_COMMAND_TARGET_ADDON_IDS = {
+    BROADCAST: "_kBroadcast",
+    WEREWOLF_GAMEMANAGER: "werewolf-gamemanager",
+};
+
 export const SYSTEMS = {
     SEPARATOR: {
         SPACE: " ",
         LINE_CYAN: "§3" + "-".repeat(20) + "§r",
         LINE_YELLOW: "§e" + "-".repeat(20) + "§r",
+    },
+    COLOR_CODE: {
+        RESET: "§r",
     },
     INTERVAL: {
         EVERY_TICK: 1,
@@ -100,6 +108,12 @@ export const SYSTEMS = {
 
     GAME_DEFEAT: {
         SOUND_ID: "random.explode",
+        SOUND_PITCH: 1,
+        SOUND_VOLUME: 1,
+    },
+
+    ROLE_ASSIGNMENT_NOTIFICATION: {
+        SOUND_ID: "random.orb",
         SOUND_PITCH: 1,
         SOUND_VOLUME: 1,
     },

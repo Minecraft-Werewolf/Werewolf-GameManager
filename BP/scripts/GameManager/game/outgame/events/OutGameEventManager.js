@@ -1,23 +1,23 @@
 import { BaseEventManager } from "../../events/BaseEventManager";
 import { OutGameItemUseHandler } from "./ItemUse";
-import { OutGamePlayerJoinHandler } from "./PlayerJoin";
+import { OutGamePlayerSpawnHandler } from "./PlayerSpawn";
 export class OutGameEventManager extends BaseEventManager {
     constructor(outGameManager) {
         super();
         this.outGameManager = outGameManager;
         this.itemUse = OutGameItemUseHandler.create(this);
-        this.playerJoin = OutGamePlayerJoinHandler.create(this);
+        this.playerSpawn = OutGamePlayerSpawnHandler.create(this);
     }
     static create(outGameManager) {
         return new OutGameEventManager(outGameManager);
     }
     subscribeAll() {
         this.itemUse.subscribe();
-        this.playerJoin.subscribe();
+        this.playerSpawn.subscribe();
     }
     unsubscribeAll() {
         this.itemUse.unsubscribe();
-        this.playerJoin.unsubscribe();
+        this.playerSpawn.unsubscribe();
     }
     getOutGameManager() {
         return this.outGameManager;

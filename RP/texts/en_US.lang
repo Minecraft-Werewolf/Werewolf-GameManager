@@ -1,44 +1,56 @@
 werewolf-gamemanager.name=Werewolf-GameManager
 werewolf-gamemanager.description=functions as the central GameManager for the Werewolf game.
 
+werewolf-gamemanager.title=§4Minecraft Werewolf§r
+werewolf-gamemanager.credits.title=Credits
+werewolf-gamemanager.version=ver.1.0.0
 
-werewolf.gamemanager.title=§4Minecraft Werewolf§r
-werewolf.gamemanager.credits=created by shizuku86
-werewolf.gamemanager.version=ver.1.0.0
+werewolf-gamemanager.stage.title=§b"Mansion"§r
+werewolf-gamemanager.stage.loading=Loading Stage...
 
-werewolf.gamemanager.stage.title=§b"Mansion"§r
-werewolf.gamemanager.stage.loading=Loading Stage...
+werewolf-gamemanager.game.preparation.countdown.message=§bGame starting in %s seconds...§r
+werewolf-gamemanager.game.preparation.countdown.warning.message=§bGame starting in %s seconds...§r
+werewolf-gamemanager.game.start.message=§aThe game is starting!§r
 
-werewolf.gamemanager.game.preparation.countdown.message=§bGame starting in %s seconds...§r
-werewolf.gamemanager.game.preparation.countdown.warning.message=§bGame starting in %s seconds...§r
-werewolf.gamemanager.game.start.message=§aThe game is starting!§r
+werewolf-gamemanager.game.start.canceled.message=§cThe game start has been canceled.§r
+werewolf-gamemanager.game.forcequit.message=§cThe game has been forcefully terminated.§r
 
-werewolf.gamemanager.game.start.canceled.message=§cThe game start has been canceled.§r
-werewolf.gamemanager.game.forcequit.message=§cThe game has been forcefully terminated.§r
+werewolf-gamemanager.game.termination.title=§eGame Over!§r
+werewolf-gamemanager.game.termination.message=§eThe game has ended!§r
 
-werewolf.gamemanager.game.termination.title=§eGame Over!§r
-werewolf.gamemanager.game.termination.message=§eThe game has ended!§r
+werewolf-gamemanager.game.result.alive=§a(Survived)§r
+werewolf-gamemanager.game.result.dead=§c(Dead)§r
+werewolf-gamemanager.game.result.left=§c(Left)§r
 
-werewolf.gamemanager.game.result.alive=§a(Survived)§r
-werewolf.gamemanager.game.result.dead=§c(Dead)§r
-werewolf.gamemanager.game.result.left=§c(Left)§r
+werewolf-gamemanager.game.result.villagerfaction.win=§aVillager Faction Wins§r
+werewolf-gamemanager.game.result.werewolffaction.win=§4Werewolf Faction Wins!§r
+werewolf-gamemanager.game.result.foxfaction.win=§gFox Faction Wins!§r
+werewolf-gamemanager.game.result.annihilation=§3Total Annihilation§r
+werewolf-gamemanager.game.result.timeup=§3Time's Up§r
 
-werewolf.gamemanager.game.result.villagerfaction.win=§aVillager Faction Wins§r
-werewolf.gamemanager.game.result.werewolffaction.win=§4Werewolf Faction Wins!§r
-werewolf.gamemanager.game.result.foxfaction.win=§gFox Faction Wins!§r
-werewolf.gamemanager.game.result.annihilation=§3Total Annihilation§r
-werewolf.gamemanager.game.result.timeup=§3Time's Up§r
+werewolf-gamemanager.game.result.victory=§aVictory!§r
+werewolf-gamemanager.game.result.defeat=§cDefeat...§r
+werewolf-gamemanager.game.result.draw=§7Draw§r
 
-werewolf.gamemanager.game.result.victory=§aVictory!§r
-werewolf.gamemanager.game.result.defeat=§cDefeat...§r
-werewolf.gamemanager.game.result.draw=§7Draw§r
+werewolf-gamemanager.game.result.victory.message=§aYou have achieved victory!§r
+werewolf-gamemanager.game.result.defeat.message=§cYou have been defeated...§r
+werewolf-gamemanager.game.result.draw.message=§7The game ended in a draw.§r
+werewolf-gamemanager.item.name.game_starter=§eStart Game§r
+werewolf-gamemanager.item.name.game_force_terminator=§cForce Stop§r
+werewolf-gamemanager.item.name.game_settings=§bGame Settings§r
+werewolf-gamemanager.item.name.join_register=§aJoin§r
+werewolf-gamemanager.item.name.spectate_register=§3Spectate§r
+werewolf-gamemanager.item.name.personal_settings=§bYour Settings§r
 
-werewolf.gamemanager.game.result.victory.message=§aYou have achieved victory!§r
-werewolf.gamemanager.game.result.defeat.message=§cYou have been defeated...§r
-werewolf.gamemanager.game.result.draw.message=§7The game ended in a draw.§r
-werewolf.gamemanager.item.name.game_starter=§eStart Game§r
-werewolf.gamemanager.item.name.game_force_terminator=§cForce Stop§r
-werewolf.gamemanager.item.name.game_settings=§bGame Settings§r
-werewolf.gamemanager.item.name.join_register=§aJoin§r
-werewolf.gamemanager.item.name.spectate_register=§3Spectate§r
-werewolf.gamemanager.item.name.personal_settings=§bYour Settings§r
+werewolf-gamemanager.setting.game.title=Game Settings
+werewolf-gamemanager.setting.role.title=Role Settings
+werewolf-gamemanager.setting.roleAssignment.title=Role Assignment
+werewolf-gamemanager.setting.roleAssignment.confirm=Confirm
+werewolf-gamemanager.setting.roleAssignment.noneRoles=No roles have been assigned
+werewolf-gamemanager.setting.roleAssignment.selectedRoles=Selected Roles
+
+werewolf-gamemanager.setting.roleAssignment.cancelForm.title=Discard Changes
+werewolf-gamemanager.setting.roleAssignment.cancelForm.message=You have unsaved changes. Do you want to discard them?
+werewolf-gamemanager.setting.roleAssignment.cancelForm.discardButton=Discard
+werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton=Back
+werewolf-gamemanager.setting.roleAssignment.appliedRoleChangesNotice=§6%s has changed the role assignment.§r

@@ -1,3 +1,4 @@
+import { world } from "@minecraft/server";
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
@@ -5,6 +6,8 @@ import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
+import { GameSettingManager } from "./system/settings/GameSettingManager";
+import { FactionManager } from "./system/factions/FactionManager";
 export var GameWorldState;
 (function (GameWorldState) {
     GameWorldState[GameWorldState["OutGame"] = 0] = "OutGame";
@@ -19,11 +22,16 @@ export class SystemManager {
         this.systemEventManager = SystemEventManager.create(this);
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
+        this.factionManager = FactionManager.create(this);
         this.roleManager = RoleManager.create(this);
+        this.gameSettingManager = GameSettingManager.create(this);
     }
+    // アドオン初期化時の処理
     init() {
         this.changeWorldState(GameWorldState.OutGame);
-        this.roleManager.requestRoleRegistration();
+        world.getPlayers().forEach((player) => {
+            this.getOutGameManager()?.initializePlayer(player);
+        });
     }
     static getInstance() {
         if (this.instance === null) {
@@ -31,8 +39,8 @@ export class SystemManager {
         }
         return this.instance;
     }
-    handleScriptEvent(message) {
-        this.scriptEventReceiver.handleScriptEvent(message);
+    handleScriptEvent(data) {
+        this.scriptEventReceiver.handleScriptEvent(data);
     }
     subscribeEvents() {
         this.systemEventManager.subscribeAll();
@@ -54,9 +62,6 @@ export class SystemManager {
     }
     changeWorldState(nextState) {
         this.worldStateChanger.change(nextState);
-    }
-    registerRoles(addonId, roles) {
-        this.roleManager.registerRoles(addonId, roles);
     }
     getWorldState() {
         return this.currentWorldState;
@@ -84,6 +89,36 @@ export class SystemManager {
     }
     broadcastWorldStateChange(next) {
         this.worldStateChangeBroadcaster.broadcast(next);
+    }
+    openSettingsForm(player) {
+        this.gameSettingManager.opneSettingsForm(player);
+    }
+    openFormRoleAssignment(playerId) {
+        this.gameSettingManager.openFormRoleAssignment(playerId);
+    }
+    getRegisteredRoleDefinitions() {
+        return this.roleManager.getRegisteredRoleDefinitions();
+    }
+    getSelectedRolesForNextGame() {
+        return this.roleManager.getSelectedRolesForNextGame();
+    }
+    registerFactions(addonId, factions) {
+        this.factionManager.registerFactions(addonId, factions);
+    }
+    requestFactionReRegistration() {
+        this.factionManager.requestFactionReRegistration();
+    }
+    registerRoles(addonId, roles) {
+        this.roleManager.registerRoles(addonId, roles);
+    }
+    requestRoleReRegistration() {
+        this.roleManager.requestRoleReRegistration();
+    }
+    getFactionData(factionId) {
+        return this.factionManager.getFactionData(factionId);
+    }
+    sortRoleDefinitions(roles) {
+        return this.roleManager.sortRoleDefinitions(roles);
     }
 }
 SystemManager.instance = null;

@@ -1,16 +1,4 @@
-export const RoleFactionValues = ["villager", "werewolf", "fox", "neutral"] as const;
-type RoleFaction = (typeof RoleFactionValues)[number];
-
-export const ResultTypeValues = ["villager", "werewolf", "fox"] as const;
-type ResultType = (typeof ResultTypeValues)[number];
-
-export const ColorTypeValues = [
-    "villager_lime",
-    "werewolf_red",
-    "fox_yellow",
-    "neutral_blue",
-] as const;
-type ColorType = (typeof ColorTypeValues)[number];
+import type { RawMessage } from "@minecraft/server";
 
 export const GameEventTypeValues = [
     "AfterGameStart",
@@ -29,16 +17,21 @@ interface RoleKey {
 
 type RoleRef = RoleKey;
 
-export interface Role {
+export interface RoleDefinition {
+    providerAddonId: string; // 登録要求時に GameManager が独自に付与する。定義側では不要
     id: string;
-    faction: RoleFaction;
-    count: {
+    name: RawMessage;
+    description: RawMessage;
+    factionId: string;
+    isExcludedFromSurvivalCheck?: boolean; // 主に狂人枠で使用
+    count?: {
+        amount?: number;
         max?: number;
         step?: number;
     };
-    color?: ColorType; // 指定しなければ、チームに基づいて自動で決定される
-    divinationResult?: ResultType; // 占い結果
-    mediumResult?: ResultType; // 霊視結果
+    color?: string; // 指定しなければ、チームに基づいて自動で決定される
+    divinationResult?: string; // 占い結果
+    mediumResult?: string; // 霊視結果
     knownRoles?: string[]; // 初期に知っている役職
     handleGmaeEvents?: GameEventType[]; // 処理するゲームイベント
     appearance?: {

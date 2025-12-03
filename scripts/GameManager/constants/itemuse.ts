@@ -6,3 +6,11 @@ export const ITEM_USE = {
     GAME_JOIN_ITEM_ID: "werewolf:join_register",
     GAME_SPECTATE_ITEM_ID: "werewolf:spectate_register",
 };
+
+
+// スキルブック
+// ゲーム一時停止
+// 投票
+// 延長 / 時短
+// サボタージュ用アイテム
+// ランダムアイテムブック

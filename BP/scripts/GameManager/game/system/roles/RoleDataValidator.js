@@ -1,4 +1,4 @@
-import { RoleFactionValues } from "../../../data/roles";
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
 /**
  * 役職データは文字列で送られてくるため、
  * データを検証する必要がある。そのためのクラス
@@ -15,7 +15,11 @@ export class RoleDataValidator {
             return false;
         if (typeof data.id !== "string")
             return false;
-        if (!this.isFaction(data.faction))
+        if (!KairoUtils.isRawMessage(data.name))
+            return false;
+        if (!KairoUtils.isRawMessage(data.description))
+            return false;
+        if (typeof data.factionId !== "string")
             return false;
         if (typeof data.sortIndex !== "number")
             return false;
@@ -66,9 +70,6 @@ export class RoleDataValidator {
     }
     isRoleRef(x) {
         return this.isObject(x) && typeof x.addonId === "string" && typeof x.roleId === "string";
-    }
-    isFaction(x) {
-        return typeof x === "string" && RoleFactionValues.includes(x);
     }
     isResultType(x) {
         return typeof x === "string";

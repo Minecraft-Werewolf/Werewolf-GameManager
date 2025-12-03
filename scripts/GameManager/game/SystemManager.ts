@@ -1,3 +1,4 @@
+import { world, type Player } from "@minecraft/server";
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
@@ -5,6 +6,11 @@ import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
+import { GameSettingManager } from "./system/settings/GameSettingManager";
+import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
+import type { RoleDefinition } from "../data/roles";
+import { FactionManager } from "./system/factions/FactionManager";
+import type { FactionDefinition } from "../data/factions";
 
 export enum GameWorldState {
     OutGame,
@@ -16,7 +22,9 @@ export class SystemManager {
     private readonly systemEventManager: SystemEventManager;
     private readonly worldStateChanger: WorldStateChanger;
     private readonly worldStateChangeBroadcaster: WorldStateChangeBroadcaster;
+    private readonly factionManager: FactionManager;
     private readonly roleManager: RoleManager;
+    private readonly gameSettingManager: GameSettingManager;
     private inGameManager: InGameManager | null = null;
     private outGameManager: OutGameManager | null = null;
     private currentWorldState: GameWorldState | null = null;
@@ -26,12 +34,18 @@ export class SystemManager {
         this.systemEventManager = SystemEventManager.create(this);
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
+        this.factionManager = FactionManager.create(this);
         this.roleManager = RoleManager.create(this);
+        this.gameSettingManager = GameSettingManager.create(this);
     }
 
+    // アドオン初期化時の処理
     public init(): void {
         this.changeWorldState(GameWorldState.OutGame);
-        this.roleManager.requestRoleRegistration();
+
+        world.getPlayers().forEach((player) => {
+            this.getOutGameManager()?.initializePlayer(player);
+        });
     }
 
     private static instance: SystemManager | null = null;
@@ -43,8 +57,8 @@ export class SystemManager {
         return this.instance;
     }
 
-    public handleScriptEvent(message: string): void {
-        this.scriptEventReceiver.handleScriptEvent(message);
+    public handleScriptEvent(data: KairoCommand): void {
+        this.scriptEventReceiver.handleScriptEvent(data);
     }
 
     public subscribeEvents(): void {
@@ -71,10 +85,6 @@ export class SystemManager {
         this.worldStateChanger.change(nextState);
     }
 
-    public registerRoles(addonId: string, roles: Object[]): void {
-        this.roleManager.registerRoles(addonId, roles);
-    }
-
     public getWorldState(): GameWorldState | null {
         return this.currentWorldState;
     }
@@ -82,14 +92,14 @@ export class SystemManager {
         this.currentWorldState = state;
     }
 
-    public getInGameManager() {
+    public getInGameManager(): InGameManager | null {
         return this.inGameManager;
     }
     public setInGameManager(v: InGameManager | null) {
         this.inGameManager = v;
     }
 
-    public getOutGameManager() {
+    public getOutGameManager(): OutGameManager | null {
         return this.outGameManager;
     }
     public setOutGameManager(v: OutGameManager | null) {
@@ -99,11 +109,52 @@ export class SystemManager {
     public createInGameManager(): InGameManager {
         return InGameManager.create(this);
     }
+
     public createOutGameManager(): OutGameManager {
         return OutGameManager.create(this);
     }
 
     public broadcastWorldStateChange(next: GameWorldState): void {
         this.worldStateChangeBroadcaster.broadcast(next);
+    }
+
+    public openSettingsForm(player: Player): void {
+        this.gameSettingManager.opneSettingsForm(player);
+    }
+
+    public openFormRoleAssignment(playerId: string): void {
+        this.gameSettingManager.openFormRoleAssignment(playerId);
+    }
+
+    public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
+        return this.roleManager.getRegisteredRoleDefinitions();
+    }
+
+    public getSelectedRolesForNextGame(): RoleDefinition[] {
+        return this.roleManager.getSelectedRolesForNextGame();
+    }
+
+    public registerFactions(addonId: string, factions: unknown[]): void {
+        this.factionManager.registerFactions(addonId, factions);
+    }
+
+    public requestFactionReRegistration(): void {
+        this.factionManager.requestFactionReRegistration();
+    }
+
+    public registerRoles(addonId: string, roles: unknown[]): void {
+        this.roleManager.registerRoles(addonId, roles);
+    }
+
+    public requestRoleReRegistration(): void {
+        this.roleManager.requestRoleReRegistration();
+    }
+
+    public getFactionData(factionId: string): FactionDefinition | null {
+        return this.factionManager.getFactionData(factionId);
+    }
+
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.roleManager.sortRoleDefinitions(roles);
     }
 }

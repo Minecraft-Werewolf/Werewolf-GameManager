@@ -1,4 +1,5 @@
-import { RoleFactionValues, type Role } from "../../../data/roles";
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
+import type { RoleDefinition } from "../../../data/roles";
 import type { RoleManager } from "./RoleManager";
 
 /**
@@ -12,11 +13,13 @@ export class RoleDataValidator {
         return new RoleDataValidator(roleManager);
     }
 
-    public isRole(data: unknown): data is Role {
+    public isRole(data: unknown): data is RoleDefinition {
         if (!this.isObject(data)) return false;
 
         if (typeof data.id !== "string") return false;
-        if (!this.isFaction(data.faction)) return false;
+        if (!KairoUtils.isRawMessage(data.name)) return false;
+        if (!KairoUtils.isRawMessage(data.description)) return false;
+        if (typeof data.factionId !== "string") return false;
         if (typeof data.sortIndex !== "number") return false;
 
         if (data.count !== undefined && !this.isValidCount(data.count)) return false;
@@ -63,10 +66,6 @@ export class RoleDataValidator {
 
     private isRoleRef(x: unknown): x is { addonId: string; roleId: string } {
         return this.isObject(x) && typeof x.addonId === "string" && typeof x.roleId === "string";
-    }
-
-    private isFaction(x: unknown): x is (typeof RoleFactionValues)[number] {
-        return typeof x === "string" && (RoleFactionValues as readonly string[]).includes(x);
     }
 
     private isResultType(x: unknown): x is string {
