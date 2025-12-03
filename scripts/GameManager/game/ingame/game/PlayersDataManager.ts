@@ -1,24 +1,6 @@
 import type { Player } from "@minecraft/server";
 import type { InGameManager } from "../InGameManager";
-
-export type ParticipationState = "participant" | "spectator";
-
-export class PlayerData {
-    public name: string;
-    public isAlive: boolean = true;
-    public isVictory: boolean = false;
-
-    constructor(
-        public readonly player: Player,
-        public state: ParticipationState = "participant",
-    ) {
-        this.name = player.name;
-    }
-
-    public get isParticipating(): boolean {
-        return this.state === "participant";
-    }
-}
+import { PlayerData, type ParticipationState } from "./PlayerData";
 
 export class PlayersDataManager {
     private dataMap: Map<string, PlayerData> = new Map();
