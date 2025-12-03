@@ -9,4 +9,5 @@ export interface FactionDefinition {
     victoryCondition: {
         description: RawMessage;
     }; // あとで勝利条件をカスタム定義できるようにする
+    sortIndex: number;
 }

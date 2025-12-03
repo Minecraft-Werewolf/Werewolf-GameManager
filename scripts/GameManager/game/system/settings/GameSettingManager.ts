@@ -46,4 +46,8 @@ export class GameSettingManager {
     public getFactionData(factionId: string): FactionDefinition | null {
         return this.systemManager.getFactionData(factionId);
     }
+
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.systemManager.sortRoleDefinitions(roles);
+    }
 }

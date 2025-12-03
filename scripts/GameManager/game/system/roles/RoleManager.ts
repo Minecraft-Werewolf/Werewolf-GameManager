@@ -7,9 +7,12 @@ import {
 } from "./RoleRegistratonValidator.ts";
 import { RoleRegistrationNotifier } from "./RoleRegistrationNotifier";
 import { RoleReRegistrationRequester } from "./RoleReRegistrationRequester";
+import type { FactionDefinition } from "../../../data/factions";
+import { RoleDefinitionSorter } from "./RoleDefinitionSorter";
 
 export class RoleManager {
     private readonly roleDataValidator: RoleDataValidator;
+    private readonly roleDefinitionSorter: RoleDefinitionSorter;
     private readonly roleRegistrationValidator: RoleRegistrationValidator;
     private readonly roleRegistrationNotifier: RoleRegistrationNotifier;
     private readonly roleReRegistrationRequester: RoleReRegistrationRequester;
@@ -18,6 +21,7 @@ export class RoleManager {
 
     private constructor(private readonly systemManager: SystemManager) {
         this.roleDataValidator = RoleDataValidator.create(this);
+        this.roleDefinitionSorter = RoleDefinitionSorter.create(this);
         this.roleRegistrationValidator = RoleRegistrationValidator.create(this);
         this.roleRegistrationNotifier = RoleRegistrationNotifier.create(this);
         this.roleReRegistrationRequester = RoleReRegistrationRequester.create(this);
@@ -62,5 +66,13 @@ export class RoleManager {
         return [...this.registeredRoleDefinitions.values()]
             .flat()
             .filter((role) => (role.count?.amount ?? 0) > 0);
+    }
+
+    public getFactionData(factionId: string): FactionDefinition | null {
+        return this.systemManager.getFactionData(factionId);
+    }
+
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.roleDefinitionSorter.sort(roles);
     }
 }

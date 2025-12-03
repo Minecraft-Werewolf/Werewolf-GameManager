@@ -54,3 +54,4 @@ werewolf-gamemanager.setting.roleAssignment.cancelForm.title=変更の破棄
 werewolf-gamemanager.setting.roleAssignment.cancelForm.message=保存されていない変更があります。変更を破棄しますか？
 werewolf-gamemanager.setting.roleAssignment.cancelForm.discardButton=破棄する
 werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton=戻る
+werewolf-gamemanager.setting.roleAssignment.appliedRoleChangesNotice=§6%sが役職構成を変更しました§r

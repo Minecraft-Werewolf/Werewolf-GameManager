@@ -153,4 +153,8 @@ export class SystemManager {
     public getFactionData(factionId: string): FactionDefinition | null {
         return this.factionManager.getFactionData(factionId);
     }
+
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.roleManager.sortRoleDefinitions(roles);
+    }
 }
