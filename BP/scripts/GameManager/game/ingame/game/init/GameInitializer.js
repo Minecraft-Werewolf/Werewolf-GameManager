@@ -22,6 +22,7 @@ export class GameInitializer {
         const players = world.getPlayers();
         await this.initPresentation.runInitPresentationAsync(players);
         this.setPlayersData(players);
+        // ここでロールを割り当てたい
     }
     getWaitController() {
         return this.waitController;
@@ -33,5 +34,8 @@ export class GameInitializer {
         players.forEach((player) => {
             this.inGameManager.getGameManager().getPlayersDataManager().init(player, "participant");
         });
+    }
+    assignRolesToPlayers(players) {
+        // ロール割り当てロジックをここに実装
     }
 }

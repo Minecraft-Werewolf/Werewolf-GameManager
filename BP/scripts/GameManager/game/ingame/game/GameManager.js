@@ -2,7 +2,7 @@ import { world } from "@minecraft/server";
 import { GamePhase, InGameManager } from "../InGameManager";
 import { IntervalManager } from "../utils/IntervalManager";
 import { ItemManager } from "./ItemManager";
-import { PlayerData, PlayersDataManager } from "./PlayersDataManager";
+import { PlayersDataManager } from "./PlayersDataManager";
 import { GameTerminationEvaluator, TerminationReason } from "./GameTerminationEvaluator";
 export class GameManager {
     constructor(inGameManager) {

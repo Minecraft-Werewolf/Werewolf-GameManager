@@ -26,8 +26,8 @@ export class ScriptEventReceiver {
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestRoleReRegistration();
                 break;
-            case SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_ASSIGNMENT:
-                this.systemManager.openFormRoleAssignment(data.playerId);
+            case SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_COMPOSITION:
+                this.systemManager.openFormRoleComposition(data.playerId);
                 break;
             default:
                 break;

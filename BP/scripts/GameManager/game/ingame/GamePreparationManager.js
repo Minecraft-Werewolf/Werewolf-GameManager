@@ -1,4 +1,4 @@
-import { HudElement, HudVisibility, InputPermissionCategory, Player, world, } from "@minecraft/server";
+import { HudElement, HudVisibility, InputPermissionCategory, world } from "@minecraft/server";
 import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { CountdownManager } from "./utils/CountdownManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";

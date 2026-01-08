@@ -1,11 +1,11 @@
 import { ROOT_SETTINGS } from "../../../data/settings";
-import { RoleAssignmentManager } from "./RoleAssignmentManager";
+import { RoleCompositionManager } from "./RoleCompositionManager";
 import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
 export class GameSettingManager {
     constructor(systemManager) {
         this.systemManager = systemManager;
-        this.roleAssignmentManager = RoleAssignmentManager.create(this);
+        this.roleCompositionManager = RoleCompositionManager.create(this);
         this.settingTreeManager = SettingTreeManager.create(this);
         this.settingUIManager = SettingUIManager.create(this);
         this.rootSettingCategory = ROOT_SETTINGS;
@@ -16,8 +16,8 @@ export class GameSettingManager {
     async opneSettingsForm(player) {
         return this.settingUIManager.open(player);
     }
-    async openFormRoleAssignment(playerId) {
-        return this.roleAssignmentManager.open(playerId);
+    async openFormRoleComposition(playerId) {
+        return this.roleCompositionManager.open(playerId);
     }
     getRoot() {
         return this.rootSettingCategory;

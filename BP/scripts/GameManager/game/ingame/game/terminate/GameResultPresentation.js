@@ -1,4 +1,4 @@
-import { EntityComponentTypes, world, } from "@minecraft/server";
+import { EntityComponentTypes, world } from "@minecraft/server";
 import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { TerminationReason } from "../GameTerminationEvaluator";

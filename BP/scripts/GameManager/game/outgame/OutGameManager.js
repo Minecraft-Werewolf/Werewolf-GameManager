@@ -1,4 +1,4 @@
-import { system, world } from "@minecraft/server";
+import { world } from "@minecraft/server";
 import { OutGameEventManager } from "./events/OutGameEventManager";
 import { PlayerInitializer } from "./PlayerInitializer";
 export class OutGameManager {
@@ -6,9 +6,15 @@ export class OutGameManager {
         this.systemManager = systemManager;
         this.outGameEventManager = OutGameEventManager.create(this);
         this.playerInitializer = PlayerInitializer.create(this);
+        this.init();
     }
     static create(systemManager) {
         return new OutGameManager(systemManager);
+    }
+    init() {
+        world.getPlayers().forEach((player) => {
+            this.initializePlayer(player);
+        });
     }
     startGame() {
         this.systemManager.startGame();
