@@ -3,6 +3,7 @@ import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/serve
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
+// クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {
     constructor(gameSettingManager) {
         this.gameSettingManager = gameSettingManager;

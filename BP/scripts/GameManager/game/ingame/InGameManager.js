@@ -120,4 +120,10 @@ export class InGameManager {
     getPlayersDataManager() {
         return this.playersDataManager;
     }
+    getRoleComposition() {
+        return this.systemManager.getRoleComposition();
+    }
+    getFactionData(factionId) {
+        return this.systemManager.getFactionData(factionId);
+    }
 }

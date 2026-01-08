@@ -10,7 +10,7 @@ export class PlayersDataManager {
     init(player, state = "participant") {
         if (this.dataMap.has(player.id))
             return;
-        this.dataMap.set(player.id, new PlayerData(player, state));
+        this.dataMap.set(player.id, new PlayerData(this, player, state));
     }
     get(playerId) {
         return this.dataMap.get(playerId);
@@ -26,5 +26,8 @@ export class PlayersDataManager {
     }
     clearAll() {
         this.dataMap.clear();
+    }
+    getInGameManager() {
+        return this.inGameManager;
     }
 }

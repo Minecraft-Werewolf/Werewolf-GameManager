@@ -117,5 +117,8 @@ export class SystemManager {
     sortRoleDefinitions(roles) {
         return this.roleManager.sortRoleDefinitions(roles);
     }
+    getRoleComposition() {
+        return this.roleManager.getSelectedRolesForNextGame();
+    }
 }
 SystemManager.instance = null;

@@ -40,4 +40,6 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_DISCARD_BUTTON: "werewolf-gamemanager.setting.roleComposition.cancelForm.discardButton",
     WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_BACK_BUTTON: "werewolf-gamemanager.setting.roleComposition.cancelForm.backButton",
     WEREWOLF_ROLE_COMPOSITION_APPLIED_CHANGES_NOTICE: "werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice",
+    ROLE_NAME_VILLAGER: "werewolf-standardroles.role.name.villager",
+    ROLE_DESCRIPTION_VILLAGER: "werewolf-standardroles.role.description.villager",
 };

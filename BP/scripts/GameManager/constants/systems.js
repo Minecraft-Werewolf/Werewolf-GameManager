@@ -6,6 +6,7 @@ export const KAIRO_COMMAND_TARGET_ADDON_IDS = {
 export const SYSTEMS = {
     SEPARATOR: {
         SPACE: " ",
+        COLON: ": ",
         LINE_CYAN: "§3" + "-".repeat(20) + "§r",
         LINE_YELLOW: "§e" + "-".repeat(20) + "§r",
     },
