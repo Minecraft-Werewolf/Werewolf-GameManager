@@ -1,4 +1,10 @@
-import { HudElement, HudVisibility, InputPermissionCategory, world } from "@minecraft/server";
+import {
+    HudElement,
+    HudVisibility,
+    InputPermissionCategory,
+    Player,
+    world,
+} from "@minecraft/server";
 import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { CountdownManager } from "./utils/CountdownManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
@@ -25,6 +31,8 @@ export class GamePreparationManager {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, true);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, true);
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [HudElement.Crosshair]);
+
+            this.showRoleToPlayer(player, DEFAULT_SETTINGS.GAME_PREPARATION_TIME);
         });
 
         try {
@@ -85,5 +93,56 @@ export class GamePreparationManager {
 
     public stopPreparation(): void {
         this.countdownManager.stop();
+    }
+
+    private showRoleToPlayer(player: Player, seconds: number): void {
+        const playerData = this.inGameManager.getPlayerData(player.id);
+        if (!playerData) return;
+        if (!playerData.role) return;
+
+        player.onScreenDisplay.setTitle(
+            {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SHOW_YOUR_ROLE_TITLE,
+                with: {
+                    rawtext: [
+                        { text: playerData.role.color ?? SYSTEMS.COLOR_CODE.RESET },
+                        playerData.role.name,
+                        { text: SYSTEMS.COLOR_CODE.RESET },
+                    ],
+                },
+            },
+            {
+                subtitle: {
+                    translate:
+                        WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN,
+                    with: [seconds.toString()],
+                },
+                fadeInDuration: SYSTEMS.YOUR_ROLE_TITLE.FADEIN_DURATION,
+                stayDuration: SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION,
+                fadeOutDuration: SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION,
+            },
+        );
+
+        player.sendMessage({
+            rawtext: [
+                {
+                    text: SYSTEMS.SEPARATOR.LINE_ORANGE + "\n",
+                },
+                {
+                    translate:
+                        WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SHOW_YOUR_ROLE_MESSAGE,
+                    with: {
+                        rawtext: [
+                            { text: playerData.role.color ?? SYSTEMS.COLOR_CODE.RESET },
+                            playerData.role.name,
+                            { text: SYSTEMS.COLOR_CODE.RESET },
+                        ],
+                    },
+                },
+                {
+                    text: "\n" + SYSTEMS.SEPARATOR.LINE_ORANGE,
+                },
+            ],
+        });
     }
 }

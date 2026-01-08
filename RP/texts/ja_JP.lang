@@ -55,3 +55,8 @@ werewolf-gamemanager.setting.roleComposition.cancelForm.message=保存されて�
 werewolf-gamemanager.setting.roleComposition.cancelForm.discardButton=破棄する
 werewolf-gamemanager.setting.roleComposition.cancelForm.backButton=戻る
 werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice=§6%sが役職構成を変更しました§r
+
+werewolf-gamemanager.game.yourRole.title=§fあなたは %1%2%3 です§r
+werewolf-gamemanager.game.yourRole.message=§fあなたの役職は %1%2%3 です§r
+
+werewolf-gamemanager.game.preparation.countdown=§fゲーム開始まで...§ss§r

@@ -62,4 +62,8 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
 
     ROLE_NAME_VILLAGER: "werewolf-standardroles.role.name.villager",
     ROLE_DESCRIPTION_VILLAGER: "werewolf-standardroles.role.description.villager",
+
+    WEREWOLF_GAME_SHOW_YOUR_ROLE_TITLE: "werewolf-gamemanager.game.yourRole.title",
+    WEREWOLF_GAME_SHOW_YOUR_ROLE_MESSAGE: "werewolf-gamemanager.game.yourRole.message",
+    WEREWOLF_GAME_PREPARATION_COUNTDOWN: "werewolf-gamemanager.game.preparation.countdown",
 };
