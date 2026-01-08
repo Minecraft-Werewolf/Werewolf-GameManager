@@ -1,5 +1,5 @@
 import type { GameManager } from "./GameManager";
-import type { PlayerData } from "./PlayersDataManager";
+import type { PlayerData } from "./PlayerData";
 
 export enum TerminationReason {
     None,

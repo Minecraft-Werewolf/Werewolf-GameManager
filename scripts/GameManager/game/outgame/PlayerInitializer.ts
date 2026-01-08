@@ -1,4 +1,4 @@
-import { EntityComponentTypes, ItemStack, type Player } from "@minecraft/server";
+import { EntityComponentTypes, GameMode, ItemStack, type Player } from "@minecraft/server";
 import type { OutGameManager } from "./OutGameManager";
 import { ITEM_USE } from "../../constants/itemuse";
 import { SYSTEMS } from "../../constants/systems";
@@ -13,6 +13,10 @@ export class PlayerInitializer {
         const wantsToJoinNextGame = player.getDynamicProperty("wantsToJoinNextGame") ?? true;
         player.setDynamicProperty("wantsToJoinNextGame", wantsToJoinNextGame);
 
+        // ゲームモード
+        player.setGameMode(GameMode.Adventure);
+
+        // インベントリ関連
         const inventory = player.getComponent(EntityComponentTypes.Inventory);
         if (!inventory) return;
 

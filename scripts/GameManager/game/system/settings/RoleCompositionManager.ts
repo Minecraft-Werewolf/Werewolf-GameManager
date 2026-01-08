@@ -6,16 +6,17 @@ import type { RoleDefinition } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
 
-export class RoleAssignmentManager {
+// クラスが肥大化気味なので、UI部分と責務を分断したい
+export class RoleCompositionManager {
     private constructor(private readonly gameSettingManager: GameSettingManager) {}
-    public static create(gameSettingManager: GameSettingManager): RoleAssignmentManager {
-        return new RoleAssignmentManager(gameSettingManager);
+    public static create(gameSettingManager: GameSettingManager): RoleCompositionManager {
+        return new RoleCompositionManager(gameSettingManager);
     }
 
     public async open(playerId: string): Promise<void> {
         const player = world.getPlayers().find((p) => p.id === playerId);
         if (player === undefined) {
-            ConsoleManager.error("[RoleAssignmentManager] Player not Found");
+            ConsoleManager.error("[RoleCompositionManager] Player not Found");
             return;
         }
 
@@ -53,23 +54,25 @@ export class RoleAssignmentManager {
         const formBody: RawMessage[] = [];
         if (workingRolesList.length === 0)
             formBody.push({
-                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_NONE_ROLES,
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_NONE_ROLES,
             });
         else {
             formBody.push({
                 translate:
-                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_SELECTED_ROLES,
+                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_SELECTED_ROLES,
             });
 
             formBody.push(...workingRolesList);
         }
 
         const form = new ActionFormData()
-            .title({ translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_TITLE })
+            .title({
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_TITLE,
+            })
             .body({ rawtext: formBody })
             .divider()
             .button({
-                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CONFIRM,
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_CONFIRM,
             })
             .divider();
         for (const addonId of addonIds) {
@@ -77,7 +80,7 @@ export class RoleAssignmentManager {
         }
         const { selection, canceled, cancelationReason } = await form.show(player);
         if (canceled || selection === undefined) {
-            if (this.hasRoleAssignmentChanged(workingRoleDefinitions))
+            if (this.hasRoleCompositionChanged(workingRoleDefinitions))
                 return this.openCancelForm(player, workingRoleDefinitions);
             else return;
         }
@@ -154,19 +157,19 @@ export class RoleAssignmentManager {
         const form = new MessageFormData()
             .title({
                 translate:
-                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_TITLE,
+                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_TITLE,
             })
             .body({
                 translate:
-                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_MESSAGE,
+                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_MESSAGE,
             })
             .button1({
                 translate:
-                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_DISCARD_BUTTON,
+                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_DISCARD_BUTTON,
             })
             .button2({
                 translate:
-                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_BACK_BUTTON,
+                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_BACK_BUTTON,
             });
 
         const { selection, canceled, cancelationReason } = await form.show(player);
@@ -184,7 +187,7 @@ export class RoleAssignmentManager {
     }
 
     public applyChanges(player: Player, working: Map<string, RoleDefinition[]>): void {
-        if (!this.hasRoleAssignmentChanged(working)) return;
+        if (!this.hasRoleCompositionChanged(working)) return;
 
         const registered = this.gameSettingManager.getRegisteredRoleDefinitions();
         for (const [addonId, registeredRoles] of registered.entries()) {
@@ -206,7 +209,7 @@ export class RoleAssignmentManager {
 
         world.sendMessage({
             translate:
-                WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_APPLIED_CHANGES_NOTICE,
+                WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_APPLIED_CHANGES_NOTICE,
             with: [player.name],
         });
         world.sendMessage(SYSTEMS.SEPARATOR.LINE_CYAN);
@@ -227,9 +230,9 @@ export class RoleAssignmentManager {
         world.sendMessage(SYSTEMS.SEPARATOR.LINE_CYAN);
 
         for (const player of world.getPlayers()) {
-            player.playSound(SYSTEMS.ROLE_ASSIGNMENT_NOTIFICATION.SOUND_ID, {
-                pitch: SYSTEMS.ROLE_ASSIGNMENT_NOTIFICATION.SOUND_PITCH,
-                volume: SYSTEMS.ROLE_ASSIGNMENT_NOTIFICATION.SOUND_VOLUME,
+            player.playSound(SYSTEMS.ROLE_COMPOSITION_NOTIFICATION.SOUND_ID, {
+                pitch: SYSTEMS.ROLE_COMPOSITION_NOTIFICATION.SOUND_PITCH,
+                volume: SYSTEMS.ROLE_COMPOSITION_NOTIFICATION.SOUND_VOLUME,
                 location: player.location,
             });
         }
@@ -253,7 +256,7 @@ export class RoleAssignmentManager {
         return [...RoleDefinitions.values()].flat().filter((role) => (role.count?.amount ?? 0) > 0);
     }
 
-    private hasRoleAssignmentChanged(working: Map<string, RoleDefinition[]>): boolean {
+    private hasRoleCompositionChanged(working: Map<string, RoleDefinition[]>): boolean {
         const original = this.gameSettingManager.getRegisteredRoleDefinitions();
         for (const [addonId, originalRoles] of original.entries()) {
             const workingRoles = working.get(addonId);

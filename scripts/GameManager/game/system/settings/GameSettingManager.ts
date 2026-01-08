@@ -1,20 +1,20 @@
 import type { Player } from "@minecraft/server";
 import { ROOT_SETTINGS, type SettingCategoryNode } from "../../../data/settings";
 import type { SystemManager } from "../../SystemManager";
-import { RoleAssignmentManager } from "./RoleAssignmentManager";
+import { RoleCompositionManager } from "./RoleCompositionManager";
 import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
 import type { RoleDefinition } from "../../../data/roles";
 import type { FactionDefinition } from "../../../data/factions";
 
 export class GameSettingManager {
-    private readonly roleAssignmentManager: RoleAssignmentManager;
+    private readonly roleCompositionManager: RoleCompositionManager;
     private readonly settingTreeManager: SettingTreeManager;
     private readonly settingUIManager: SettingUIManager;
     private readonly rootSettingCategory: SettingCategoryNode;
 
     private constructor(private readonly systemManager: SystemManager) {
-        this.roleAssignmentManager = RoleAssignmentManager.create(this);
+        this.roleCompositionManager = RoleCompositionManager.create(this);
         this.settingTreeManager = SettingTreeManager.create(this);
         this.settingUIManager = SettingUIManager.create(this);
         this.rootSettingCategory = ROOT_SETTINGS;
@@ -27,8 +27,8 @@ export class GameSettingManager {
         return this.settingUIManager.open(player);
     }
 
-    public async openFormRoleAssignment(playerId: string): Promise<void> {
-        return this.roleAssignmentManager.open(playerId);
+    public async openFormRoleComposition(playerId: string): Promise<void> {
+        return this.roleCompositionManager.open(playerId);
     }
 
     public getRoot(): SettingCategoryNode {

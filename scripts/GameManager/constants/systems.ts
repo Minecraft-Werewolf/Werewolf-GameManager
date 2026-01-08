@@ -112,7 +112,7 @@ export const SYSTEMS = {
         SOUND_VOLUME: 1,
     },
 
-    ROLE_ASSIGNMENT_NOTIFICATION: {
+    ROLE_COMPOSITION_NOTIFICATION: {
         SOUND_ID: "random.orb",
         SOUND_PITCH: 1,
         SOUND_VOLUME: 1,

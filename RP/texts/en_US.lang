@@ -44,13 +44,13 @@ werewolf-gamemanager.item.name.personal_settings=§bYour Settings§r
 
 werewolf-gamemanager.setting.game.title=Game Settings
 werewolf-gamemanager.setting.role.title=Role Settings
-werewolf-gamemanager.setting.roleAssignment.title=Role Assignment
-werewolf-gamemanager.setting.roleAssignment.confirm=Confirm
-werewolf-gamemanager.setting.roleAssignment.noneRoles=No roles have been assigned
-werewolf-gamemanager.setting.roleAssignment.selectedRoles=Selected Roles
+werewolf-gamemanager.setting.roleComposition.title=Role Composition
+werewolf-gamemanager.setting.roleComposition.confirm=Confirm
+werewolf-gamemanager.setting.roleComposition.noneRoles=No roles have been assigned
+werewolf-gamemanager.setting.roleComposition.selectedRoles=Selected Roles
 
-werewolf-gamemanager.setting.roleAssignment.cancelForm.title=Discard Changes
-werewolf-gamemanager.setting.roleAssignment.cancelForm.message=You have unsaved changes. Do you want to discard them?
-werewolf-gamemanager.setting.roleAssignment.cancelForm.discardButton=Discard
-werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton=Back
-werewolf-gamemanager.setting.roleAssignment.appliedRoleChangesNotice=§6%s has changed the role assignment.§r
+werewolf-gamemanager.setting.roleComposition.cancelForm.title=Discard Changes
+werewolf-gamemanager.setting.roleComposition.cancelForm.message=You have unsaved changes. Do you want to discard them?
+werewolf-gamemanager.setting.roleComposition.cancelForm.discardButton=Discard
+werewolf-gamemanager.setting.roleComposition.cancelForm.backButton=Back
+werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice=§6%s has changed the role composition.§r

@@ -1,4 +1,4 @@
-import { system, world, type Player } from "@minecraft/server";
+import { world, type Player } from "@minecraft/server";
 import type { SystemManager } from "../SystemManager";
 import { OutGameEventManager } from "./events/OutGameEventManager";
 import { PlayerInitializer } from "./PlayerInitializer";
@@ -9,9 +9,17 @@ export class OutGameManager {
     private constructor(private readonly systemManager: SystemManager) {
         this.outGameEventManager = OutGameEventManager.create(this);
         this.playerInitializer = PlayerInitializer.create(this);
+
+        this.init();
     }
     public static create(systemManager: SystemManager): OutGameManager {
         return new OutGameManager(systemManager);
+    }
+
+    public init(): void {
+        world.getPlayers().forEach((player) => {
+            this.initializePlayer(player);
+        });
     }
 
     public startGame(): void {

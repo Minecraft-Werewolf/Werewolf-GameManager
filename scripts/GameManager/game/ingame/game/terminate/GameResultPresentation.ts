@@ -1,14 +1,9 @@
-import {
-    EntityComponentTypes,
-    world,
-    type EntityInventoryComponent,
-    type Player,
-} from "@minecraft/server";
+import { EntityComponentTypes, world, type Player } from "@minecraft/server";
 import type { GameTerminator } from "./GameTerminator";
 import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { TerminationReason } from "../GameTerminationEvaluator";
-import type { PlayerData } from "../PlayersDataManager";
+import type { PlayerData } from "../PlayerData";
 
 export class GameResultPresentation {
     private constructor(private readonly gameTerminator: GameTerminator) {}
