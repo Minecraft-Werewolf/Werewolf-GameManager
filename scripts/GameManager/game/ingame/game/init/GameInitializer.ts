@@ -35,6 +35,10 @@ export class GameInitializer {
         this.roleAssignmentManager.assign(players);
     }
 
+    public getInGameManager(): InGameManager {
+        return this.inGameManager;
+    }
+
     public getWaitController(): CancelableWait {
         return this.waitController;
     }

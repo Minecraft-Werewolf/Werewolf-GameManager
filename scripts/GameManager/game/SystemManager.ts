@@ -153,4 +153,8 @@ export class SystemManager {
     public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
         return this.roleManager.sortRoleDefinitions(roles);
     }
+
+    public getRoleComposition() {
+        return this.roleManager.getSelectedRolesForNextGame();
+    }
 }

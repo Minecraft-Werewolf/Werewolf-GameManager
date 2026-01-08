@@ -149,4 +149,8 @@ export class InGameManager {
     public getPlayersDataManager(): PlayersDataManager {
         return this.playersDataManager;
     }
+
+    public getRoleComposition() {
+        return this.systemManager.getRoleComposition();
+    }
 }
