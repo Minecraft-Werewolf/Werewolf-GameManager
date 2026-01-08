@@ -128,6 +128,10 @@ export class GameResultPresentation {
             lines.push({
                 rawtext: [
                     { text: playerData.name },
+                    { text: SYSTEMS.SEPARATOR.COLON },
+                    { text: playerData.role?.color || SYSTEMS.COLOR_CODE.RESET },
+                    playerData.role?.name || { text: "Unknown Role" },
+                    { text: SYSTEMS.COLOR_CODE.RESET },
                     { text: SYSTEMS.SEPARATOR.SPACE },
                     { translate: translateId },
                 ],

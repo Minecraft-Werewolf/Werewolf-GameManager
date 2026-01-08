@@ -153,4 +153,8 @@ export class InGameManager {
     public getRoleComposition() {
         return this.systemManager.getRoleComposition();
     }
+
+    public getFactionData(factionId: string) {
+        return this.systemManager.getFactionData(factionId);
+    }
 }

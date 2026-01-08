@@ -34,4 +34,8 @@ export class PlayersDataManager {
     public clearAll(): void {
         this.dataMap.clear();
     }
+
+    public getInGameManager(): InGameManager {
+        return this.inGameManager;
+    }
 }

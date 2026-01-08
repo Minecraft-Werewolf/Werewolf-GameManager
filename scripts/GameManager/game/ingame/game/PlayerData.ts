@@ -24,5 +24,14 @@ export class PlayerData {
 
     public setRole(role: RoleDefinition): void {
         this.role = role;
+
+        const faction = this.playerDataManager
+            .getInGameManager()
+            .getFactionData(this.role.factionId);
+        if (!faction) return;
+
+        if (this.role.color === undefined) {
+            this.role.color = faction.defaultColor;
+        }
     }
 }
