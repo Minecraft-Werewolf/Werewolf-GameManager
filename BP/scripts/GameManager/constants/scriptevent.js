@@ -8,7 +8,7 @@ export const SCRIPT_EVENT_COMMAND_IDS = {
     ROLE_REGISTRATION_REQUEST: "role_registration_request",
     ROLE_RE_REGISTRATION_REQUEST: "role_re_registration_request",
     ROLE_REGISTRATION_NOTIFY: "role_registration_notify",
-    OPEN_FORM_ROLE_ASSIGNMENT: "open_form_role_assignment",
+    OPEN_FORM_ROLE_COMPOSITION: "open_form_role_composition",
     OPEN_FORM_ROLE_SETTINGS: "open_form_role_settings",
     OPEN_FORM_GAME_SETTINGS: "open_form_game_settings",
     OPEN_FORM_WEREWOLF_GAME_CREDIT: "open_form_werewolf_game_credit",

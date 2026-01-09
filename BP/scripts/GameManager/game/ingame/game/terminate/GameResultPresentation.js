@@ -1,4 +1,4 @@
-import { EntityComponentTypes, world, } from "@minecraft/server";
+import { EntityComponentTypes, world } from "@minecraft/server";
 import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { TerminationReason } from "../GameTerminationEvaluator";
@@ -97,6 +97,10 @@ export class GameResultPresentation {
             lines.push({
                 rawtext: [
                     { text: playerData.name },
+                    { text: SYSTEMS.SEPARATOR.COLON },
+                    { text: playerData.role?.color || SYSTEMS.COLOR_CODE.RESET },
+                    playerData.role?.name || { text: "Unknown Role" },
+                    { text: SYSTEMS.COLOR_CODE.RESET },
                     { text: SYSTEMS.SEPARATOR.SPACE },
                     { translate: translateId },
                 ],

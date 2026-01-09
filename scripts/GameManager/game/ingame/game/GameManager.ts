@@ -1,11 +1,14 @@
 import { world } from "@minecraft/server";
 import { GamePhase, InGameManager } from "../InGameManager";
 import { IntervalManager } from "../utils/IntervalManager";
-import { ItemManager } from "./ItemManager";
-import { PlayerData, PlayersDataManager } from "./PlayersDataManager";
+import { ItemManager } from "./gameplay/ItemManager";
+import { PlayersDataManager } from "./PlayersDataManager";
 import { GameTerminationEvaluator, TerminationReason } from "./GameTerminationEvaluator";
+import type { PlayerData } from "./PlayerData";
+import { ActionBarManager } from "./gameplay/ActionBarManager";
 
 export class GameManager {
+    private readonly actionBarManager: ActionBarManager;
     private readonly intervalManager: IntervalManager;
     private readonly itemManager: ItemManager;
     private readonly gameTerminationEvaluator: GameTerminationEvaluator;
@@ -17,6 +20,7 @@ export class GameManager {
     private _evaluateResult: TerminationReason = TerminationReason.None;
 
     private constructor(private readonly inGameManager: InGameManager) {
+        this.actionBarManager = ActionBarManager.create(this);
         this.intervalManager = IntervalManager.create();
         this.itemManager = ItemManager.create(this);
         this.gameTerminationEvaluator = GameTerminationEvaluator.create(this);
@@ -59,6 +63,7 @@ export class GameManager {
         const players = world.getPlayers();
         const playersData = this.getPlayersData();
 
+        this.actionBarManager.showActionBarToPlayers(players);
         this.itemManager.replaceItemToPlayers(players);
 
         // 終了判定

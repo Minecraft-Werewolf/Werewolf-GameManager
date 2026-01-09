@@ -44,14 +44,21 @@ werewolf-gamemanager.item.name.personal_settings=§b個人設定§r
 
 werewolf-gamemanager.setting.game.title=ゲーム設定
 werewolf-gamemanager.setting.role.title=役職設定
-werewolf-gamemanager.setting.roleAssignment.title=役職構成
-werewolf-gamemanager.setting.roleAssignment.confirm=決定
-werewolf-gamemanager.setting.roleAssignment.noneRoles=役職が設定されていません
-werewolf-gamemanager.setting.roleAssignment.roleList=役職一覧
-werewolf-gamemanager.setting.roleAssignment.selectedRoles=選択された役職一覧
+werewolf-gamemanager.setting.roleComposition.title=役職構成
+werewolf-gamemanager.setting.roleComposition.confirm=決定
+werewolf-gamemanager.setting.roleComposition.noneRoles=役職が設定されていません
+werewolf-gamemanager.setting.roleComposition.roleList=役職一覧
+werewolf-gamemanager.setting.roleComposition.selectedRoles=選択された役職一覧
 
-werewolf-gamemanager.setting.roleAssignment.cancelForm.title=変更の破棄
-werewolf-gamemanager.setting.roleAssignment.cancelForm.message=保存されていない変更があります。変更を破棄しますか？
-werewolf-gamemanager.setting.roleAssignment.cancelForm.discardButton=破棄する
-werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton=戻る
-werewolf-gamemanager.setting.roleAssignment.appliedRoleChangesNotice=§6%sが役職構成を変更しました§r
+werewolf-gamemanager.setting.roleComposition.cancelForm.title=変更の破棄
+werewolf-gamemanager.setting.roleComposition.cancelForm.message=保存されていない変更があります。変更を破棄しますか？
+werewolf-gamemanager.setting.roleComposition.cancelForm.discardButton=破棄する
+werewolf-gamemanager.setting.roleComposition.cancelForm.backButton=戻る
+werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice=§6%sが役職構成を変更しました§r
+
+werewolf-gamemanager.game.yourRole.title=§fあなたは %1%2%3 です§r
+werewolf-gamemanager.game.yourRole.message=§fあなたの役職は %1%2%3 です§r
+
+werewolf-gamemanager.game.preparation.countdown=§fゲーム開始まで...§ss§r
+
+werewolf-gamemanager.game.actionbar.roleName=§f役職: %1%2%3§r

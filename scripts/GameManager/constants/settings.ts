@@ -1,4 +1,4 @@
-import type { InGameItem } from "../game/ingame/game/ItemManager";
+import type { InGameItem } from "../game/ingame/game/gameplay/ItemManager";
 
 export const DEFAULT_SETTINGS = {
     VERBOSE_COUNTDOWN: true,

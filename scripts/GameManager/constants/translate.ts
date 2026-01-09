@@ -3,14 +3,16 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
         TITLE: "werewolf-gamemanager.title",
         VERSION: "werewolf-gamemanager.version",
         CREDITS: {
-            TITLE: "werewolf-gamemanager.credits.title"
+            TITLE: "werewolf-gamemanager.credits.title",
         },
     },
     WEREWOLF_STAGE_TITLE: "werewolf-gamemanager.stage.title",
     WEREWOLF_STAGE_LOADING: "werewolf-gamemanager.stage.loading",
 
-    WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE: "werewolf-gamemanager.game.preparation.countdown.message",
-    WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE: "werewolf-gamemanager.game.preparation.countdown.warning.message",
+    WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE:
+        "werewolf-gamemanager.game.preparation.countdown.message",
+    WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE:
+        "werewolf-gamemanager.game.preparation.countdown.warning.message",
     WEREWOLF_GAME_START_MESSAGE: "werewolf-gamemanager.game.start.message",
 
     WEREWOLF_GAME_START_CANCELD_MESSAGE: "werewolf-gamemanager.game.start.canceled.message",
@@ -33,20 +35,37 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
 
     WEREWOLF_GAME_RESULT_ANNIHILATION: "werewolf-gamemanager.game.result.annihilation",
     WEREWOLF_GAME_RESULT_TIMEUP: "werewolf-gamemanager.game.result.timeup",
-    WEREWOLF_GAME_RESULT_VILLAGER_FACTION_WIN: "werewolf-gamemanager.game.result.villagerfaction.win",
-    WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_WIN: "werewolf-gamemanager.game.result.werewolffaction.win",
+    WEREWOLF_GAME_RESULT_VILLAGER_FACTION_WIN:
+        "werewolf-gamemanager.game.result.villagerfaction.win",
+    WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_WIN:
+        "werewolf-gamemanager.game.result.werewolffaction.win",
     WEREWOLF_GAME_RESULT_FOX_FACTION_WIN: "werewolf-gamemanager.game.result.foxfaction.win",
 
     WEREWOLF_GAME_SETTING_TITLE: "werewolf-gamemanager.setting.game.title",
     WEREWOLF_ROLE_SETTING_TITLE: "werewolf-gamemanager.setting.role.title",
-    WEREWOLF_ROLE_ASSIGNMENT_TITLE: "werewolf-gamemanager.setting.roleAssignment.title",
+    WEREWOLF_ROLE_COMPOSITION_TITLE: "werewolf-gamemanager.setting.roleComposition.title",
 
-    WEREWOLF_ROLE_ASSIGNMENT_CONFIRM: "werewolf-gamemanager.setting.roleAssignment.confirm",
-    WEREWOLF_ROLE_ASSIGNMENT_NONE_ROLES: "werewolf-gamemanager.setting.roleAssignment.noneRoles",
-    WEREWOLF_ROLE_ASSIGNMENT_SELECTED_ROLES: "werewolf-gamemanager.setting.roleAssignment.selectedRoles",
-    WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_TITLE: "werewolf-gamemanager.setting.roleAssignment.cancelForm.title",
-    WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_MESSAGE: "werewolf-gamemanager.setting.roleAssignment.cancelForm.message",
-    WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_DISCARD_BUTTON: "werewolf-gamemanager.setting.roleAssignment.cancelForm.discardButton",
-    WEREWOLF_ROLE_ASSIGNMENT_CANCEL_FORM_BACK_BUTTON: "werewolf-gamemanager.setting.roleAssignment.cancelForm.backButton",
-    WEREWOLF_ROLE_ASSIGNMENT_APPLIED_CHANGES_NOTICE: "werewolf-gamemanager.setting.roleAssignment.appliedRoleChangesNotice",
+    WEREWOLF_ROLE_COMPOSITION_CONFIRM: "werewolf-gamemanager.setting.roleComposition.confirm",
+    WEREWOLF_ROLE_COMPOSITION_NONE_ROLES: "werewolf-gamemanager.setting.roleComposition.noneRoles",
+    WEREWOLF_ROLE_COMPOSITION_SELECTED_ROLES:
+        "werewolf-gamemanager.setting.roleComposition.selectedRoles",
+    WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_TITLE:
+        "werewolf-gamemanager.setting.roleComposition.cancelForm.title",
+    WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_MESSAGE:
+        "werewolf-gamemanager.setting.roleComposition.cancelForm.message",
+    WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_DISCARD_BUTTON:
+        "werewolf-gamemanager.setting.roleComposition.cancelForm.discardButton",
+    WEREWOLF_ROLE_COMPOSITION_CANCEL_FORM_BACK_BUTTON:
+        "werewolf-gamemanager.setting.roleComposition.cancelForm.backButton",
+    WEREWOLF_ROLE_COMPOSITION_APPLIED_CHANGES_NOTICE:
+        "werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice",
+
+    ROLE_NAME_VILLAGER: "werewolf-standardroles.role.name.villager",
+    ROLE_DESCRIPTION_VILLAGER: "werewolf-standardroles.role.description.villager",
+
+    WEREWOLF_GAME_SHOW_YOUR_ROLE_TITLE: "werewolf-gamemanager.game.yourRole.title",
+    WEREWOLF_GAME_SHOW_YOUR_ROLE_MESSAGE: "werewolf-gamemanager.game.yourRole.message",
+    WEREWOLF_GAME_PREPARATION_COUNTDOWN: "werewolf-gamemanager.game.preparation.countdown",
+
+    WEREWOLF_GAME_ACTIONBAR_ROLE_NAME: "werewolf-gamemanager.game.actionbar.roleName",
 };

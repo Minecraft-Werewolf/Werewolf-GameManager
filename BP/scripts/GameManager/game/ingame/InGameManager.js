@@ -7,7 +7,7 @@ import { SYSTEMS } from "../../constants/systems";
 import { GameWorldState } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
-import { PlayerData, PlayersDataManager } from "./game/PlayersDataManager";
+import { PlayersDataManager } from "./game/PlayersDataManager";
 import { GameFinalizer } from "./game/GameFinalizer";
 export var GamePhase;
 (function (GamePhase) {
@@ -119,5 +119,11 @@ export class InGameManager {
     }
     getPlayersDataManager() {
         return this.playersDataManager;
+    }
+    getRoleComposition() {
+        return this.systemManager.getRoleComposition();
+    }
+    getFactionData(factionId) {
+        return this.systemManager.getFactionData(factionId);
     }
 }

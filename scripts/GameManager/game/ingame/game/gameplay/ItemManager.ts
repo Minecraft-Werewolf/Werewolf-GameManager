@@ -1,5 +1,5 @@
 import type { Player } from "@minecraft/server";
-import type { GameManager } from "./GameManager";
+import type { GameManager } from "../GameManager";
 
 export interface InGameItem {
     typeId: string;

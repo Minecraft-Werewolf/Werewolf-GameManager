@@ -42,10 +42,6 @@ export class SystemManager {
     // アドオン初期化時の処理
     public init(): void {
         this.changeWorldState(GameWorldState.OutGame);
-
-        world.getPlayers().forEach((player) => {
-            this.getOutGameManager()?.initializePlayer(player);
-        });
     }
 
     private static instance: SystemManager | null = null;
@@ -122,8 +118,8 @@ export class SystemManager {
         this.gameSettingManager.opneSettingsForm(player);
     }
 
-    public openFormRoleAssignment(playerId: string): void {
-        this.gameSettingManager.openFormRoleAssignment(playerId);
+    public openFormRoleComposition(playerId: string): void {
+        this.gameSettingManager.openFormRoleComposition(playerId);
     }
 
     public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
@@ -156,5 +152,9 @@ export class SystemManager {
 
     public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
         return this.roleManager.sortRoleDefinitions(roles);
+    }
+
+    public getRoleComposition() {
+        return this.roleManager.getSelectedRolesForNextGame();
     }
 }

@@ -2,14 +2,17 @@ import { Player, world } from "@minecraft/server";
 import { InitPresentation } from "./InitPresentation";
 import { GamePhase, type InGameManager } from "../../InGameManager";
 import { CancelableWait } from "../../utils/CancelableWait";
+import { RoleAssignmentManager } from "./RoleAssignmentManager";
 
 export class GameInitializer {
     private readonly initPresentation: InitPresentation;
+    private readonly roleAssignmentManager: RoleAssignmentManager;
     private readonly waitController = new CancelableWait();
     private _isCancelled = false;
 
     private constructor(private readonly inGameManager: InGameManager) {
         this.initPresentation = InitPresentation.create(this);
+        this.roleAssignmentManager = RoleAssignmentManager.create(this);
     }
 
     public static create(inGameManager: InGameManager): GameInitializer {
@@ -29,6 +32,11 @@ export class GameInitializer {
         await this.initPresentation.runInitPresentationAsync(players);
 
         this.setPlayersData(players);
+        this.roleAssignmentManager.assign(players);
+    }
+
+    public getInGameManager(): InGameManager {
+        return this.inGameManager;
     }
 
     public getWaitController(): CancelableWait {

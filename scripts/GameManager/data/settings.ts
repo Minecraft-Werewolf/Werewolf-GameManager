@@ -35,13 +35,13 @@ export const ROOT_SETTINGS: SettingCategoryNode = {
     type: "category",
     children: [
         {
-            id: "RoleAssignment",
+            id: "RoleComposition",
             title: {
-                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_ASSIGNMENT_TITLE,
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_TITLE,
             },
             type: "item",
             command: {
-                commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_ASSIGNMENT,
+                commandId: SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_COMPOSITION,
                 targetAddonId: properties.id,
             },
             order: 100,

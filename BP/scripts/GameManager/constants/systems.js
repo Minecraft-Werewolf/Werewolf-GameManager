@@ -6,8 +6,10 @@ export const KAIRO_COMMAND_TARGET_ADDON_IDS = {
 export const SYSTEMS = {
     SEPARATOR: {
         SPACE: " ",
-        LINE_CYAN: "§3" + "-".repeat(20) + "§r",
-        LINE_YELLOW: "§e" + "-".repeat(20) + "§r",
+        COLON: ": ",
+        LINE_CYAN: "§3" + "-".repeat(28) + "§r",
+        LINE_YELLOW: "§e" + "-".repeat(28) + "§r",
+        LINE_ORANGE: "§6" + "-".repeat(28) + "§r",
     },
     COLOR_CODE: {
         RESET: "§r",
@@ -99,16 +101,21 @@ export const SYSTEMS = {
         SOUND_PITCH: 1,
         SOUND_VOLUME: 1,
     },
-    ROLE_ASSIGNMENT_NOTIFICATION: {
+    ROLE_COMPOSITION_NOTIFICATION: {
         SOUND_ID: "random.orb",
         SOUND_PITCH: 1,
         SOUND_VOLUME: 1,
+    },
+    YOUR_ROLE_TITLE: {
+        FADEIN_DURATION: 0,
+        STAY_DURATION: 100,
+        FADEOUT_DURATION: 20,
     },
 };
 export const GAMES = {
     UI_RESULT_WINNING_FACTION_TITLE_ANIMATION: {
         fadeInDuration: 0,
-        stayDuration: 100,
+        stayDuration: 130,
         fadeOutDuration: 10,
     },
 };
