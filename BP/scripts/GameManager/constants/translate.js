@@ -45,4 +45,5 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_GAME_SHOW_YOUR_ROLE_TITLE: "werewolf-gamemanager.game.yourRole.title",
     WEREWOLF_GAME_SHOW_YOUR_ROLE_MESSAGE: "werewolf-gamemanager.game.yourRole.message",
     WEREWOLF_GAME_PREPARATION_COUNTDOWN: "werewolf-gamemanager.game.preparation.countdown",
+    WEREWOLF_GAME_ACTIONBAR_ROLE_NAME: "werewolf-gamemanager.game.actionbar.roleName",
 };
