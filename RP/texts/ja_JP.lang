@@ -60,3 +60,5 @@ werewolf-gamemanager.game.yourRole.title=§fあなたは %1%2%3 です§r
 werewolf-gamemanager.game.yourRole.message=§fあなたの役職は %1%2%3 です§r
 
 werewolf-gamemanager.game.preparation.countdown=§fゲーム開始まで...§ss§r
+
+werewolf-gamemanager.game.actionbar.roleName=§f役職: %1%2%3§r

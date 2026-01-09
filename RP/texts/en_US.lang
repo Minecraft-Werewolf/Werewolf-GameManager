@@ -62,3 +62,5 @@ werewolf-gamemanager.game.yourRole.title=§fYou are %1%2%3§r
 werewolf-gamemanager.game.yourRole.message=§fYour role is %1%2%3§r
 
 werewolf-gamemanager.game.preparation.countdown=§fGame starting in %s seconds§r
+
+werewolf-gamemanager.game.actionbar.roleName=§fRole: %1%2%3§r
