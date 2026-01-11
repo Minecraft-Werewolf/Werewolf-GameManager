@@ -1,5 +1,5 @@
 import type { Player } from "@minecraft/server";
-import type { InGameManager } from "../InGameManager";
+import type { InGameManager } from "../../InGameManager";
 import { PlayerData, type ParticipationState } from "./PlayerData";
 
 export class PlayersDataManager {

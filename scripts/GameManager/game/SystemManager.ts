@@ -146,15 +146,19 @@ export class SystemManager {
         this.roleManager.requestRoleReRegistration();
     }
 
-    public getFactionData(factionId: string): FactionDefinition | null {
-        return this.factionManager.getFactionData(factionId);
-    }
-
     public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
         return this.roleManager.sortRoleDefinitions(roles);
     }
 
     public getRoleComposition() {
         return this.roleManager.getSelectedRolesForNextGame();
+    }
+
+    public getFactionData(factionId: string): FactionDefinition | null {
+        return this.factionManager.getFactionData(factionId);
+    }
+
+    public getFactionDefinitions() {
+        return this.factionManager.getSelectedRolesForNextGame();
     }
 }

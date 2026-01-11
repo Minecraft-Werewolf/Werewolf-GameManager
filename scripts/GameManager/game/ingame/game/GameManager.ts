@@ -1,11 +1,23 @@
-import { world } from "@minecraft/server";
+import { world, type RawMessage } from "@minecraft/server";
 import { GamePhase, InGameManager } from "../InGameManager";
 import { IntervalManager } from "../utils/IntervalManager";
 import { ItemManager } from "./gameplay/ItemManager";
-import { PlayersDataManager } from "./PlayersDataManager";
-import { GameTerminationEvaluator, TerminationReason } from "./GameTerminationEvaluator";
-import type { PlayerData } from "./PlayerData";
+import { PlayersDataManager } from "./gameplay/PlayersDataManager";
+import { GameTerminationEvaluator } from "./gameplay/GameTerminationEvaluator";
 import { ActionBarManager } from "./gameplay/ActionBarManager";
+import { PlayerData } from "./gameplay/PlayerData";
+import type { GameOutcome } from "../../../data/types/conditions";
+import { defaultGameOutcomeRules, type GameOutcomeRule } from "../../../data/outcome";
+
+export interface ResolvedGameOutcome {
+    type: "resolved";
+    ruleId: string;
+    outcome: GameOutcome;
+    presentation: {
+        title: RawMessage;
+        message: RawMessage;
+    };
+}
 
 export class GameManager {
     private readonly actionBarManager: ActionBarManager;
@@ -17,7 +29,7 @@ export class GameManager {
     private resolveFn: (() => void) | null = null;
     private rejectFn: ((reason?: any) => void) | null = null;
 
-    private _evaluateResult: TerminationReason = TerminationReason.None;
+    private _gameResult: ResolvedGameOutcome | null = null;
 
     private constructor(private readonly inGameManager: InGameManager) {
         this.actionBarManager = ActionBarManager.create(this);
@@ -67,12 +79,22 @@ export class GameManager {
         this.itemManager.replaceItemToPlayers(players);
 
         // 終了判定
-        const evaluateResult = this.gameTerminationEvaluator.evaluate(playersData);
-        if (evaluateResult === TerminationReason.None) return;
+        const result = this.gameTerminationEvaluator.evaluate(playersData);
+        if (result.type === "none") return;
 
-        this._evaluateResult = evaluateResult;
+        this._gameResult = result;
+        playersData.forEach((playerData) => {
+            if (result.outcome.type === "victory") {
+                playerData.isVictory = result.outcome.factionId === playerData.role?.factionId;
+            }
+        });
+
         this.finishGame();
     };
+
+    public get gameResult(): ResolvedGameOutcome | null {
+        return this._gameResult;
+    }
 
     private onSecondUpdate = (): void => {
         if (!this.isRunning) return;
@@ -97,7 +119,15 @@ export class GameManager {
         return this.inGameManager.getPlayersDataManager();
     }
 
-    public get evaluateResult(): TerminationReason {
-        return this._evaluateResult;
+    public getFactionDefinitions() {
+        return this.inGameManager.getFactionDefinitions();
+    }
+
+    public getDefaultOutcomeRules(): GameOutcomeRule[] {
+        return defaultGameOutcomeRules;
+    }
+
+    public getRemainingTime(): number {
+        return 100; // 一旦100で返しておく
     }
 }

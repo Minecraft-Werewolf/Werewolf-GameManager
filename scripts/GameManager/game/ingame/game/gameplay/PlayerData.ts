@@ -1,6 +1,6 @@
 import type { Player } from "@minecraft/server";
+import type { RoleDefinition } from "../../../../data/roles";
 import type { PlayersDataManager } from "./PlayersDataManager";
-import type { RoleDefinition } from "../../../data/roles";
 
 export type ParticipationState = "participant" | "spectator";
 
