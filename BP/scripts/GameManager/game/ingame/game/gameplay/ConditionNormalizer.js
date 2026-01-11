@@ -19,6 +19,8 @@ export class ConditionNormalizer {
     }
     normalizeCondition(condition) {
         switch (condition.type) {
+            case "standardFactionVictory":
+                return { type: "standardFactionVictory" };
             case "comparison":
                 return {
                     type: "comparison",
@@ -85,6 +87,9 @@ export class ConditionNormalizer {
     }
     evalNormalized(condition, ctx) {
         switch (condition.type) {
+            case "standardFactionVictory": {
+                return this.evalStandardFactionVictory(ctx);
+            }
             case "comparison": {
                 const left = this.evalNumeric(condition.left, ctx);
                 const right = this.evalNumeric(condition.right, ctx);
@@ -110,5 +115,21 @@ export class ConditionNormalizer {
             case "not":
                 return !this.evalNormalized(condition.condition, ctx);
         }
+    }
+    evalStandardFactionVictory(ctx) {
+        const factions = this.gameTerminationEvaluator
+            .getGameManager()
+            .getFactionDefinitions()
+            .filter((f) => f.type === "standard");
+        for (const faction of factions) {
+            const selfAlive = (ctx.aliveCountByFaction[faction.id] ?? 0) > 0;
+            if (!selfAlive)
+                continue;
+            const othersAlive = factions.some((f) => f.id !== faction.id && (ctx.aliveCountByFaction[f.id] ?? 0) > 0);
+            if (!othersAlive) {
+                return true;
+            }
+        }
+        return false;
     }
 }
