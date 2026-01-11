@@ -9,6 +9,7 @@ export interface GameContext {
 }
 
 export type Condition =
+    | StandardFactionVictoryCondition
     | ComparisonCondition
     | FactionAliveCountComparison
     | PlayerAliveCountComparison
@@ -16,6 +17,10 @@ export type Condition =
     | AndCondition
     | OrCondition
     | NotCondition;
+
+export interface StandardFactionVictoryCondition {
+    type: "standardFactionVictory";
+}
 
 export interface ComparisonCondition {
     type: "comparison";
@@ -92,6 +97,7 @@ export interface NormalizedComparison {
 
 export type NormalizedCondition =
     | NormalizedComparison
+    | { type: "standardFactionVictory" }
     | { type: "and"; conditions: NormalizedCondition[] }
     | { type: "or"; conditions: NormalizedCondition[] }
     | { type: "not"; condition: NormalizedCondition };

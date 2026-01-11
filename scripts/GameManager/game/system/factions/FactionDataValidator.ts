@@ -24,6 +24,7 @@ export class FactionDataValidator {
         if (!this.isObject(data)) return false;
 
         if (typeof data.id !== "string") return false;
+        if (typeof data.type !== "string") return false;
         if (!KairoUtils.isRawMessage(data.name)) return false;
         if (!KairoUtils.isRawMessage(data.description)) return false;
         if (typeof data.defaultColor !== "string") return false;
@@ -88,6 +89,8 @@ export class FactionDataValidator {
         if (typeof data.type !== "string") return false;
 
         switch (data.type) {
+            case "standardFactionVictory":
+                return true;
             case "comparison":
                 return this.isComparisonCondition(data);
 

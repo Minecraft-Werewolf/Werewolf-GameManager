@@ -59,10 +59,16 @@ export class GameTerminationEvaluator {
         const alive = playersData.filter((p) => p.isParticipating && p.isAlive);
 
         const aliveCountByFaction: Record<string, number> = {};
+
         for (const p of alive) {
-            if (p.role == null) continue;
-            aliveCountByFaction[p.role.factionId] =
-                (aliveCountByFaction[p.role.factionId] ?? 0) + 1;
+            const role = p.role;
+            if (!role) continue;
+
+            // 狂人枠はカウントしない
+            if (role.isExcludedFromSurvivalCheck === true) continue;
+
+            const factionId = role.factionId;
+            aliveCountByFaction[factionId] = (aliveCountByFaction[factionId] ?? 0) + 1;
         }
 
         return {
@@ -83,5 +89,9 @@ export class GameTerminationEvaluator {
             } satisfies GameOutcome,
             presentation: faction.victoryCondition.presentation,
         }));
+    }
+
+    public getGameManager(): GameManager {
+        return this.gameManager;
     }
 }

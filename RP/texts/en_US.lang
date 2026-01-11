@@ -27,13 +27,14 @@ werewolf-gamemanager.game.result.presentation.timeup.message=§3The game has end
 werewolf-gamemanager.game.result.presentation.annihilation.title=§3Total Annihilation!§r
 werewolf-gamemanager.game.result.presentation.annihilation.message=§3All players have been eliminated.§r
 
-werewolf-gamemanager.game.result.victory=§aVictory!§r
+werewolf-gamemanager.game.result.victory=§eVictory!§r
 werewolf-gamemanager.game.result.defeat=§cDefeat...§r
 werewolf-gamemanager.game.result.draw=§7Draw§r
 
-werewolf-gamemanager.game.result.victory.message=§aYou have achieved victory!§r
-werewolf-gamemanager.game.result.defeat.message=§cYou have been defeated...§r
-werewolf-gamemanager.game.result.draw.message=§7The game ended in a draw.§r
+werewolf-gamemanager.game.result.victory.message=§fYou have achieved §eVictory§f!§r
+werewolf-gamemanager.game.result.defeat.message=§fYou have been §cDefeated§f...§r
+werewolf-gamemanager.game.result.draw.message=§fThe game ended in a §7Draw§f.§r
+
 werewolf-gamemanager.item.name.game_starter=§eStart Game§r
 werewolf-gamemanager.item.name.game_force_terminator=§cForce Stop§r
 werewolf-gamemanager.item.name.game_settings=§bGame Settings§r

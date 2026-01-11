@@ -50,8 +50,6 @@ export class GameResultPresentation {
         const gameResult = terminator.getGameResult();
         if (!gameResult) return;
 
-        world.sendMessage(gameResult.presentation.message);
-
         players.forEach((player) => {
             const playerData = inGameManager.getPlayerData(player.id);
 
@@ -67,7 +65,18 @@ export class GameResultPresentation {
                 ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
             });
 
-            player.sendMessage({ translate: messageId });
+            const lineBreak = { text: "\n" };
+            player.sendMessage({
+                rawtext: [
+                    { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+                    lineBreak,
+                    gameResult.presentation.message,
+                    lineBreak,
+                    { translate: messageId },
+                    lineBreak,
+                    { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+                ],
+            });
         });
 
         this.broadcastPlayersState(inGameManager.getPlayersData());
@@ -133,7 +142,10 @@ export class GameResultPresentation {
         });
 
         world.sendMessage({
-            rawtext: lines.flatMap((line) => [...line.rawtext, { text: "\n" }]),
+            rawtext: [
+                ...lines.flatMap((line) => [...line.rawtext, { text: "\n" }]),
+                { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+            ],
         });
     }
 

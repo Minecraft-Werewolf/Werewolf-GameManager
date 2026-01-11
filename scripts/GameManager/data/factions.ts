@@ -14,9 +14,12 @@ export interface VictoryCondition {
 export interface FactionDefinition {
     providerAddonId: string; // 登録要求時に GameManager が独自に付与する。定義側では不要
     id: string;
+    type: FactionCategory;
     name: RawMessage;
     description: RawMessage;
     defaultColor: string;
     victoryCondition: VictoryCondition;
     sortIndex: number;
 }
+
+export type FactionCategory = "standard" | "independent" | "neutral";

@@ -27,13 +27,14 @@ werewolf-gamemanager.game.result.presentation.timeup.message=§3ゲームは時�
 werewolf-gamemanager.game.result.presentation.annihilation.title=§3全滅§r
 werewolf-gamemanager.game.result.presentation.annihilation.message=§3参加者全員が死亡しました.§r
 
-werewolf-gamemanager.game.result.victory=§aVictory!§r
+werewolf-gamemanager.game.result.victory=§eVictory!§r
 werewolf-gamemanager.game.result.defeat=§cDefeat...§r
 werewolf-gamemanager.game.result.draw=§7Draw§r
 
-werewolf-gamemanager.game.result.victory.message=§a勝利！§r
-werewolf-gamemanager.game.result.defeat.message=§c敗北...§r
-werewolf-gamemanager.game.result.draw.message=§7引き分け§r
+werewolf-gamemanager.game.result.victory.message=§fあなたは§e勝利§fしました！§r
+werewolf-gamemanager.game.result.defeat.message=§fあなたは§c敗北§fしました...§r
+werewolf-gamemanager.game.result.draw.message=§f試合は§7引き分け§fに終わりました§r
+
 werewolf-gamemanager.item.name.game_starter=§eゲーム開始§r
 werewolf-gamemanager.item.name.game_force_terminator=§c強制終了§r
 werewolf-gamemanager.item.name.game_settings=§bゲーム設定§r
