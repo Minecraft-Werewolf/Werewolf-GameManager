@@ -18,15 +18,14 @@ werewolf-gamemanager.game.forcequit.message=§cゲームが強制終了されま
 werewolf-gamemanager.game.termination.title=§eゲーム終了！§r
 werewolf-gamemanager.game.termination.message=§eゲーム終了！§r
 
-werewolf-gamemanager.game.result.alive=§a(生存)§r
+werewolf-gamemanager.game.result.alive=§b(生存)§r
 werewolf-gamemanager.game.result.dead=§c(死亡)§r
 werewolf-gamemanager.game.result.left=§c(退出)§r
 
-werewolf-gamemanager.game.result.villagerfaction.win=§a村人陣営の勝利！§r
-werewolf-gamemanager.game.result.werewolffaction.win=§4人狼陣営の勝利！§r
-werewolf-gamemanager.game.result.foxfaction.win=§g妖狐陣営の勝利！§r
-werewolf-gamemanager.game.result.annihilation=§3全滅§r
-werewolf-gamemanager.game.result.timeup=§3タイムアップ§r
+werewolf-gamemanager.game.result.presentation.timeup.title=§3タイムアップ§r
+werewolf-gamemanager.game.result.presentation.timeup.message=§3ゲームは時間切れで終了しました.§r
+werewolf-gamemanager.game.result.presentation.annihilation.title=§3全滅§r
+werewolf-gamemanager.game.result.presentation.annihilation.message=§3参加者全員が死亡しました.§r
 
 werewolf-gamemanager.game.result.victory=§aVictory!§r
 werewolf-gamemanager.game.result.defeat=§cDefeat...§r
@@ -59,6 +58,6 @@ werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice=§6%sが�
 werewolf-gamemanager.game.yourRole.title=§fあなたは %1%2%3 です§r
 werewolf-gamemanager.game.yourRole.message=§fあなたの役職は %1%2%3 です§r
 
-werewolf-gamemanager.game.preparation.countdown=§fゲーム開始まで...§ss§r
+werewolf-gamemanager.game.preparation.countdown=§fゲーム開始まで...%ss§r
 
 werewolf-gamemanager.game.actionbar.roleName=§f役職: %1%2%3§r

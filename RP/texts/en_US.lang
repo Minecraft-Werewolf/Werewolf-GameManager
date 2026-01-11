@@ -18,15 +18,14 @@ werewolf-gamemanager.game.forcequit.message=§cThe game has been forcefully term
 werewolf-gamemanager.game.termination.title=§eGame Over!§r
 werewolf-gamemanager.game.termination.message=§eThe game has ended!§r
 
-werewolf-gamemanager.game.result.alive=§a(Survived)§r
+werewolf-gamemanager.game.result.alive=§b(Survived)§r
 werewolf-gamemanager.game.result.dead=§c(Dead)§r
 werewolf-gamemanager.game.result.left=§c(Left)§r
 
-werewolf-gamemanager.game.result.villagerfaction.win=§aVillager Faction Wins§r
-werewolf-gamemanager.game.result.werewolffaction.win=§4Werewolf Faction Wins!§r
-werewolf-gamemanager.game.result.foxfaction.win=§gFox Faction Wins!§r
-werewolf-gamemanager.game.result.annihilation=§3Total Annihilation§r
-werewolf-gamemanager.game.result.timeup=§3Time's Up§r
+werewolf-gamemanager.game.result.presentation.timeup.title=§3Time's Up!§r
+werewolf-gamemanager.game.result.presentation.timeup.message=§3The game has ended due to time running out.§r
+werewolf-gamemanager.game.result.presentation.annihilation.title=§3Total Annihilation!§r
+werewolf-gamemanager.game.result.presentation.annihilation.message=§3All players have been eliminated.§r
 
 werewolf-gamemanager.game.result.victory=§aVictory!§r
 werewolf-gamemanager.game.result.defeat=§cDefeat...§r

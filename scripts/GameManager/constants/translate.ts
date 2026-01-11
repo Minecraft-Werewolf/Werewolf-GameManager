@@ -68,4 +68,13 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_GAME_PREPARATION_COUNTDOWN: "werewolf-gamemanager.game.preparation.countdown",
 
     WEREWOLF_GAME_ACTIONBAR_ROLE_NAME: "werewolf-gamemanager.game.actionbar.roleName",
+
+    WEREWOLF_GAME_RESULT_PRESENTATION_TIMEUP_TITLE:
+        "werewolf-gamemanager.game.result.presentation.timeup.title",
+    WEREWOLF_GAME_RESULT_PRESENTATION_TIMEUP_MESSAGE:
+        "werewolf-gamemanager.game.result.presentation.timeup.message",
+    WEREWOLF_GAME_RESULT_ANNIHILATION_TITLE:
+        "werewolf-gamemanager.game.result.presentation.annihilation.title",
+    WEREWOLF_GAME_RESULT_ANNIHILATION_MESSAGE:
+        "werewolf-gamemanager.game.result.presentation.annihilation.message",
 };

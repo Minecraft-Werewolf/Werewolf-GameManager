@@ -2,8 +2,8 @@ import { EntityComponentTypes, world, type Player } from "@minecraft/server";
 import type { GameTerminator } from "./GameTerminator";
 import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
-import { TerminationReason } from "../GameTerminationEvaluator";
-import type { PlayerData } from "../PlayerData";
+import type { ResolvedGameOutcome } from "../GameManager";
+import type { PlayerData } from "../gameplay/PlayerData";
 
 export class GameResultPresentation {
     private constructor(private readonly gameTerminator: GameTerminator) {}
@@ -47,10 +47,10 @@ export class GameResultPresentation {
     private async showGameResult(players: Player[]): Promise<void> {
         const terminator = this.gameTerminator;
         const inGameManager = terminator.getInGameManager();
-        const evaluateResult = inGameManager.getGameManager().evaluateResult;
-        const winningFactionTitleId = this.getWinningFactionTitleTranslateId(evaluateResult);
+        const gameResult = terminator.getGameResult();
+        if (!gameResult) return;
 
-        world.sendMessage({ translate: winningFactionTitleId });
+        world.sendMessage(gameResult.presentation.message);
 
         players.forEach((player) => {
             const playerData = inGameManager.getPlayerData(player.id);
@@ -58,22 +58,19 @@ export class GameResultPresentation {
             this.playResultSound(player, playerData.isVictory);
 
             const { subtitleId, messageId } = this.getPlayerResultTextIds(
-                evaluateResult,
+                gameResult,
                 playerData.isVictory,
             );
 
-            player.onScreenDisplay.setTitle(
-                { translate: winningFactionTitleId },
-                {
-                    subtitle: { translate: subtitleId },
-                    ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
-                },
-            );
+            player.onScreenDisplay.setTitle(gameResult.presentation.title, {
+                subtitle: { translate: subtitleId },
+                ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
+            });
 
             player.sendMessage({ translate: messageId });
         });
 
-        this.broadcastPlayersAliveState(inGameManager.getPlayersData());
+        this.broadcastPlayersState(inGameManager.getPlayersData());
 
         await terminator.getWaitController().waitTicks(SYSTEMS.GAME_SHOW_RESULT.DURATION);
     }
@@ -91,13 +88,10 @@ export class GameResultPresentation {
     }
 
     private getPlayerResultTextIds(
-        result: TerminationReason,
+        result: ResolvedGameOutcome,
         isVictory: boolean,
     ): { subtitleId: string; messageId: string } {
-        const isDraw =
-            result === TerminationReason.Annihilation || result === TerminationReason.Timeup;
-
-        if (isDraw) {
+        if (result.outcome.type === "draw") {
             return {
                 subtitleId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DRAW,
                 messageId: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DRAW_MESSAGE,
@@ -117,7 +111,7 @@ export class GameResultPresentation {
         };
     }
 
-    private broadcastPlayersAliveState(playersData: readonly PlayerData[]): void {
+    private broadcastPlayersState(playersData: readonly PlayerData[]): void {
         const lines: { rawtext: any[] }[] = [];
 
         playersData.forEach((playerData) => {
@@ -141,23 +135,6 @@ export class GameResultPresentation {
         world.sendMessage({
             rawtext: lines.flatMap((line) => [...line.rawtext, { text: "\n" }]),
         });
-    }
-
-    private getWinningFactionTitleTranslateId(result: TerminationReason) {
-        switch (result) {
-            case TerminationReason.Annihilation:
-                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ANNIHILATION;
-            case TerminationReason.Timeup:
-                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_TIMEUP;
-            case TerminationReason.VillagerVictory:
-                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VILLAGER_FACTION_WIN;
-            case TerminationReason.WerewolfVictory:
-                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_WIN;
-            case TerminationReason.FoxVictory:
-                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_FOX_FACTION_WIN;
-            default:
-                return WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ANNIHILATION;
-        }
     }
 
     private showGameTerminatedTitleForPlayer(player: Player): void {

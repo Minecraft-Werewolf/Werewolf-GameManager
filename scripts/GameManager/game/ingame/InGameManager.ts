@@ -7,9 +7,9 @@ import { SYSTEMS } from "../../constants/systems";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
-import { PlayersDataManager } from "./game/PlayersDataManager";
+import { PlayersDataManager } from "./game/gameplay/PlayersDataManager";
 import { GameFinalizer } from "./game/GameFinalizer";
-import type { PlayerData } from "./game/PlayerData";
+import type { PlayerData } from "./game/gameplay/PlayerData";
 
 export enum GamePhase {
     Initializing,
@@ -156,5 +156,9 @@ export class InGameManager {
 
     public getFactionData(factionId: string) {
         return this.systemManager.getFactionData(factionId);
+    }
+
+    public getFactionDefinitions() {
+        return this.systemManager.getFactionDefinitions();
     }
 }
