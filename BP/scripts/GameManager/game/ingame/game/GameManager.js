@@ -2,16 +2,18 @@ import { world } from "@minecraft/server";
 import { GamePhase, InGameManager } from "../InGameManager";
 import { IntervalManager } from "../utils/IntervalManager";
 import { ItemManager } from "./gameplay/ItemManager";
-import { PlayersDataManager } from "./PlayersDataManager";
-import { GameTerminationEvaluator, TerminationReason } from "./GameTerminationEvaluator";
+import { PlayersDataManager } from "./gameplay/PlayersDataManager";
+import { GameTerminationEvaluator } from "./gameplay/GameTerminationEvaluator";
 import { ActionBarManager } from "./gameplay/ActionBarManager";
+import { PlayerData } from "./gameplay/PlayerData";
+import { defaultGameOutcomeRules } from "../../../data/outcome";
 export class GameManager {
     constructor(inGameManager) {
         this.inGameManager = inGameManager;
         this.isRunning = false;
         this.resolveFn = null;
         this.rejectFn = null;
-        this._evaluateResult = TerminationReason.None;
+        this._gameResult = null;
         this.onTickUpdate = () => {
             if (!this.isRunning)
                 return;
@@ -20,10 +22,15 @@ export class GameManager {
             this.actionBarManager.showActionBarToPlayers(players);
             this.itemManager.replaceItemToPlayers(players);
             // 終了判定
-            const evaluateResult = this.gameTerminationEvaluator.evaluate(playersData);
-            if (evaluateResult === TerminationReason.None)
+            const result = this.gameTerminationEvaluator.evaluate(playersData);
+            if (result.type === "none")
                 return;
-            this._evaluateResult = evaluateResult;
+            this._gameResult = result;
+            playersData.forEach((playerData) => {
+                if (result.outcome.type === "victory") {
+                    playerData.isVictory = result.outcome.factionId === playerData.role?.factionId;
+                }
+            });
             this.finishGame();
         };
         this.onSecondUpdate = () => {
@@ -63,6 +70,9 @@ export class GameManager {
         this.resolveFn?.();
         this.cleanup();
     }
+    get gameResult() {
+        return this._gameResult;
+    }
     cleanup() {
         this.intervalManager.clearAll();
         this.isRunning = false;
@@ -78,7 +88,13 @@ export class GameManager {
     getPlayersDataManager() {
         return this.inGameManager.getPlayersDataManager();
     }
-    get evaluateResult() {
-        return this._evaluateResult;
+    getFactionDefinitions() {
+        return this.inGameManager.getFactionDefinitions();
+    }
+    getDefaultOutcomeRules() {
+        return defaultGameOutcomeRules;
+    }
+    getRemainingTime() {
+        return 100; // 一旦100で返しておく
     }
 }

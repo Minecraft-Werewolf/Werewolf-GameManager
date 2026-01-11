@@ -111,14 +111,17 @@ export class SystemManager {
     requestRoleReRegistration() {
         this.roleManager.requestRoleReRegistration();
     }
-    getFactionData(factionId) {
-        return this.factionManager.getFactionData(factionId);
-    }
     sortRoleDefinitions(roles) {
         return this.roleManager.sortRoleDefinitions(roles);
     }
     getRoleComposition() {
         return this.roleManager.getSelectedRolesForNextGame();
+    }
+    getFactionData(factionId) {
+        return this.factionManager.getFactionData(factionId);
+    }
+    getFactionDefinitions() {
+        return this.factionManager.getSelectedRolesForNextGame();
     }
 }
 SystemManager.instance = null;

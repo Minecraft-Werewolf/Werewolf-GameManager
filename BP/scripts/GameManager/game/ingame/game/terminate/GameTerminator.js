@@ -31,4 +31,7 @@ export class GameTerminator {
     getInGameManager() {
         return this.inGameManager;
     }
+    getGameResult() {
+        return this.inGameManager.getGameManager().gameResult;
+    }
 }

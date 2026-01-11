@@ -10,6 +10,7 @@ export const GameEventTypeValues = [
 /**
  * 役職が足りなかった場合に割り当てられるデフォルト役職
  * 初期化時に登録はせず、直接この場所からimportして使います
+ * 後から消します
  */
 export const defaultRole = {
     providerAddonId: "werewolf-gamemanager",

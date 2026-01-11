@@ -29,6 +29,9 @@ export class RoleAssignmentManager {
             }
         }
         while (pool.length < playerCount) {
+            // StandardRoles から、村人をデフォルト役職として定義してGameManagerに保存し、
+            // それをここで利用するに今後する
+            // GameManager でデフォルト役職を定義するのはなんか違う気がするので一旦保留
             pool.push(defaultRole);
         }
         return pool;
