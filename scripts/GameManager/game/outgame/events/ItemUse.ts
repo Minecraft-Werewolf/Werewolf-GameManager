@@ -27,17 +27,11 @@ export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, 
         // 使用後処理
         const { itemStack, source } = ev;
 
-        const data: KairoCommand = {
-            commandId: "", // 仮置き
-            addonId: properties.id,
-        };
-
         switch (itemStack.typeId) {
             case ITEM_USE.GAME_STARTER_ITEM_ID:
-                data.commandId = SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START;
                 KairoUtils.sendKairoCommand(
                     KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER,
-                    data,
+                    SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_START,
                 );
                 break;
             case ITEM_USE.GAME_SETTINGS_ITEM_ID:

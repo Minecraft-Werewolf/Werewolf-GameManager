@@ -2,8 +2,7 @@ import type { Kairo } from "..";
 import type { AddonProperty } from "./AddonPropertyManager";
 import { system } from "@minecraft/server";
 import { AddonReceiver } from "./router/AddonReceiver";
-import { DataVaultReceiver } from "./router/DataVaultReceiver";
-import type { KairoCommand } from "../utils/KairoUtils";
+import type { KairoCommand, KairoResponse } from "../utils/KairoUtils";
 
 export type RegistrationState = "registered" | "unregistered" | "missing_requiredAddons";
 
@@ -35,13 +34,11 @@ export interface AddonData {
 
 export class AddonManager {
     private readonly receiver: AddonReceiver;
-    private readonly dataVaultReceiver: DataVaultReceiver;
 
     private _isActive: boolean = false;
 
     private constructor(private readonly kairo: Kairo) {
         this.receiver = AddonReceiver.create(this);
-        this.dataVaultReceiver = DataVaultReceiver.create(this);
     }
     public static create(kairo: Kairo): AddonManager {
         return new AddonManager(kairo);
@@ -63,16 +60,8 @@ export class AddonManager {
         this.kairo._deactivateAddon();
     }
 
-    public _scriptEvent(data: KairoCommand): void {
-        this.kairo._scriptEvent(data);
-    }
-
-    public dataVaultHandleOnScriptEvent(data: KairoCommand): void {
-        this.dataVaultReceiver.handleOnScriptEvent(data);
-    }
-
-    public getDataVaultLastDataLoaded(): { data: string; count: number } {
-        return this.dataVaultReceiver.getLastDataLoaded();
+    public async _scriptEvent(data: KairoCommand): Promise<void | KairoResponse> {
+        return this.kairo._scriptEvent(data);
     }
 
     public get isActive(): boolean {

@@ -5,8 +5,8 @@ export const ITEM_USE = {
     PERSONAL_SETTINGS_ITEM_ID: "werewolf:personal_settings",
     GAME_JOIN_ITEM_ID: "werewolf:join_register",
     GAME_SPECTATE_ITEM_ID: "werewolf:spectate_register",
+    SKILL_TRIGGER_ITEM_ID: "minecraft:book",
 };
-
 
 // スキルブック
 // ゲーム一時停止

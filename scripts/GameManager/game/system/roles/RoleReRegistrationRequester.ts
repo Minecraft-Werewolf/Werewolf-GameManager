@@ -1,8 +1,7 @@
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import type { RoleManager } from "./RoleManager";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
-import { properties } from "../../../../properties";
-import { KairoUtils, type KairoCommand } from "../../../../Kairo/utils/KairoUtils";
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../../constants/systems";
 
 export class RoleReRegistrationRequester {
@@ -12,12 +11,10 @@ export class RoleReRegistrationRequester {
     }
 
     public request(): void {
-        const data: KairoCommand = {
-            commandId: SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST,
-            addonId: properties.id,
-        };
-
         ConsoleManager.log("Requesting role re_registration...");
-        KairoUtils.sendKairoCommand(KAIRO_COMMAND_TARGET_ADDON_IDS.BROADCAST, data);
+        KairoUtils.sendKairoCommand(
+            KAIRO_COMMAND_TARGET_ADDON_IDS.BROADCAST,
+            SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST,
+        );
     }
 }

@@ -12,6 +12,9 @@ export const SCRIPT_EVENT_COMMAND_IDS = {
     OPEN_FORM_ROLE_SETTINGS: "open_form_role_settings",
     OPEN_FORM_GAME_SETTINGS: "open_form_game_settings",
     OPEN_FORM_WEREWOLF_GAME_CREDIT: "open_form_werewolf_game_credit",
+    WEREWOLF_INGAME_PLAYER_SKILL_TRIGGER: "werewolf_ingame_player_skill_trigger",
+    GET_PLAYER_WEREWOLF_DATA: "getPlayerWerewolfData",
+    GET_PLAYERS_WEREWOLF_DATA: "getPlayersWerewolfData",
 };
 
 export const SCRIPT_EVENT_MESSAGES = {

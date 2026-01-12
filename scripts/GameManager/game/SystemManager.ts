@@ -7,7 +7,7 @@ import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
-import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
+import type { KairoCommand, KairoResponse } from "../../Kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../data/roles";
 import { FactionManager } from "./system/factions/FactionManager";
 import type { FactionDefinition } from "../data/factions";
@@ -53,8 +53,8 @@ export class SystemManager {
         return this.instance;
     }
 
-    public handleScriptEvent(data: KairoCommand): void {
-        this.scriptEventReceiver.handleScriptEvent(data);
+    public async handleScriptEvent(data: KairoCommand): Promise<void | KairoResponse> {
+        return this.scriptEventReceiver.handleScriptEvent(data);
     }
 
     public subscribeEvents(): void {

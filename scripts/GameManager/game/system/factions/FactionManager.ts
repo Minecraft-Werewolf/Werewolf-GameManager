@@ -41,13 +41,12 @@ export class FactionManager {
         // 今はテスト用に適当にツッコんじゃう
         this.selectedFactionsForNextGame.push(...validateResult.validatedFactions);
     }
-    public requestFactionReRegistration() {}
 
     public setFactions(addonId: string, factions: FactionDefinition[]): void {
         this.registeredFactionDefinitions.set(addonId, factions);
     }
 
-    public clearRoles(): void {
+    public clearFactions(): void {
         this.registeredFactionDefinitions.clear();
     }
 
@@ -55,8 +54,8 @@ export class FactionManager {
         return this.factionDataValidator.isFaction(data);
     }
 
-    public requestRoleReRegistration(): void {
-        this.clearRoles();
+    public requestFactionReRegistration(): void {
+        this.clearFactions();
         this.factionReRegistrationRequester.request();
     }
 

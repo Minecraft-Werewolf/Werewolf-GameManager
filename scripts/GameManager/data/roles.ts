@@ -5,11 +5,11 @@ export const GameEventTypeValues = [
     "AfterGameStart",
     "BeforeMeetingStart",
     "AfterMeetingStart",
-    "SkillUse",
-    "SkillUseInMeeting",
+    "ItemUse",
+    "ItemUseInMeeting",
     "Death",
 ] as const;
-type GameEventType = (typeof GameEventTypeValues)[number];
+export type GameEventType = (typeof GameEventTypeValues)[number];
 
 interface RoleKey {
     addonId: string;

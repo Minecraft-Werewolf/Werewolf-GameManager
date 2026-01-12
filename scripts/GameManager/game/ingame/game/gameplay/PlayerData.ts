@@ -4,6 +4,14 @@ import type { PlayersDataManager } from "./PlayersDataManager";
 
 export type ParticipationState = "participant" | "spectator";
 
+export interface PlayerDataDTO {
+    playerId: string;
+    name: string;
+    isAlive: boolean;
+    isVictory: boolean;
+    role: RoleDefinition | null;
+}
+
 export class PlayerData {
     public name: string;
     public isAlive: boolean = true;

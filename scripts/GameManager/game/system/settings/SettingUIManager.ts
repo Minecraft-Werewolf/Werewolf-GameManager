@@ -2,8 +2,7 @@ import { Player } from "@minecraft/server";
 import type { SettingCategoryNode } from "../../../data/settings";
 import { ActionFormData } from "@minecraft/server-ui";
 import type { GameSettingManager } from "./GameSettingManager";
-import { KairoUtils, type KairoCommand } from "../../../../Kairo/utils/KairoUtils";
-import { properties } from "../../../../properties";
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
 
 export class SettingUIManager {
     private constructor(private readonly gameSettingManager: GameSettingManager) {}
@@ -49,12 +48,13 @@ export class SettingUIManager {
             stack.push(selected);
             this.openNode(player, stack);
         } else if (selected.type === "item") {
-            const command: KairoCommand = {
-                commandId: selected.command.commandId,
-                addonId: properties.id,
-                playerId: player.id,
-            };
-            KairoUtils.sendKairoCommand(selected.command.targetAddonId, command);
+            KairoUtils.sendKairoCommand(
+                selected.command.targetAddonId,
+                selected.command.commandId,
+                {
+                    playerId: player.id,
+                },
+            );
         }
     }
 }
