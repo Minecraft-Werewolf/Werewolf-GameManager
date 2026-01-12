@@ -21,14 +21,21 @@ export class InGameItemUseHandler extends BaseEventHandler {
     handleAfter(ev) {
         // 使用後処理
         const { itemStack, source } = ev;
-        const data = {
-            commandId: "", // 仮置き
-            addonId: properties.id,
-        };
         switch (itemStack.typeId) {
             case ITEM_USE.GAME_FORCE_TERMINATOR_ITEM_ID:
-                data.commandId = SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_RESET;
-                KairoUtils.sendKairoCommand(KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER, data);
+                KairoUtils.sendKairoCommand(KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER, SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_RESET);
+                break;
+            case ITEM_USE.SKILL_TRIGGER_ITEM_ID:
+                const player = source;
+                const playerData = this.inGameEventManager
+                    .getInGameManager()
+                    .getPlayerData(player.id);
+                if (!playerData)
+                    return;
+                KairoUtils.sendKairoCommand(playerData.role?.providerAddonId ?? "", SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_INGAME_PLAYER_SKILL_TRIGGER, {
+                    playerId: player.id,
+                    eventType: "ItemUse",
+                });
                 break;
         }
     }

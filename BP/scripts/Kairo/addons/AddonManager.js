@@ -1,12 +1,10 @@
 import { system } from "@minecraft/server";
 import { AddonReceiver } from "./router/AddonReceiver";
-import { DataVaultReceiver } from "./router/DataVaultReceiver";
 export class AddonManager {
     constructor(kairo) {
         this.kairo = kairo;
         this._isActive = false;
         this.receiver = AddonReceiver.create(this);
-        this.dataVaultReceiver = DataVaultReceiver.create(this);
     }
     static create(kairo) {
         return new AddonManager(kairo);
@@ -23,14 +21,8 @@ export class AddonManager {
     _deactivateAddon() {
         this.kairo._deactivateAddon();
     }
-    _scriptEvent(data) {
-        this.kairo._scriptEvent(data);
-    }
-    dataVaultHandleOnScriptEvent(data) {
-        this.dataVaultReceiver.handleOnScriptEvent(data);
-    }
-    getDataVaultLastDataLoaded() {
-        return this.dataVaultReceiver.getLastDataLoaded();
+    async _scriptEvent(data) {
+        return this.kairo._scriptEvent(data);
     }
     get isActive() {
         return this._isActive;

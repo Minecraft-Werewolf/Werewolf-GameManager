@@ -1,6 +1,5 @@
 import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
-import { properties } from "../../../../properties";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
 export class FactionRegistrationNotifier {
     constructor(factionManager) {
@@ -11,15 +10,12 @@ export class FactionRegistrationNotifier {
     }
     notify(validateResult) {
         const validatedFactionsIds = validateResult.validatedFactions.map((faction) => faction.id);
-        const data = {
-            commandId: SCRIPT_EVENT_COMMAND_IDS.FACTION_REGISTRATION_NOTIFY,
-            addonId: properties.id,
-            registered: validatedFactionsIds,
-        };
         if (validateResult.isSuccessful)
             ConsoleManager.log(`Faction registration succeeded from "${validateResult.addonId}": [ ${validatedFactionsIds.join(", ")} ]`);
         else
             ConsoleManager.log(`Faction registration failed from "${validateResult.addonId}"`);
-        KairoUtils.sendKairoCommand(validateResult.addonId, data);
+        KairoUtils.sendKairoCommand(validateResult.addonId, SCRIPT_EVENT_COMMAND_IDS.FACTION_REGISTRATION_NOTIFY, {
+            registered: validatedFactionsIds,
+        });
     }
 }

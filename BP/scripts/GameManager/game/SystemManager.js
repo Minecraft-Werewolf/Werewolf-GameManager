@@ -36,8 +36,8 @@ export class SystemManager {
         }
         return this.instance;
     }
-    handleScriptEvent(data) {
-        this.scriptEventReceiver.handleScriptEvent(data);
+    async handleScriptEvent(data) {
+        return this.scriptEventReceiver.handleScriptEvent(data);
     }
     subscribeEvents() {
         this.systemEventManager.subscribeAll();

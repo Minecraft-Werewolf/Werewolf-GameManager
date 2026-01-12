@@ -3,8 +3,8 @@ export const GameEventTypeValues = [
     "AfterGameStart",
     "BeforeMeetingStart",
     "AfterMeetingStart",
-    "SkillUse",
-    "SkillUseInMeeting",
+    "ItemUse",
+    "ItemUseInMeeting",
     "Death",
 ];
 /**

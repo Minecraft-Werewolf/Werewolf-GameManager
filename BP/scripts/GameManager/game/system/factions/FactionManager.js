@@ -25,18 +25,17 @@ export class FactionManager {
         // 今はテスト用に適当にツッコんじゃう
         this.selectedFactionsForNextGame.push(...validateResult.validatedFactions);
     }
-    requestFactionReRegistration() { }
     setFactions(addonId, factions) {
         this.registeredFactionDefinitions.set(addonId, factions);
     }
-    clearRoles() {
+    clearFactions() {
         this.registeredFactionDefinitions.clear();
     }
     isFaction(data) {
         return this.factionDataValidator.isFaction(data);
     }
-    requestRoleReRegistration() {
-        this.clearRoles();
+    requestFactionReRegistration() {
+        this.clearFactions();
         this.factionReRegistrationRequester.request();
     }
     getRegisteredRoleDefinitions() {

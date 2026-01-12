@@ -1,7 +1,6 @@
 import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
-import { properties } from "../../../../properties";
 export class SettingUIManager {
     constructor(gameSettingManager) {
         this.gameSettingManager = gameSettingManager;
@@ -42,12 +41,9 @@ export class SettingUIManager {
             this.openNode(player, stack);
         }
         else if (selected.type === "item") {
-            const command = {
-                commandId: selected.command.commandId,
-                addonId: properties.id,
+            KairoUtils.sendKairoCommand(selected.command.targetAddonId, selected.command.commandId, {
                 playerId: player.id,
-            };
-            KairoUtils.sendKairoCommand(selected.command.targetAddonId, command);
+            });
         }
     }
 }
