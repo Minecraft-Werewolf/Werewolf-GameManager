@@ -4,6 +4,7 @@ import type { Condition, GameOutcome } from "./types/conditions";
 
 export interface GameOutcomeRule {
     id: string;
+    factionId?: string;
     priority: number;
     condition: Condition;
     outcome: GameOutcome;

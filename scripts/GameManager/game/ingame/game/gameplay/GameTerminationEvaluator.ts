@@ -30,7 +30,7 @@ export class GameTerminationEvaluator {
         ];
 
         const satisfied = rules
-            .filter((rule) => this.evaluateCondition(rule.condition, context))
+            .filter((rule) => this.evaluateCondition(rule.condition, context, rule.factionId))
             .sort((a, b) => b.priority - a.priority);
 
         if (satisfied.length === 0) {
@@ -50,9 +50,13 @@ export class GameTerminationEvaluator {
         } as const;
     }
 
-    public evaluateCondition(condition: Condition, context: GameContext): boolean {
+    public evaluateCondition(
+        condition: Condition,
+        context: GameContext,
+        factionId: string | undefined,
+    ): boolean {
         const normalized = this.conditonNormalizer.normalizeCondition(condition);
-        return this.conditonNormalizer.evalNormalized(normalized, context);
+        return this.conditonNormalizer.evalNormalized(normalized, context, factionId);
     }
 
     private buildContext(playersData: readonly PlayerData[]) {
@@ -81,6 +85,7 @@ export class GameTerminationEvaluator {
     private buildFactionVictoryRules(): GameOutcomeRule[] {
         return this.gameManager.getFactionDefinitions().map((faction) => ({
             id: `victory:${faction.id}`,
+            factionId: faction.id,
             priority: faction.victoryCondition.priority,
             condition: faction.victoryCondition.condition,
             outcome: {

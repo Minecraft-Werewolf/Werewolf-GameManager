@@ -118,7 +118,10 @@ export class GameResultPresentation {
         world.sendMessage({
             rawtext: [
                 ...lines.flatMap((line) => [...line.rawtext, { text: "\n" }]),
-                { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+                /**
+                 * プレイヤー名に日本語が含まれている場合にフォントがおかしくなってしまうため、
+                 * broadcast では下部に仕切り線を出力しない
+                 */
             ],
         });
     }

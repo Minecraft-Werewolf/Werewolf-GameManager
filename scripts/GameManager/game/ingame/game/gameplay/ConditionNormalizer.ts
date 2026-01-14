@@ -107,11 +107,14 @@ export class ConditionNormalizer {
         }
     }
 
-    public evalNormalized(condition: NormalizedCondition, ctx: GameContext): boolean {
+    public evalNormalized(
+        condition: NormalizedCondition,
+        ctx: GameContext,
+        factionId?: string | undefined,
+    ): boolean {
         switch (condition.type) {
-            case "standardFactionVictory": {
-                return this.evalStandardFactionVictory(ctx);
-            }
+            case "standardFactionVictory":
+                return this.evalStandardFactionVictory(ctx, factionId);
             case "comparison": {
                 const left = this.evalNumeric(condition.left, ctx);
                 const right = this.evalNumeric(condition.right, ctx);
@@ -133,34 +136,35 @@ export class ConditionNormalizer {
             }
 
             case "and":
-                return condition.conditions.every((c) => this.evalNormalized(c, ctx));
+                return condition.conditions.every((c) => this.evalNormalized(c, ctx, factionId));
 
             case "or":
-                return condition.conditions.some((c) => this.evalNormalized(c, ctx));
+                return condition.conditions.some((c) => this.evalNormalized(c, ctx, factionId));
 
             case "not":
-                return !this.evalNormalized(condition.condition, ctx);
+                return !this.evalNormalized(condition.condition, ctx, factionId);
         }
     }
 
-    private evalStandardFactionVictory(ctx: GameContext): boolean {
+    private evalStandardFactionVictory(ctx: GameContext, factionId: string | undefined): boolean {
+        if (factionId === undefined) return false;
+
         const factions = this.gameTerminationEvaluator
             .getGameManager()
             .getFactionDefinitions()
             .filter((f) => f.type === "standard");
 
-        for (const faction of factions) {
-            const selfAlive = (ctx.aliveCountByFaction[faction.id] ?? 0) > 0;
+        const selfAliveCount = ctx.aliveCountByFaction[factionId] ?? 0;
+        if (selfAliveCount <= 0) return false;
 
-            if (!selfAlive) continue;
+        let otherAliveCount = 0;
+        for (const other of factions) {
+            if (other.id === factionId) continue;
+            otherAliveCount += ctx.aliveCountByFaction[other.id] ?? 0;
+        }
 
-            const othersAlive = factions.some(
-                (f) => f.id !== faction.id && (ctx.aliveCountByFaction[f.id] ?? 0) > 0,
-            );
-
-            if (!othersAlive) {
-                return true;
-            }
+        if (otherAliveCount === 0) {
+            return true;
         }
 
         return false;
