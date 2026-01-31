@@ -1,5 +1,5 @@
 {
-    "name": "kairo",
+    "name": "werewolf-gamemanager",
     "version": "1.0.0",
     "description": "**Stable Script API**\r - @minecraft/server - 2.0.0",
     "main": "index.js",
@@ -11,7 +11,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com-shizu:Minecraft-Werewolf/Werewolf-StandardRoles.git"
+        "url": "git@github.com-shizu:Minecraft-Werewolf/Werewolf-GameManager.git"
     },
     "keywords": [],
     "author": "",
