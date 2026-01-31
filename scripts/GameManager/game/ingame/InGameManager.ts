@@ -2,7 +2,7 @@ import { world } from "@minecraft/server";
 import { GameManager } from "./game/GameManager";
 import { GameInitializer } from "./game/init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
-import { SYSTEMS } from "../../constants/systems";
+import { KAIRO_COMMAND_TARGET_ADDON_IDS, SYSTEMS } from "../../constants/systems";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
@@ -10,9 +10,11 @@ import { GameFinalizer } from "./game/GameFinalizer";
 import type { PlayerData } from "./game/gameplay/PlayerData";
 import { WerewolfGameDataManager } from "./game/gameplay/WerewolfGameDataManager";
 import { GamePreparationManager } from "./game/GamePreparationManager";
-import type { KairoResponse } from "../../../Kairo/utils/KairoUtils";
+import { KairoUtils, type KairoResponse } from "../../../Kairo/utils/KairoUtils";
 import type { FactionDefinition } from "../../data/factions";
 import type { RoleDefinition } from "../../data/roles";
+import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
+import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 
 export enum GamePhase {
     Initializing,
@@ -138,6 +140,7 @@ export class InGameManager {
 
     public setCurrentPhase(phase: GamePhase): void {
         this.currentPhase = phase;
+        this.broadcastPhaseChange(this.currentPhase);
     }
 
     public isResetPending(): boolean {
@@ -186,5 +189,17 @@ export class InGameManager {
 
     public getIngameConstants(): IngameConstants {
         return this.ingameConstants;
+    }
+
+    public broadcastPhaseChange(phase: GamePhase): void {
+        ConsoleManager.log(`Broadcasting phase change... New phase: ${phase}`);
+
+        KairoUtils.sendKairoCommand(
+            KAIRO_COMMAND_TARGET_ADDON_IDS.BROADCAST,
+            SCRIPT_EVENT_COMMAND_IDS.INGAME_PHASE_CHANGE,
+            {
+                newPhase: phase,
+            },
+        );
     }
 }

@@ -14,6 +14,7 @@ export const SCRIPT_EVENT_COMMAND_IDS = {
     OPEN_FORM_WEREWOLF_GAME_CREDIT: "open_form_werewolf_game_credit",
     WEREWOLF_INGAME_PLAYER_SKILL_TRIGGER: "werewolf_ingame_player_skill_trigger",
     GET_WEREWOLF_GAME_DATA: "getWerewolfGameData",
+    INGAME_PHASE_CHANGE: "ingame_phase_change",
 };
 
 export const SCRIPT_EVENT_MESSAGES = {
