@@ -8,7 +8,7 @@ export class PlayerInitializer {
     static create(outGameManager) {
         return new PlayerInitializer(outGameManager);
     }
-    initializePlayer(player) {
+    initializePlayer(player, isHost) {
         const wantsToJoinNextGame = player.getDynamicProperty("wantsToJoinNextGame") ?? true;
         player.setDynamicProperty("wantsToJoinNextGame", wantsToJoinNextGame);
         // ゲームモード
@@ -23,8 +23,9 @@ export class PlayerInitializer {
             inventory.container.setItem(SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_SPECTATE, new ItemStack(ITEM_USE.GAME_SPECTATE_ITEM_ID, 1));
         else
             inventory.container.setItem(SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_JOIN, new ItemStack(ITEM_USE.GAME_JOIN_ITEM_ID, 1));
-        // ホスト機能作るまでは、ホスト専用アイテムも全員に配っちゃう (デバッグがだるい)
-        inventory.container.setItem(SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_STARTER, new ItemStack(ITEM_USE.GAME_STARTER_ITEM_ID, 1));
-        inventory.container.setItem(SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_SETTINGS, new ItemStack(ITEM_USE.GAME_SETTINGS_ITEM_ID, 1));
+        if (isHost) {
+            inventory.container.setItem(SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_STARTER, new ItemStack(ITEM_USE.GAME_STARTER_ITEM_ID, 1));
+            inventory.container.setItem(SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_SETTINGS, new ItemStack(ITEM_USE.GAME_SETTINGS_ITEM_ID, 1));
+        }
     }
 }

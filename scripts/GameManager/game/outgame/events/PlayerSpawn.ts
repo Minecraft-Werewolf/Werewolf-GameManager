@@ -1,6 +1,7 @@
 import { PlayerJoinAfterEvent, PlayerSpawnAfterEvent, world } from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { OutGameEventManager } from "./OutGameEventManager";
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
 
 export class OutGamePlayerSpawnHandler extends BaseEventHandler<undefined, PlayerSpawnAfterEvent> {
     private constructor(private readonly outGameEventManager: OutGameEventManager) {
@@ -12,9 +13,18 @@ export class OutGamePlayerSpawnHandler extends BaseEventHandler<undefined, Playe
 
     protected afterEvent = world.afterEvents.playerSpawn;
 
-    protected handleAfter(ev: PlayerSpawnAfterEvent): void {
+    protected async handleAfter(ev: PlayerSpawnAfterEvent): Promise<void> {
         const { initialSpawn, player } = ev;
 
-        this.outGameEventManager.getOutGameManager().initializePlayer(player);
+        const players = world.getPlayers();
+        const alivePlayerIds = new Set(players.map((p) => p.id));
+        const playersKairoData = (await KairoUtils.getPlayersKairoData())
+            .filter((data) => alivePlayerIds.has(data.playerId))
+            .sort((a, b) => a.joinOrder - b.joinOrder);
+
+        const leaderPlayerId = playersKairoData[0]?.playerId;
+        const isLeader = player.id === leaderPlayerId;
+
+        this.outGameEventManager.getOutGameManager().initializePlayer(player, isLeader);
     }
 }

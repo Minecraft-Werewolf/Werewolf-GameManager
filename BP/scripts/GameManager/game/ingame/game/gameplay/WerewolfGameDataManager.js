@@ -4,7 +4,7 @@ export class WerewolfGameDataManager {
     constructor(inGameManager) {
         this.inGameManager = inGameManager;
         this._remainingTicks = 0;
-        this._remainingTicks = 6000; // 後から設定をいじれるような仕組みを作った時に、ここでそれを使って初期化するようにする
+        this._remainingTicks = 12000; // 後から設定をいじれるような仕組みを作った時に、ここでそれを使って初期化するようにする
         this.playersDataManager = PlayersDataManager.create(this);
     }
     static create(inGameManager) {
