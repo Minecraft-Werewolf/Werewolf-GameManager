@@ -33,7 +33,7 @@ export interface RoleDefinition {
     };
     color?: string; // 指定しなければ、チームに基づいて自動で決定される
     divinationResult?: string; // 占い結果 roleId (別アドオンでも可)
-    mediumResult?: string; // 霊視結果 roleId (別アドオンでも可)
+    clairvoyanceResult?: string; // 霊視結果 roleId (別アドオンでも可)
     knownRoles?: string[]; // 初期に知っている役職
     skills?: SkillDefinition[]; // 役職に紐づくスキル定義
     handleGameEvents?: RoleSkillEvents; // スキルのトリガーとなるイベント

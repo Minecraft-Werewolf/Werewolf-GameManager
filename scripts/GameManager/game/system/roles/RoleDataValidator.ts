@@ -26,7 +26,8 @@ export class RoleDataValidator {
         if (data.color !== undefined && !this.isColorType(data.color)) return false;
         if (data.divinationResult !== undefined && !this.isResultType(data.divinationResult))
             return false;
-        if (data.mediumResult !== undefined && !this.isResultType(data.mediumResult)) return false;
+        if (data.clairvoyanceResult !== undefined && !this.isResultType(data.clairvoyanceResult))
+            return false;
         if (data.knownRoles !== undefined && !this.isStringArray(data.knownRoles)) return false;
 
         if (data.skills !== undefined) {
