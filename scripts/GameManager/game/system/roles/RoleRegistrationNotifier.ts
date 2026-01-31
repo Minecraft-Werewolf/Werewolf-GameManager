@@ -1,5 +1,5 @@
-import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
-import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
+import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
+import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
 import type { RoleManager } from "./RoleManager";
 import type { ValidateRoleRegistrationResult } from "./RoleRegistratonValidator.ts";

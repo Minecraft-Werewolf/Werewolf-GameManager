@@ -7,7 +7,7 @@ import {
 } from "../../constants/scriptevent";
 import { ConsoleManager } from "../../utils/ConsoleManager";
 import { KairoUtils, type KairoCommand } from "../../utils/KairoUtils";
-import { properties } from "../../../properties";
+import { properties } from "../../../../properties";
 
 export class AddonReceiver {
     private constructor(private readonly addonManager: AddonManager) {}

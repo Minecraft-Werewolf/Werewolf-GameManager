@@ -1,7 +1,7 @@
 import { system, type Vector3 } from "@minecraft/server";
 import { SCRIPT_EVENT_COMMAND_TYPES, SCRIPT_EVENT_ID_PREFIX } from "../constants/scriptevent";
-import { properties } from "../../properties";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../constants/system";
+import { properties } from "../../../properties";
 
 export interface KairoCommand {
     sourceAddonId: string;

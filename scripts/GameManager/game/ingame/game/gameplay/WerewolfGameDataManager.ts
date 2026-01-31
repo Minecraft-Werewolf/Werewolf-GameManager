@@ -1,4 +1,4 @@
-import { KairoUtils, type KairoResponse } from "../../../../../Kairo/utils/KairoUtils";
+import { KairoUtils, type KairoResponse } from "../../../../../@core/kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../../../../data/roles";
 import type { InGameManager } from "../../InGameManager";
 import type { PlayerData } from "./PlayerData";

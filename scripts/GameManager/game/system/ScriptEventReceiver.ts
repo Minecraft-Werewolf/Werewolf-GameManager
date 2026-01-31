@@ -1,4 +1,4 @@
-import { type KairoCommand, type KairoResponse } from "../../../Kairo/utils/KairoUtils";
+import type { KairoCommand, KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 import type { SystemManager } from "../SystemManager";
 

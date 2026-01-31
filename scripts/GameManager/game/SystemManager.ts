@@ -7,10 +7,14 @@ import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
-import { KairoUtils, type KairoCommand, type KairoResponse } from "../../Kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../data/roles";
 import { FactionManager } from "./system/factions/FactionManager";
 import type { FactionDefinition } from "../data/factions";
+import {
+    KairoUtils,
+    type KairoCommand,
+    type KairoResponse,
+} from "../../@core/kairo/utils/KairoUtils";
 
 export enum GameWorldState {
     OutGame,

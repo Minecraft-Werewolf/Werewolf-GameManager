@@ -2,7 +2,7 @@ import { world, type Player } from "@minecraft/server";
 import type { SystemManager } from "../SystemManager";
 import { OutGameEventManager } from "./events/OutGameEventManager";
 import { PlayerInitializer } from "./PlayerInitializer";
-import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
+import { KairoUtils } from "../../../@core/kairo/utils/KairoUtils";
 
 export class OutGameManager {
     private readonly outGameEventManager: OutGameEventManager;

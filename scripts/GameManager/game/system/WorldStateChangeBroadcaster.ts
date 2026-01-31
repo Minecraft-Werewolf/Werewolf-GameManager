@@ -1,9 +1,9 @@
-import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
-import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../constants/systems";
 import type { IngameConstants } from "../ingame/InGameManager";
+import { KairoUtils } from "../../../@core/kairo/utils/KairoUtils";
+import { ConsoleManager } from "../../../@core/kairo/utils/ConsoleManager";
 
 export class WorldStateChangeBroadcaster {
     private constructor(private readonly systemManager: SystemManager) {}

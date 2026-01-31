@@ -1,8 +1,8 @@
-import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import type { RoleManager } from "./RoleManager";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
-import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../../constants/systems";
+import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
+import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
 
 export class RoleReRegistrationRequester {
     private constructor(private readonly roleManager: RoleManager) {}

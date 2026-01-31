@@ -3,10 +3,10 @@ import { BaseEventHandler } from "../../events/BaseEventHandler";
 import { ITEM_USE } from "../../../constants/itemuse";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
 import type { InGameEventManager } from "./InGameEventManager";
-import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS, SYSTEMS } from "../../../constants/systems";
 import type { GameEventType } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
+import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
 
 export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {

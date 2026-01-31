@@ -1,6 +1,6 @@
-import { Kairo } from "./Kairo/index";
+import { Kairo } from "./@core/kairo";
+import type { KairoCommand, KairoResponse } from "./@core/kairo/utils/KairoUtils";
 import { SystemManager } from "./GameManager/game/SystemManager";
-import type { KairoCommand, KairoResponse } from "./Kairo/utils/KairoUtils";
 
 async function main(): Promise<void> {
     Kairo.init(); // client

@@ -1,10 +1,10 @@
 import { Player, world, type RawMessage } from "@minecraft/server";
 import type { GameSettingManager } from "./GameSettingManager";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
-import { ConsoleManager } from "../../../../Kairo/utils/ConsoleManager";
 import type { RoleDefinition } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
+import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
 
 // クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {

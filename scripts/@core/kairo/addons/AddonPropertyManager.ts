@@ -1,5 +1,5 @@
 import type { Kairo } from "..";
-import { properties, type SemVer } from "../../properties";
+import { properties, type SemVer } from "../../../properties";
 import { KairoUtils } from "../utils/KairoUtils";
 
 export interface AddonProperty {

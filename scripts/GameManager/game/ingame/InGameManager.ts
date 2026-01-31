@@ -10,11 +10,11 @@ import { GameFinalizer } from "./game/GameFinalizer";
 import type { PlayerData } from "./game/gameplay/PlayerData";
 import { WerewolfGameDataManager } from "./game/gameplay/WerewolfGameDataManager";
 import { GamePreparationManager } from "./game/GamePreparationManager";
-import { KairoUtils, type KairoResponse } from "../../../Kairo/utils/KairoUtils";
 import type { FactionDefinition } from "../../data/factions";
 import type { RoleDefinition } from "../../data/roles";
-import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
+import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
+import { ConsoleManager } from "../../../@core/kairo/utils/ConsoleManager";
 
 export enum GamePhase {
     Initializing,

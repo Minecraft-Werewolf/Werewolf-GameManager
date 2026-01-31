@@ -1,4 +1,4 @@
-import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
+import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../../../data/roles";
 import type { RoleManager } from "./RoleManager";
 
