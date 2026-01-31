@@ -1,31 +1,46 @@
-import { HudElement, HudVisibility, InputPermissionCategory, Player, world, } from "@minecraft/server";
-import { DEFAULT_SETTINGS } from "../../constants/settings";
-import { CountdownManager } from "./utils/CountdownManager";
-import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
-import { SYSTEMS } from "../../constants/systems";
-import { GamePhase } from "./InGameManager";
+import {
+    HudElement,
+    HudVisibility,
+    InputPermissionCategory,
+    Player,
+    world,
+} from "@minecraft/server";
+import { CountdownManager } from "../utils/CountdownManager";
+import { GamePhase, type InGameManager } from "../InGameManager";
+import { DEFAULT_SETTINGS } from "../../../constants/settings";
+import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
+import { SYSTEMS } from "../../../constants/systems";
+
 export class GamePreparationManager {
-    constructor(inGameManager) {
-        this.inGameManager = inGameManager;
-        this.countdownManager = CountdownManager.create(DEFAULT_SETTINGS.GAME_PREPARATION_TIME, DEFAULT_SETTINGS.VERBOSE_COUNTDOWN);
+    private readonly countdownManager: CountdownManager;
+    private constructor(private readonly inGameManager: InGameManager) {
+        this.countdownManager = CountdownManager.create(
+            DEFAULT_SETTINGS.GAME_PREPARATION_TIME,
+            DEFAULT_SETTINGS.VERBOSE_COUNTDOWN,
+        );
     }
-    static create(inGameManager) {
+    public static create(inGameManager: InGameManager): GamePreparationManager {
         return new GamePreparationManager(inGameManager);
     }
-    async runPreparationAsync() {
+
+    public async runPreparationAsync(): Promise<void> {
         this.inGameManager.setCurrentPhase(GamePhase.Preparing);
         const players = world.getPlayers();
+
         players.forEach((player) => {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, true);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, true);
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [HudElement.Crosshair]);
+
             this.showRoleToPlayer(player, DEFAULT_SETTINGS.GAME_PREPARATION_TIME);
         });
+
         try {
             await this.countdownManager.startAsync({
                 onNormalTick: (seconds) => {
                     world.sendMessage({
-                        translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE,
+                        translate:
+                            WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_MESSAGE,
                         with: [seconds.toString()],
                     });
                     players.forEach((player) => {
@@ -38,7 +53,8 @@ export class GamePreparationManager {
                 },
                 onWarningTick: (seconds) => {
                     world.sendMessage({
-                        translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE,
+                        translate:
+                            WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN_WARNING_MESSAGE,
                         with: [seconds.toString()],
                     });
                     players.forEach((player) => {
@@ -62,11 +78,11 @@ export class GamePreparationManager {
                     });
                 },
             });
-        }
-        catch (err) {
+        } catch (err) {
             console.warn("[GamePreparationManager] Countdown stopped:", err);
             return;
         }
+
         players.forEach((player) => {
             player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [
                 HudElement.Hotbar,
@@ -74,40 +90,47 @@ export class GamePreparationManager {
             ]);
         });
     }
-    stopPreparation() {
+
+    public stopPreparation(): void {
         this.countdownManager.stop();
     }
-    showRoleToPlayer(player, seconds) {
+
+    private showRoleToPlayer(player: Player, seconds: number): void {
         const playerData = this.inGameManager.getPlayerData(player.id);
-        if (!playerData)
-            return;
-        if (!playerData.role)
-            return;
-        player.onScreenDisplay.setTitle({
-            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SHOW_YOUR_ROLE_TITLE,
-            with: {
-                rawtext: [
-                    { text: playerData.role.color ?? SYSTEMS.COLOR_CODE.RESET },
-                    playerData.role.name,
-                    { text: SYSTEMS.COLOR_CODE.RESET },
-                ],
+        if (!playerData) return;
+        if (!playerData.role) return;
+
+        player.onScreenDisplay.setTitle(
+            {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SHOW_YOUR_ROLE_TITLE,
+                with: {
+                    rawtext: [
+                        { text: playerData.role.color ?? SYSTEMS.COLOR_CODE.RESET },
+                        playerData.role.name,
+                        { text: SYSTEMS.COLOR_CODE.RESET },
+                    ],
+                },
             },
-        }, {
-            subtitle: {
-                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN,
-                with: [seconds.toString()],
+            {
+                subtitle: {
+                    translate:
+                        WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_PREPARATION_COUNTDOWN,
+                    with: [seconds.toString()],
+                },
+                fadeInDuration: SYSTEMS.YOUR_ROLE_TITLE.FADEIN_DURATION,
+                stayDuration: SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION,
+                fadeOutDuration: SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION,
             },
-            fadeInDuration: SYSTEMS.YOUR_ROLE_TITLE.FADEIN_DURATION,
-            stayDuration: SYSTEMS.SHOW_GAME_TITLE.STAY_DURATION,
-            fadeOutDuration: SYSTEMS.SHOW_GAME_TITLE.FADEOUT_DURATION,
-        });
+        );
+
         player.sendMessage({
             rawtext: [
                 {
                     text: SYSTEMS.SEPARATOR.LINE_ORANGE + "\n",
                 },
                 {
-                    translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SHOW_YOUR_ROLE_MESSAGE,
+                    translate:
+                        WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SHOW_YOUR_ROLE_MESSAGE,
                     with: {
                         rawtext: [
                             { text: playerData.role.color ?? SYSTEMS.COLOR_CODE.RESET },

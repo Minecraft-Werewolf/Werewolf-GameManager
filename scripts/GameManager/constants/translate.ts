@@ -77,4 +77,10 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
         "werewolf-gamemanager.game.result.presentation.annihilation.title",
     WEREWOLF_GAME_RESULT_ANNIHILATION_MESSAGE:
         "werewolf-gamemanager.game.result.presentation.annihilation.message",
+
+    SKILL_NO_REMAINING_USES_ERROR: "werewolf-gamemanager.skill.noRemainingUses.error",
+    SKILL_ON_COOLDOWN_ERROR: "werewolf-gamemanager.skill.onCooldown.error",
+    WEREWOLF_GAME_ACTIONBAR_SKILL_READY: "werewolf-gamemanager.game.actionbar.skill.ready",
+    
+    WEREWOLF_GAME_ACTIONBAR_REMAINING_TIME: "werewolf-gamemanager.game.actionbar.remainingTime",
 };

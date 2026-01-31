@@ -1,3 +1,4 @@
+import type { IngameConstants } from "../ingame/InGameManager";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 
 export class WorldStateChanger {
@@ -11,9 +12,19 @@ export class WorldStateChanger {
         const current = this.systemManager.getWorldState();
         if (current === next) return;
 
+        let ingameConstants: IngameConstants | null = null;
+
         switch (next) {
             case GameWorldState.InGame:
-                this.toInGame();
+                ingameConstants = {
+                    roleDefinitions: this.mapToObject(
+                        this.systemManager.getRegisteredRoleDefinitions(),
+                    ),
+                    factionDefinitions: this.mapToObject(
+                        this.systemManager.getRegisteredFactionDefinitions(),
+                    ),
+                };
+                this.toInGame(ingameConstants);
                 break;
 
             case GameWorldState.OutGame:
@@ -22,14 +33,14 @@ export class WorldStateChanger {
         }
 
         if (!this.isInitialized) this.isInitialized = true;
-        else this.systemManager.broadcastWorldStateChange(next);
+        else this.systemManager.broadcastWorldStateChange(next, ingameConstants);
     }
 
-    private toInGame(): void {
+    private toInGame(ingameConstants: IngameConstants): void {
         this.systemManager.getOutGameManager()?.getOutGameEventManager().unsubscribeAll();
         this.systemManager.setOutGameManager(null);
 
-        const InGameManager = this.systemManager.createInGameManager();
+        const InGameManager = this.systemManager.createInGameManager(ingameConstants);
         InGameManager.getInGameEventManager().subscribeAll();
         this.systemManager.setInGameManager(InGameManager);
 
@@ -45,5 +56,9 @@ export class WorldStateChanger {
         this.systemManager.setOutGameManager(OutGameManager);
 
         this.systemManager.setWorldState(GameWorldState.OutGame);
+    }
+
+    private mapToObject<V>(map: Map<string, V>): Record<string, V> {
+        return Object.fromEntries(map);
     }
 }

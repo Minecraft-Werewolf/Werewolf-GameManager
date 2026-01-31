@@ -1,5 +1,4 @@
 import { world } from "@minecraft/server";
-import { GamePreparationManager } from "./GamePreparationManager";
 import { GameManager } from "./game/GameManager";
 import { GameInitializer } from "./game/init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
@@ -7,8 +6,9 @@ import { SYSTEMS } from "../../constants/systems";
 import { GameWorldState } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
-import { PlayersDataManager } from "./game/gameplay/PlayersDataManager";
 import { GameFinalizer } from "./game/GameFinalizer";
+import { WerewolfGameDataManager } from "./game/gameplay/WerewolfGameDataManager";
+import { GamePreparationManager } from "./game/GamePreparationManager";
 export var GamePhase;
 (function (GamePhase) {
     GamePhase[GamePhase["Initializing"] = 0] = "Initializing";
@@ -18,8 +18,9 @@ export var GamePhase;
     GamePhase[GamePhase["Waiting"] = 4] = "Waiting";
 })(GamePhase || (GamePhase = {}));
 export class InGameManager {
-    constructor(systemManager) {
+    constructor(systemManager, ingameConstants) {
         this.systemManager = systemManager;
+        this.ingameConstants = ingameConstants;
         this.currentPhase = GamePhase.Waiting;
         this.isResetRequested = false;
         this.gameInitializer = GameInitializer.create(this);
@@ -28,10 +29,10 @@ export class InGameManager {
         this.gameTerminator = GameTerminator.create(this);
         this.gameFinalizer = GameFinalizer.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
-        this.playersDataManager = PlayersDataManager.create(this);
+        this.werewolfGameDataManager = WerewolfGameDataManager.create(this);
     }
-    static create(systemManager) {
-        return new InGameManager(systemManager);
+    static create(systemManager, ingameConstants) {
+        return new InGameManager(systemManager, ingameConstants);
     }
     async gameStart() {
         this.isResetRequested = false;
@@ -112,13 +113,16 @@ export class InGameManager {
         return this.inGameEventManager;
     }
     getPlayerData(playerId) {
-        return this.playersDataManager.get(playerId);
+        return this.werewolfGameDataManager.getPlayerData(playerId);
     }
     getPlayersData() {
-        return this.playersDataManager.getPlayersData();
+        return this.werewolfGameDataManager.getPlayersData();
     }
     getPlayersDataManager() {
-        return this.playersDataManager;
+        return this.werewolfGameDataManager.getPlayersDataManager();
+    }
+    getWerewolfGameDataManager() {
+        return this.werewolfGameDataManager;
     }
     getRoleComposition() {
         return this.systemManager.getRoleComposition();
@@ -128,5 +132,11 @@ export class InGameManager {
     }
     getFactionDefinitions() {
         return this.systemManager.getFactionDefinitions();
+    }
+    getWerewolfGameDataDTO() {
+        return this.werewolfGameDataManager.getWerewolfGameDataDTO();
+    }
+    getIngameConstants() {
+        return this.ingameConstants;
     }
 }

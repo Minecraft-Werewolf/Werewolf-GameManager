@@ -11,9 +11,14 @@ export class WorldStateChanger {
         const current = this.systemManager.getWorldState();
         if (current === next)
             return;
+        let ingameConstants = null;
         switch (next) {
             case GameWorldState.InGame:
-                this.toInGame();
+                ingameConstants = {
+                    roleDefinitions: this.mapToObject(this.systemManager.getRegisteredRoleDefinitions()),
+                    factionDefinitions: this.mapToObject(this.systemManager.getRegisteredFactionDefinitions()),
+                };
+                this.toInGame(ingameConstants);
                 break;
             case GameWorldState.OutGame:
                 this.toOutGame();
@@ -22,12 +27,12 @@ export class WorldStateChanger {
         if (!this.isInitialized)
             this.isInitialized = true;
         else
-            this.systemManager.broadcastWorldStateChange(next);
+            this.systemManager.broadcastWorldStateChange(next, ingameConstants);
     }
-    toInGame() {
+    toInGame(ingameConstants) {
         this.systemManager.getOutGameManager()?.getOutGameEventManager().unsubscribeAll();
         this.systemManager.setOutGameManager(null);
-        const InGameManager = this.systemManager.createInGameManager();
+        const InGameManager = this.systemManager.createInGameManager(ingameConstants);
         InGameManager.getInGameEventManager().subscribeAll();
         this.systemManager.setInGameManager(InGameManager);
         this.systemManager.setWorldState(GameWorldState.InGame);
@@ -39,5 +44,8 @@ export class WorldStateChanger {
         OutGameManager.getOutGameEventManager().subscribeAll();
         this.systemManager.setOutGameManager(OutGameManager);
         this.systemManager.setWorldState(GameWorldState.OutGame);
+    }
+    mapToObject(map) {
+        return Object.fromEntries(map);
     }
 }

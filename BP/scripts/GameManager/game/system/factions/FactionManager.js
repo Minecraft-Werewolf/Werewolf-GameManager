@@ -38,10 +38,10 @@ export class FactionManager {
         this.clearFactions();
         this.factionReRegistrationRequester.request();
     }
-    getRegisteredRoleDefinitions() {
+    getRegisteredFactionDefinitions() {
         return this.registeredFactionDefinitions;
     }
-    getSelectedRolesForNextGame() {
+    getSelectedFactionsForNextGame() {
         return this.selectedFactionsForNextGame;
     }
     getFactionData(factionId) {

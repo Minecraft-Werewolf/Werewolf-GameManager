@@ -64,3 +64,9 @@ werewolf-gamemanager.game.yourRole.message=§fYour role is %1%2%3§r
 werewolf-gamemanager.game.preparation.countdown=§fGame starting in %s seconds§r
 
 werewolf-gamemanager.game.actionbar.roleName=§fRole: %1%2%3§r
+
+werewolf-gamemanager.skill.noRemainingUses.error=§cYou cannot use any more skills§r
+werewolf-gamemanager.skill.onCooldown.error=§cSkill is on cooldown for %s seconds§r
+werewolf-gamemanager.game.actionbar.skill.ready=§bReady§r
+
+werewolf-gamemanager.game.actionbar.remainingTime=§bRemaining Time: %ss§r

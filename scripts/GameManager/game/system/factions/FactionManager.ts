@@ -59,11 +59,11 @@ export class FactionManager {
         this.factionReRegistrationRequester.request();
     }
 
-    public getRegisteredRoleDefinitions(): Map<string, FactionDefinition[]> {
+    public getRegisteredFactionDefinitions(): Map<string, FactionDefinition[]> {
         return this.registeredFactionDefinitions;
     }
 
-    public getSelectedRolesForNextGame(): FactionDefinition[] {
+    public getSelectedFactionsForNextGame(): FactionDefinition[] {
         return this.selectedFactionsForNextGame;
     }
 

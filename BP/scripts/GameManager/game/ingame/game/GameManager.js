@@ -2,7 +2,6 @@ import { world } from "@minecraft/server";
 import { GamePhase, InGameManager } from "../InGameManager";
 import { IntervalManager } from "../utils/IntervalManager";
 import { ItemManager } from "./gameplay/ItemManager";
-import { PlayersDataManager } from "./gameplay/PlayersDataManager";
 import { GameTerminationEvaluator } from "./gameplay/GameTerminationEvaluator";
 import { ActionBarManager } from "./gameplay/ActionBarManager";
 import { PlayerData } from "./gameplay/PlayerData";
@@ -17,6 +16,7 @@ export class GameManager {
         this.onTickUpdate = () => {
             if (!this.isRunning)
                 return;
+            this.inGameManager.getWerewolfGameDataManager().updateRemainingTicks();
             const players = world.getPlayers();
             const playersData = this.getPlayersData();
             this.actionBarManager.showActionBarToPlayers(players);
@@ -36,6 +36,14 @@ export class GameManager {
         this.onSecondUpdate = () => {
             if (!this.isRunning)
                 return;
+            const playersData = this.getPlayersData();
+            playersData.forEach((playerData) => {
+                playerData.skillStates.forEach((skillState) => {
+                    if (skillState.cooldownRemaining > 0) {
+                        skillState.cooldownRemaining -= 1;
+                    }
+                });
+            });
         };
         this.actionBarManager = ActionBarManager.create(this);
         this.intervalManager = IntervalManager.create();
@@ -85,16 +93,13 @@ export class GameManager {
     getPlayersData() {
         return this.inGameManager.getPlayersData();
     }
-    getPlayersDataManager() {
-        return this.inGameManager.getPlayersDataManager();
-    }
     getFactionDefinitions() {
         return this.inGameManager.getFactionDefinitions();
     }
     getDefaultOutcomeRules() {
         return defaultGameOutcomeRules;
     }
-    getRemainingTime() {
-        return 100; // 一旦100で返しておく
+    getRemainingTicks() {
+        return this.inGameManager.getWerewolfGameDataManager().remainingTicks;
     }
 }

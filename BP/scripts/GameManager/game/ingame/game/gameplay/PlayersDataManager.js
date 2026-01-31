@@ -1,11 +1,11 @@
 import { PlayerData } from "./PlayerData";
 export class PlayersDataManager {
-    constructor(inGameManager) {
-        this.inGameManager = inGameManager;
+    constructor(werewolfGameDataManager) {
+        this.werewolfGameDataManager = werewolfGameDataManager;
         this.dataMap = new Map();
     }
-    static create(inGameManager) {
-        return new PlayersDataManager(inGameManager);
+    static create(werewolfGameDataManager) {
+        return new PlayersDataManager(werewolfGameDataManager);
     }
     init(player, state = "participant") {
         if (this.dataMap.has(player.id))
@@ -28,6 +28,6 @@ export class PlayersDataManager {
         this.dataMap.clear();
     }
     getInGameManager() {
-        return this.inGameManager;
+        return this.werewolfGameDataManager.getInGameManager();
     }
 }

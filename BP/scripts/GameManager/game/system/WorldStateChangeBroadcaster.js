@@ -10,13 +10,14 @@ export class WorldStateChangeBroadcaster {
     static create(systemManager) {
         return new WorldStateChangeBroadcaster(systemManager);
     }
-    broadcast(next) {
+    broadcast(next, ingameConstants) {
         ConsoleManager.log(`Broadcasting world state change... New state: ${next}`);
         const nextState = next === GameWorldState.InGame
             ? SCRIPT_EVENT_MESSAGES.IN_GAME
             : SCRIPT_EVENT_MESSAGES.OUT_GAME;
         KairoUtils.sendKairoCommand(KAIRO_COMMAND_TARGET_ADDON_IDS.BROADCAST, SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE, {
             newState: nextState,
+            ingameConstants,
         });
     }
 }

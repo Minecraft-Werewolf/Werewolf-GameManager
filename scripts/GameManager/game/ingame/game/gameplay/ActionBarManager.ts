@@ -39,6 +39,32 @@ export class ActionBarManager {
         };
         actionBarRawMessage.rawtext.push(roleName, lineBreak);
 
+        // スキルクールタイム表示
+        const skillCTs: RawMessage[] = [];
+        playerData.skillStates.forEach((skillState, skillId) => {
+            const cooldown =
+                skillState.cooldownRemaining > 0
+                    ? { text: `${skillState.cooldownRemaining}s` }
+                    : {
+                          translate:
+                              WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_ACTIONBAR_SKILL_READY,
+                      };
+
+            skillCTs.push(skillState.name, { text: ": " }, cooldown, lineBreak);
+        });
+
+        actionBarRawMessage.rawtext.push(...skillCTs);
+
+        // 制限時間表示
+        actionBarRawMessage.rawtext.push(lineBreak);
+        const remainingTicks = this.gameManager.getRemainingTicks();
+        const remainingTimeSeconds = Math.ceil(remainingTicks / 20);
+        const remainingTimeMessage: RawMessage = {
+            translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_ACTIONBAR_REMAINING_TIME,
+            with: [remainingTimeSeconds.toString()],
+        };
+        actionBarRawMessage.rawtext.push(remainingTimeMessage, lineBreak);
+
         player.onScreenDisplay.setActionBar(actionBarRawMessage);
     }
 }

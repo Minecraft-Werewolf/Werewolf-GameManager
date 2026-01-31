@@ -1,5 +1,5 @@
 import { world, type Player } from "@minecraft/server";
-import { InGameManager } from "./ingame/InGameManager";
+import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
 import { RoleManager } from "./system/roles/RoleManager";
@@ -7,7 +7,7 @@ import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
-import type { KairoCommand, KairoResponse } from "../../Kairo/utils/KairoUtils";
+import { KairoUtils, type KairoCommand, type KairoResponse } from "../../Kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../data/roles";
 import { FactionManager } from "./system/factions/FactionManager";
 import type { FactionDefinition } from "../data/factions";
@@ -102,16 +102,19 @@ export class SystemManager {
         this.outGameManager = v;
     }
 
-    public createInGameManager(): InGameManager {
-        return InGameManager.create(this);
+    public createInGameManager(ingameConstants: IngameConstants): InGameManager {
+        return InGameManager.create(this, ingameConstants);
     }
 
     public createOutGameManager(): OutGameManager {
         return OutGameManager.create(this);
     }
 
-    public broadcastWorldStateChange(next: GameWorldState): void {
-        this.worldStateChangeBroadcaster.broadcast(next);
+    public broadcastWorldStateChange(
+        next: GameWorldState,
+        ingameConstants: IngameConstants | null,
+    ): void {
+        this.worldStateChangeBroadcaster.broadcast(next, ingameConstants);
     }
 
     public openSettingsForm(player: Player): void {
@@ -159,6 +162,20 @@ export class SystemManager {
     }
 
     public getFactionDefinitions() {
-        return this.factionManager.getSelectedRolesForNextGame();
+        return this.factionManager.getSelectedFactionsForNextGame();
+    }
+
+    public getRegisteredFactionDefinitions(): Map<string, FactionDefinition[]> {
+        return this.factionManager.getRegisteredFactionDefinitions();
+    }
+
+    public getWerewolfGameDataDTO(): KairoResponse {
+        if (!this.inGameManager)
+            return KairoUtils.buildKairoResponse(
+                {},
+                false,
+                "The game is not currently in progress.",
+            );
+        return this.inGameManager.getWerewolfGameDataDTO();
     }
 }

@@ -1,15 +1,12 @@
-import type { Player } from "@minecraft/server";
+import type { Player, RawMessage } from "@minecraft/server";
 import type { RoleDefinition } from "../../../../data/roles";
 import type { PlayersDataManager } from "./PlayersDataManager";
 
 export type ParticipationState = "participant" | "spectator";
-
-export interface PlayerDataDTO {
-    playerId: string;
-    name: string;
-    isAlive: boolean;
-    isVictory: boolean;
-    role: RoleDefinition | null;
+export interface PlayerSkillState {
+    name: RawMessage;
+    cooldownRemaining: number;
+    remainingUses: number;
 }
 
 export class PlayerData {
@@ -17,6 +14,7 @@ export class PlayerData {
     public isAlive: boolean = true;
     public isVictory: boolean = false;
     public role: RoleDefinition | null = null;
+    public readonly skillStates = new Map<string, PlayerSkillState>();
 
     constructor(
         private readonly playerDataManager: PlayersDataManager,
@@ -33,6 +31,8 @@ export class PlayerData {
     public setRole(role: RoleDefinition): void {
         this.role = role;
 
+        this.initSkillStates();
+
         const faction = this.playerDataManager
             .getInGameManager()
             .getFactionData(this.role.factionId);
@@ -40,6 +40,26 @@ export class PlayerData {
 
         if (this.role.color === undefined) {
             this.role.color = faction.defaultColor;
+        }
+    }
+
+    private initSkillStates(): void {
+        this.skillStates.clear();
+
+        if (!this.role?.skills) return;
+
+        const gameManager = this.playerDataManager.getInGameManager();
+
+        for (const skill of this.role.skills) {
+            // number | string なので、string の場合の解決を後に作る必要がある
+            // const cooldown = gameManager.resolveSkillValue(skill.cooldown);
+            // const maxUses = gameManager.resolveSkillValue(skill.maxUses);
+
+            this.skillStates.set(skill.id, {
+                name: skill.name,
+                cooldownRemaining: 0,
+                remainingUses: 3, // とりあえず3で固定しておく
+            });
         }
     }
 }

@@ -2,7 +2,6 @@ import { world, type RawMessage } from "@minecraft/server";
 import { GamePhase, InGameManager } from "../InGameManager";
 import { IntervalManager } from "../utils/IntervalManager";
 import { ItemManager } from "./gameplay/ItemManager";
-import { PlayersDataManager } from "./gameplay/PlayersDataManager";
 import { GameTerminationEvaluator } from "./gameplay/GameTerminationEvaluator";
 import { ActionBarManager } from "./gameplay/ActionBarManager";
 import { PlayerData } from "./gameplay/PlayerData";
@@ -72,6 +71,8 @@ export class GameManager {
 
     private onTickUpdate = (): void => {
         if (!this.isRunning) return;
+        this.inGameManager.getWerewolfGameDataManager().updateRemainingTicks();
+
         const players = world.getPlayers();
         const playersData = this.getPlayersData();
 
@@ -92,13 +93,23 @@ export class GameManager {
         this.finishGame();
     };
 
+    private onSecondUpdate = (): void => {
+        if (!this.isRunning) return;
+
+        const playersData = this.getPlayersData();
+
+        playersData.forEach((playerData) => {
+            playerData.skillStates.forEach((skillState) => {
+                if (skillState.cooldownRemaining > 0) {
+                    skillState.cooldownRemaining -= 1;
+                }
+            });
+        });
+    };
+
     public get gameResult(): ResolvedGameOutcome | null {
         return this._gameResult;
     }
-
-    private onSecondUpdate = (): void => {
-        if (!this.isRunning) return;
-    };
 
     private cleanup(): void {
         this.intervalManager.clearAll();
@@ -115,10 +126,6 @@ export class GameManager {
         return this.inGameManager.getPlayersData();
     }
 
-    public getPlayersDataManager(): PlayersDataManager {
-        return this.inGameManager.getPlayersDataManager();
-    }
-
     public getFactionDefinitions() {
         return this.inGameManager.getFactionDefinitions();
     }
@@ -127,7 +134,7 @@ export class GameManager {
         return defaultGameOutcomeRules;
     }
 
-    public getRemainingTime(): number {
-        return 100; // 一旦100で返しておく
+    public getRemainingTicks(): number {
+        return this.inGameManager.getWerewolfGameDataManager().remainingTicks;
     }
 }

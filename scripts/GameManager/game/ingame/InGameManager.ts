@@ -1,5 +1,4 @@
 import { world } from "@minecraft/server";
-import { GamePreparationManager } from "./GamePreparationManager";
 import { GameManager } from "./game/GameManager";
 import { GameInitializer } from "./game/init/GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../constants/translate";
@@ -7,9 +6,13 @@ import { SYSTEMS } from "../../constants/systems";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
-import { PlayersDataManager } from "./game/gameplay/PlayersDataManager";
 import { GameFinalizer } from "./game/GameFinalizer";
 import type { PlayerData } from "./game/gameplay/PlayerData";
+import { WerewolfGameDataManager } from "./game/gameplay/WerewolfGameDataManager";
+import { GamePreparationManager } from "./game/GamePreparationManager";
+import type { KairoResponse } from "../../../Kairo/utils/KairoUtils";
+import type { FactionDefinition } from "../../data/factions";
+import type { RoleDefinition } from "../../data/roles";
 
 export enum GamePhase {
     Initializing,
@@ -18,6 +21,11 @@ export enum GamePhase {
     Result,
     Waiting,
 }
+
+export type IngameConstants = {
+    roleDefinitions: Record<string, RoleDefinition[]>;
+    factionDefinitions: Record<string, FactionDefinition[]>;
+};
 
 export class InGameManager {
     private currentPhase: GamePhase = GamePhase.Waiting;
@@ -28,22 +36,28 @@ export class InGameManager {
     private readonly gameTerminator: GameTerminator;
     private readonly gameFinalizer: GameFinalizer;
     private readonly inGameEventManager: InGameEventManager;
-    private readonly playersDataManager: PlayersDataManager;
+    private readonly werewolfGameDataManager: WerewolfGameDataManager;
 
     private isResetRequested = false;
 
-    private constructor(private readonly systemManager: SystemManager) {
+    private constructor(
+        private readonly systemManager: SystemManager,
+        private readonly ingameConstants: IngameConstants,
+    ) {
         this.gameInitializer = GameInitializer.create(this);
         this.gamePreparationManager = GamePreparationManager.create(this);
         this.gameManager = GameManager.create(this);
         this.gameTerminator = GameTerminator.create(this);
         this.gameFinalizer = GameFinalizer.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
-        this.playersDataManager = PlayersDataManager.create(this);
+        this.werewolfGameDataManager = WerewolfGameDataManager.create(this);
     }
 
-    public static create(systemManager: SystemManager): InGameManager {
-        return new InGameManager(systemManager);
+    public static create(
+        systemManager: SystemManager,
+        ingameConstants: IngameConstants,
+    ): InGameManager {
+        return new InGameManager(systemManager, ingameConstants);
     }
 
     public async gameStart(): Promise<void> {
@@ -139,15 +153,19 @@ export class InGameManager {
     }
 
     public getPlayerData(playerId: string) {
-        return this.playersDataManager.get(playerId);
+        return this.werewolfGameDataManager.getPlayerData(playerId);
     }
 
     public getPlayersData(): readonly PlayerData[] {
-        return this.playersDataManager.getPlayersData();
+        return this.werewolfGameDataManager.getPlayersData();
     }
 
-    public getPlayersDataManager(): PlayersDataManager {
-        return this.playersDataManager;
+    public getPlayersDataManager() {
+        return this.werewolfGameDataManager.getPlayersDataManager();
+    }
+
+    public getWerewolfGameDataManager(): WerewolfGameDataManager {
+        return this.werewolfGameDataManager;
     }
 
     public getRoleComposition() {
@@ -160,5 +178,13 @@ export class InGameManager {
 
     public getFactionDefinitions() {
         return this.systemManager.getFactionDefinitions();
+    }
+
+    public getWerewolfGameDataDTO(): KairoResponse {
+        return this.werewolfGameDataManager.getWerewolfGameDataDTO();
+    }
+
+    public getIngameConstants(): IngameConstants {
+        return this.ingameConstants;
     }
 }

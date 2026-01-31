@@ -2,11 +2,11 @@ import { ItemUseAfterEvent, ItemUseBeforeEvent, system, world } from "@minecraft
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import { ITEM_USE } from "../../../constants/itemuse";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
-import { properties } from "../../../../properties";
 import type { InGameEventManager } from "./InGameEventManager";
-import { KairoUtils, type KairoCommand } from "../../../../Kairo/utils/KairoUtils";
-import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../../constants/systems";
+import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
+import { KAIRO_COMMAND_TARGET_ADDON_IDS, SYSTEMS } from "../../../constants/systems";
 import type { GameEventType } from "../../../data/roles";
+import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 
 export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {
@@ -24,7 +24,7 @@ export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, I
         // 使用前処理
     }
 
-    protected handleAfter(ev: ItemUseAfterEvent): void {
+    protected async handleAfter(ev: ItemUseAfterEvent): Promise<void> {
         // 使用後処理
         const { itemStack, source } = ev;
 
@@ -40,16 +40,56 @@ export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, I
                 const playerData = this.inGameEventManager
                     .getInGameManager()
                     .getPlayerData(player.id);
-                if (!playerData) return;
+                if (!playerData || !playerData.isAlive) return;
+                if (!playerData.role) return;
+                if (!playerData.role.skills) return;
+                if (playerData.role.handleGameEvents?.["SkillUse"] === undefined) return;
+                const skillId = playerData.role.handleGameEvents?.["SkillUse"].skillId;
+                const skillState = playerData.skillStates.get(skillId);
+                if (!skillState) return;
+                if (skillState.remainingUses === 0) {
+                    player.playSound(SYSTEMS.ERROR.SOUND_ID, {
+                        pitch: SYSTEMS.ERROR.SOUND_PITCH,
+                        volume: SYSTEMS.ERROR.SOUND_VOLUME,
+                        location: player.location,
+                    });
+                    player.sendMessage({
+                        translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.SKILL_NO_REMAINING_USES_ERROR,
+                    });
+                    return;
+                }
+                if (skillState.cooldownRemaining > 0) {
+                    player.playSound(SYSTEMS.ERROR.SOUND_ID, {
+                        pitch: SYSTEMS.ERROR.SOUND_PITCH,
+                        volume: SYSTEMS.ERROR.SOUND_VOLUME,
+                        location: player.location,
+                    });
+                    player.sendMessage({
+                        translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.SKILL_ON_COOLDOWN_ERROR,
+                        with: [skillState.cooldownRemaining.toString()],
+                    });
+                    return;
+                }
 
-                KairoUtils.sendKairoCommand(
+                const kairoResponse = await KairoUtils.sendKairoCommandAndWaitResponse(
                     playerData.role?.providerAddonId ?? "",
                     SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_INGAME_PLAYER_SKILL_TRIGGER,
                     {
                         playerId: player.id,
-                        eventType: "ItemUse" satisfies GameEventType,
+                        eventType: "SkillUse" satisfies GameEventType,
                     },
+                    this.inGameEventManager.getInGameManager().getWerewolfGameDataManager()
+                        .remainingTicks,
                 );
+
+                if (kairoResponse.data.success) {
+                    skillState.remainingUses -= 1;
+                    skillState.cooldownRemaining =
+                        (playerData.role.skills.find((skill) => skill.id === skillId)
+                            ?.cooldown as number) ?? 0;
+                    // とりあえず number と見なしているけど、後で設定できるようにしたら string を展開できるようにもする必要がある
+                }
+
                 break;
         }
     }

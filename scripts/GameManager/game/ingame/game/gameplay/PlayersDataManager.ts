@@ -1,13 +1,14 @@
 import type { Player } from "@minecraft/server";
 import type { InGameManager } from "../../InGameManager";
 import { PlayerData, type ParticipationState } from "./PlayerData";
+import type { WerewolfGameDataManager } from "./WerewolfGameDataManager";
 
 export class PlayersDataManager {
     private dataMap: Map<string, PlayerData> = new Map();
 
-    private constructor(private readonly inGameManager: InGameManager) {}
-    public static create(inGameManager: InGameManager): PlayersDataManager {
-        return new PlayersDataManager(inGameManager);
+    private constructor(private readonly werewolfGameDataManager: WerewolfGameDataManager) {}
+    public static create(werewolfGameDataManager: WerewolfGameDataManager): PlayersDataManager {
+        return new PlayersDataManager(werewolfGameDataManager);
     }
 
     public init(player: Player, state: ParticipationState = "participant"): void {
@@ -36,6 +37,6 @@ export class PlayersDataManager {
     }
 
     public getInGameManager(): InGameManager {
-        return this.inGameManager;
+        return this.werewolfGameDataManager.getInGameManager();
     }
 }

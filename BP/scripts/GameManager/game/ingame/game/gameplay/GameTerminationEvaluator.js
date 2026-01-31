@@ -48,7 +48,7 @@ export class GameTerminationEvaluator {
             aliveCountByFaction[factionId] = (aliveCountByFaction[factionId] ?? 0) + 1;
         }
         return {
-            remainingTime: this.gameManager.getRemainingTime(),
+            remainingTime: this.gameManager.getRemainingTicks(),
             alivePlayerCount: alive.length,
             aliveCountByFaction,
         };

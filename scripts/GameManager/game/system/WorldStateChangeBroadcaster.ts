@@ -3,6 +3,7 @@ import { GameWorldState, type SystemManager } from "../SystemManager";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
 import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../constants/systems";
+import type { IngameConstants } from "../ingame/InGameManager";
 
 export class WorldStateChangeBroadcaster {
     private constructor(private readonly systemManager: SystemManager) {}
@@ -10,7 +11,7 @@ export class WorldStateChangeBroadcaster {
         return new WorldStateChangeBroadcaster(systemManager);
     }
 
-    public broadcast(next: GameWorldState): void {
+    public broadcast(next: GameWorldState, ingameConstants: IngameConstants | null): void {
         ConsoleManager.log(`Broadcasting world state change... New state: ${next}`);
 
         const nextState =
@@ -23,6 +24,7 @@ export class WorldStateChangeBroadcaster {
             SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE,
             {
                 newState: nextState,
+                ingameConstants,
             },
         );
     }

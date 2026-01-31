@@ -125,6 +125,12 @@ export const SYSTEMS = {
         STAY_DURATION: 100,
         FADEOUT_DURATION: 20,
     },
+
+    ERROR: {
+        SOUND_ID: "note.bass",
+        SOUND_PITCH: 1,
+        SOUND_VOLUME: 1,
+    }
 };
 
 export const GAMES = {

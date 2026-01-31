@@ -1,6 +1,5 @@
-import { KairoUtils, type KairoCommand, type KairoResponse } from "../../../Kairo/utils/KairoUtils";
+import { type KairoCommand, type KairoResponse } from "../../../Kairo/utils/KairoUtils";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
-import { type PlayerDataDTO } from "../ingame/game/gameplay/PlayerData";
 import type { SystemManager } from "../SystemManager";
 
 export class ScriptEventReceiver {
@@ -32,44 +31,8 @@ export class ScriptEventReceiver {
             case SCRIPT_EVENT_COMMAND_IDS.OPEN_FORM_ROLE_COMPOSITION:
                 this.systemManager.openFormRoleComposition(command.data.playerId);
                 return;
-            case SCRIPT_EVENT_COMMAND_IDS.GET_PLAYER_WEREWOLF_DATA:
-                const playerId = command.data.playerId;
-                const playerData = this.systemManager.getInGameManager()?.getPlayerData(playerId);
-                if (!playerData)
-                    return KairoUtils.buildKairoResponse(
-                        {},
-                        false,
-                        "The game is not currently in progress.",
-                    );
-
-                const playerDataDTO: PlayerDataDTO = {
-                    playerId,
-                    name: playerData.name,
-                    isAlive: playerData.isAlive,
-                    isVictory: playerData.isVictory,
-                    role: playerData.role,
-                };
-                return KairoUtils.buildKairoResponse({ playerData: playerDataDTO });
-            case SCRIPT_EVENT_COMMAND_IDS.GET_PLAYERS_WEREWOLF_DATA:
-                const playersData = this.systemManager.getInGameManager()?.getPlayersData();
-                if (!playersData)
-                    return KairoUtils.buildKairoResponse(
-                        {},
-                        false,
-                        "The game is not currently in progress.",
-                    );
-
-                const playersDataDTO: PlayerDataDTO[] = playersData.map((playerData) => ({
-                    playerId: playerData.player.id,
-                    name: playerData.name,
-                    isAlive: playerData.isAlive,
-                    isVictory: playerData.isVictory,
-                    role: playerData.role,
-                }));
-
-                return KairoUtils.buildKairoResponse({
-                    playersData: playersDataDTO,
-                });
+            case SCRIPT_EVENT_COMMAND_IDS.GET_WEREWOLF_GAME_DATA:
+                return this.systemManager.getWerewolfGameDataDTO();
             default:
                 return;
         }

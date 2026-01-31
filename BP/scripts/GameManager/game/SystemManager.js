@@ -7,6 +7,7 @@ import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 import { GameSettingManager } from "./system/settings/GameSettingManager";
+import { KairoUtils } from "../../Kairo/utils/KairoUtils";
 import { FactionManager } from "./system/factions/FactionManager";
 export var GameWorldState;
 (function (GameWorldState) {
@@ -78,14 +79,14 @@ export class SystemManager {
     setOutGameManager(v) {
         this.outGameManager = v;
     }
-    createInGameManager() {
-        return InGameManager.create(this);
+    createInGameManager(ingameConstants) {
+        return InGameManager.create(this, ingameConstants);
     }
     createOutGameManager() {
         return OutGameManager.create(this);
     }
-    broadcastWorldStateChange(next) {
-        this.worldStateChangeBroadcaster.broadcast(next);
+    broadcastWorldStateChange(next, ingameConstants) {
+        this.worldStateChangeBroadcaster.broadcast(next, ingameConstants);
     }
     openSettingsForm(player) {
         this.gameSettingManager.opneSettingsForm(player);
@@ -121,7 +122,15 @@ export class SystemManager {
         return this.factionManager.getFactionData(factionId);
     }
     getFactionDefinitions() {
-        return this.factionManager.getSelectedRolesForNextGame();
+        return this.factionManager.getSelectedFactionsForNextGame();
+    }
+    getRegisteredFactionDefinitions() {
+        return this.factionManager.getRegisteredFactionDefinitions();
+    }
+    getWerewolfGameDataDTO() {
+        if (!this.inGameManager)
+            return KairoUtils.buildKairoResponse({}, false, "The game is not currently in progress.");
+        return this.inGameManager.getWerewolfGameDataDTO();
     }
 }
 SystemManager.instance = null;

@@ -11,6 +11,8 @@ export class FactionDataValidator {
             return false;
         if (typeof data.id !== "string")
             return false;
+        if (typeof data.defaultRoleId !== "string")
+            return false;
         if (typeof data.type !== "string")
             return false;
         if (!KairoUtils.isRawMessage(data.name))

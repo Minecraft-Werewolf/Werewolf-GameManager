@@ -136,7 +136,6 @@ export class KairoUtils {
         if (!pending) return;
 
         this.pendingRequests.delete(commandId);
-
         if (pending.expectResponse && response === undefined) {
             pending.reject(
                 new Error(`Kairo response expected but none received (commandId=${commandId})`),

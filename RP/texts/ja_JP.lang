@@ -62,3 +62,9 @@ werewolf-gamemanager.game.yourRole.message=§fあなたの役職は %1%2%3 で�
 werewolf-gamemanager.game.preparation.countdown=§fゲーム開始まで...%ss§r
 
 werewolf-gamemanager.game.actionbar.roleName=§f役職: %1%2%3§r
+
+werewolf-gamemanager.skill.noRemainingUses.error=§cこれ以上スキルを使うことはできません§r
+werewolf-gamemanager.skill.onCooldown.error=§cスキルCT中...%ss§r
+werewolf-gamemanager.game.actionbar.skill.ready=§bReady§r
+
+werewolf-gamemanager.game.actionbar.remainingTime=§b制限時間: %ss§r

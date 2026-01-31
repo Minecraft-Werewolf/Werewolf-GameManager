@@ -76,7 +76,7 @@ export class GameTerminationEvaluator {
         }
 
         return {
-            remainingTime: this.gameManager.getRemainingTime(),
+            remainingTime: this.gameManager.getRemainingTicks(),
             alivePlayerCount: alive.length,
             aliveCountByFaction,
         };

@@ -33,11 +33,21 @@ export class RoleDataValidator {
             return false;
         if (data.knownRoles !== undefined && !this.isStringArray(data.knownRoles))
             return false;
-        if (data.handleGmaeEvents !== undefined) {
-            if (!Array.isArray(data.handleGmaeEvents))
+        if (data.skills !== undefined) {
+            if (!Array.isArray(data.skills))
                 return false;
-            if (!data.handleGmaeEvents.every(this.isGameEventType))
+            if (!data.skills.every((s) => this.isSkillDefinition(s)))
                 return false;
+        }
+        if (data.handleGameEvents !== undefined) {
+            if (!this.isObject(data.handleGameEvents))
+                return false;
+            for (const [eventType, binding] of Object.entries(data.handleGameEvents)) {
+                if (!this.isGameEventType(eventType))
+                    return false;
+                if (!this.isSkillEventBinding(binding))
+                    return false;
+            }
         }
         if (data.appearance !== undefined) {
             if (!this.isObject(data.appearance))
@@ -55,18 +65,17 @@ export class RoleDataValidator {
     isObject(x) {
         return typeof x === "object" && x !== null && !Array.isArray(x);
     }
+    isStringArray(x) {
+        return Array.isArray(x) && x.every((v) => typeof v === "string");
+    }
     isValidCount(x) {
         if (!this.isObject(x))
             return false;
-        const count = x;
-        if (count.max !== undefined && typeof count.max !== "number")
+        if (x.max !== undefined && typeof x.max !== "number")
             return false;
-        if (count.step !== undefined && typeof count.step !== "number")
+        if (x.step !== undefined && typeof x.step !== "number")
             return false;
         return true;
-    }
-    isStringArray(x) {
-        return Array.isArray(x) && x.every((v) => typeof v === "string");
     }
     isRoleRef(x) {
         return this.isObject(x) && typeof x.addonId === "string" && typeof x.roleId === "string";
@@ -79,5 +88,25 @@ export class RoleDataValidator {
     }
     isGameEventType(x) {
         return typeof x === "string";
+    }
+    isSkillDefinition(x) {
+        if (!this.isObject(x))
+            return false;
+        if (typeof x.id !== "string")
+            return false;
+        if (!KairoUtils.isRawMessage(x.name))
+            return false;
+        if (x.cooldown !== undefined &&
+            typeof x.cooldown !== "number" &&
+            typeof x.cooldown !== "string")
+            return false;
+        if (x.maxUses !== undefined &&
+            typeof x.maxUses !== "number" &&
+            typeof x.maxUses !== "string")
+            return false;
+        return true;
+    }
+    isSkillEventBinding(x) {
+        return this.isObject(x) && typeof x.skillId === "string";
     }
 }
