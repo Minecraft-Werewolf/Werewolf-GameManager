@@ -4,6 +4,7 @@ werewolf-gamemanager.description=人狼ゲームの中枢を担うGameManagerと
 werewolf-gamemanager.title=§4マイクラ人狼§r
 werewolf-gamemanager.credits.title=クレジット
 werewolf-gamemanager.version=ver.1.0.0
+werewolf-gamemanager.ui.betaWarning=これはBeta版です。\n正式版では内容や仕様が変更される可能性があります。
 
 werewolf-gamemanager.stage.title=§b「館」§r
 werewolf-gamemanager.stage.loading=マップをロード中...

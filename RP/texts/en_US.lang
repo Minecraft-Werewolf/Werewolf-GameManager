@@ -4,6 +4,7 @@ werewolf-gamemanager.description=functions as the central GameManager for the We
 werewolf-gamemanager.title=§4Minecraft Werewolf§r
 werewolf-gamemanager.credits.title=Credits
 werewolf-gamemanager.version=ver.1.0.0
+werewolf-gamemanager.ui.betaWarning=This is a Beta version.\nContent and features may change in the final release.
 
 werewolf-gamemanager.stage.title=§b"Mansion"§r
 werewolf-gamemanager.stage.loading=Loading Stage...

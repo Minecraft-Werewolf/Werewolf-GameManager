@@ -15,6 +15,7 @@ import {
     type KairoCommand,
     type KairoResponse,
 } from "../../@core/kairo/utils/KairoUtils";
+import { SystemMonitor } from "./system/SystemMonitor";
 
 export enum GameWorldState {
     OutGame = "OutGame",
@@ -24,6 +25,7 @@ export enum GameWorldState {
 export class SystemManager {
     private readonly scriptEventReceiver: ScriptEventReceiver;
     private readonly systemEventManager: SystemEventManager;
+    private readonly systemMonitor: SystemMonitor;
     private readonly worldStateChanger: WorldStateChanger;
     private readonly worldStateChangeBroadcaster: WorldStateChangeBroadcaster;
     private readonly factionManager: FactionManager;
@@ -36,6 +38,7 @@ export class SystemManager {
     private constructor() {
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.systemEventManager = SystemEventManager.create(this);
+        this.systemMonitor = SystemMonitor.create(this);
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
         this.factionManager = FactionManager.create(this);
@@ -181,5 +184,9 @@ export class SystemManager {
                 "The game is not currently in progress.",
             );
         return this.inGameManager.getWerewolfGameDataDTO();
+    }
+
+    public monitorSystem(): void {
+        this.systemMonitor.monitor();
     }
 }

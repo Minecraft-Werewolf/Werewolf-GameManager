@@ -48,6 +48,8 @@ Kairo.onTick = () => {
      * It becomes active when onActivate is called and is disabled when onDeactivate is called.
      */
 
+    SystemManager.getInstance().monitorSystem();
+
     world.getPlayers().forEach((player) => {
         player.setSpawnPoint({
             dimension: world.getDimension(MinecraftDimensionTypes.Overworld),
