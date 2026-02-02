@@ -17,8 +17,8 @@ import {
 } from "../../@core/kairo/utils/KairoUtils";
 
 export enum GameWorldState {
-    OutGame,
-    InGame,
+    OutGame = "OutGame",
+    InGame = "InGame",
 }
 
 export class SystemManager {

@@ -17,11 +17,11 @@ import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/Kairo
 import { ConsoleManager } from "../../../@core/kairo/utils/ConsoleManager";
 
 export enum GamePhase {
-    Initializing,
-    Preparing,
-    InGame,
-    Result,
-    Waiting,
+    Initializing = "Initializing",
+    Preparing = "Preparing",
+    InGame = "InGame",
+    Result = "Result",
+    Waiting = "Waiting",
 }
 
 export type IngameConstants = {

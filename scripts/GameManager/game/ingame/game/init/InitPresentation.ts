@@ -3,12 +3,15 @@ import {
     HudElement,
     HudVisibility,
     InputPermissionCategory,
+    TicksPerSecond,
     world,
     type Player,
 } from "@minecraft/server";
 import type { GameInitializer } from "./GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
+import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { DEFAULT_SETTINGS } from "../../../../constants/settings";
 
 export class InitPresentation {
     private constructor(private readonly gameInitializer: GameInitializer) {}
@@ -21,6 +24,31 @@ export class InitPresentation {
             await this.runStep(async () => this.showGameTitle(players));
             await this.runStep(async () => this.cameraBlackoutEffect(players));
             await this.runStep(() => this.teleportPlayers(players));
+            await this.runStep(() => {
+                // 遷移時に一瞬だけ透明ができていないので、とりあえず数秒だけ事前に透明をかけておく
+                world.getPlayers().forEach((player) => {
+                    player.addEffect(
+                        MinecraftEffectTypes.Invisibility,
+                        SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME *
+                            SYSTEMS.INTERVAL.EVERY_SECOND +
+                            120, // 120 は適当
+                        {
+                            amplifier: 255,
+                            showParticles: false,
+                        },
+                    );
+                    player.addEffect(
+                        MinecraftEffectTypes.Speed,
+                        SYSTEMS.SHOW_STAGE_TITLE.BACKGROUND_HOLD_TIME *
+                            SYSTEMS.INTERVAL.EVERY_SECOND +
+                            120, // 120 は適当
+                        {
+                            amplifier: 2,
+                            showParticles: false,
+                        },
+                    );
+                });
+            });
             await this.runStep(async () => this.showStageTitle(players));
         } catch (e) {
             console.warn(`[GameInitializer] Initialization interrupted: ${String(e)}`);

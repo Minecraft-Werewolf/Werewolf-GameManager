@@ -7,6 +7,7 @@ import { ActionBarManager } from "./gameplay/ActionBarManager";
 import { PlayerData } from "./gameplay/PlayerData";
 import type { GameOutcome } from "../../../data/types/conditions";
 import { defaultGameOutcomeRules, type GameOutcomeRule } from "../../../data/outcome";
+import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 
 export interface ResolvedGameOutcome {
     type: "resolved";
@@ -45,6 +46,8 @@ export class GameManager {
         if (this.isRunning) return;
         this.isRunning = true;
 
+        world.gameRules.pvp = true;
+
         this.inGameManager.setCurrentPhase(GamePhase.InGame);
 
         return new Promise<void>((resolve, reject) => {
@@ -78,6 +81,18 @@ export class GameManager {
 
         this.actionBarManager.showActionBarToPlayers(players);
         this.itemManager.replaceItemToPlayers(players);
+
+        // エフェクト付与 (仮)
+        players.forEach((player) => {
+            player.addEffect(MinecraftEffectTypes.Weakness, 2, {
+                amplifier: 255,
+                showParticles: false,
+            });
+            player.addEffect(MinecraftEffectTypes.Regeneration, 2, {
+                amplifier: 255,
+                showParticles: false,
+            });
+        });
 
         // 終了判定
         const result = this.gameTerminationEvaluator.evaluate(playersData);

@@ -16,6 +16,7 @@ export type PlayerDataDTO = {
     };
     role: RoleDefinition | null;
     isAlive: boolean;
+    isLeave: boolean;
     isVictory: boolean;
 };
 
@@ -68,6 +69,7 @@ export class WerewolfGameDataManager {
             },
             role: playerData.role,
             isAlive: playerData.isAlive,
+            isLeave: playerData.isLeave,
             isVictory: playerData.isVictory,
         }));
 

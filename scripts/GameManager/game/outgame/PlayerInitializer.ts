@@ -1,4 +1,11 @@
-import { EntityComponentTypes, GameMode, ItemStack, type Player } from "@minecraft/server";
+import {
+    EntityComponentTypes,
+    GameMode,
+    HudElement,
+    HudVisibility,
+    ItemStack,
+    type Player,
+} from "@minecraft/server";
 import type { OutGameManager } from "./OutGameManager";
 import { ITEM_USE } from "../../constants/itemuse";
 import { SYSTEMS } from "../../constants/systems";
@@ -15,6 +22,18 @@ export class PlayerInitializer {
 
         // ゲームモード
         player.setGameMode(GameMode.Adventure);
+
+        // Hud
+        player.onScreenDisplay.setHudVisibility(HudVisibility.Hide, [
+            HudElement.PaperDoll,
+            HudElement.Armor,
+            HudElement.ToolTips,
+            HudElement.ProgressBar,
+            HudElement.Hunger,
+            HudElement.AirBubbles,
+            HudElement.HorseHealth,
+            HudElement.StatusEffects,
+        ]);
 
         // インベントリ関連
         const inventory = player.getComponent(EntityComponentTypes.Inventory);

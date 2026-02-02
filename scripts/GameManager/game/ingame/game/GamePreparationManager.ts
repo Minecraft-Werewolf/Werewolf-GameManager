@@ -10,6 +10,7 @@ import { GamePhase, type InGameManager } from "../InGameManager";
 import { DEFAULT_SETTINGS } from "../../../constants/settings";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
+import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 
 export class GamePreparationManager {
     private readonly countdownManager: CountdownManager;
@@ -30,7 +31,29 @@ export class GamePreparationManager {
         players.forEach((player) => {
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Camera, true);
             player.inputPermissions.setPermissionCategory(InputPermissionCategory.Movement, true);
-            player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [HudElement.Crosshair]);
+            player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [
+                HudElement.Crosshair,
+                HudElement.Hotbar,
+                HudElement.Health,
+            ]);
+
+            player.addEffect(
+                MinecraftEffectTypes.Invisibility,
+                DEFAULT_SETTINGS.GAME_PREPARATION_TIME * SYSTEMS.INTERVAL.EVERY_SECOND,
+                {
+                    amplifier: 255,
+                    showParticles: false,
+                },
+            );
+
+            player.addEffect(
+                MinecraftEffectTypes.Speed,
+                DEFAULT_SETTINGS.GAME_PREPARATION_TIME * SYSTEMS.INTERVAL.EVERY_SECOND,
+                {
+                    amplifier: 2,
+                    showParticles: false,
+                },
+            );
 
             this.showRoleToPlayer(player, DEFAULT_SETTINGS.GAME_PREPARATION_TIME);
         });

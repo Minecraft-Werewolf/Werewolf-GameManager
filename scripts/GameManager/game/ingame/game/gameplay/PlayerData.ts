@@ -12,6 +12,7 @@ export interface PlayerSkillState {
 export class PlayerData {
     public name: string;
     public isAlive: boolean = true;
+    public isLeave: boolean = false;
     public isVictory: boolean = false;
     public role: RoleDefinition | null = null;
     public readonly skillStates = new Map<string, PlayerSkillState>();

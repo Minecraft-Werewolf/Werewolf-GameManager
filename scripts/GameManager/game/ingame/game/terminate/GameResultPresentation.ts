@@ -124,9 +124,11 @@ export class GameResultPresentation {
         const lines: { rawtext: any[] }[] = [];
 
         playersData.forEach((playerData) => {
-            const translateId = playerData.isAlive
-                ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ALIVE
-                : WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEAD;
+            const translateId = playerData.isLeave
+                ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_LEFT
+                : playerData.isAlive
+                  ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ALIVE
+                  : WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEAD;
 
             lines.push({
                 rawtext: [

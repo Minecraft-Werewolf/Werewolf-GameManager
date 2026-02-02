@@ -18,6 +18,8 @@ export class OutGameManager {
     }
 
     public async init(): Promise<void> {
+        world.gameRules.pvp = false;
+
         const players = world.getPlayers();
         const playersKairoData = await KairoUtils.getPlayersKairoData();
 
