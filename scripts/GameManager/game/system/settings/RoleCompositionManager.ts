@@ -37,6 +37,7 @@ export class RoleCompositionManager {
             a.localeCompare(b, "en", { numeric: true }),
         );
 
+        let roleCount = 0;
         const workingRolesList = this.filterRolesByCount(workingRoleDefinitions).map(
             (role): RawMessage => {
                 const rawMessage: RawMessage[] = [];
@@ -45,8 +46,13 @@ export class RoleCompositionManager {
                 if (role.color !== undefined) rawMessage.push({ text: `\n${role.color}` });
                 else if (faction !== null) rawMessage.push({ text: `\n${faction.defaultColor}` });
 
+                if (role.count?.amount === undefined) return {};
+
                 rawMessage.push(role.name);
                 rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${role.count?.amount}` });
+
+                roleCount += role.count.amount;
+
                 return { rawtext: rawMessage };
             },
         );
@@ -61,6 +67,15 @@ export class RoleCompositionManager {
                 translate:
                     WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_SELECTED_ROLES,
             });
+
+            workingRolesList.push(
+                { text: "\n\n" },
+                {
+                    translate:
+                        WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_APPLIED_CHANGES_NOTICE_TOTAL,
+                    with: [roleCount.toString()],
+                },
+            );
 
             formBody.push(...workingRolesList);
         }
@@ -212,8 +227,9 @@ export class RoleCompositionManager {
                 WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_APPLIED_CHANGES_NOTICE,
             with: [player.name],
         });
-        world.sendMessage(SYSTEMS.SEPARATOR.LINE_CYAN);
         const roleListMessage: RawMessage[] = [];
+        roleListMessage.push({ text: SYSTEMS.SEPARATOR.LINE_CYAN + "\n" });
+        let roleCount = 0;
         for (const role of this.gameSettingManager.sortRoleDefinitions(roleDefinitionsAfterApply)) {
             const rawMessage: RawMessage[] = [];
             const faction = this.gameSettingManager.getFactionData(role.factionId);
@@ -221,13 +237,25 @@ export class RoleCompositionManager {
             if (role.color !== undefined) rawMessage.push({ text: `${role.color}` });
             else if (faction !== null) rawMessage.push({ text: `${faction.defaultColor}` });
 
+            if (role.count?.amount === undefined) continue;
+
             rawMessage.push(role.name);
-            rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${role.count?.amount}\n` });
+            rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${role.count.amount}\n` });
+
+            roleCount += role.count.amount;
 
             roleListMessage.push({ rawtext: rawMessage });
         }
+        roleListMessage.push(
+            { text: "\n" },
+            {
+                translate:
+                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_APPLIED_CHANGES_NOTICE_TOTAL,
+                with: [roleCount.toString()],
+            },
+        );
+        roleListMessage.push({ text: "\n" + SYSTEMS.SEPARATOR.LINE_CYAN });
         world.sendMessage({ rawtext: roleListMessage });
-        world.sendMessage(SYSTEMS.SEPARATOR.LINE_CYAN);
 
         for (const player of world.getPlayers()) {
             player.playSound(SYSTEMS.ROLE_COMPOSITION_NOTIFICATION.SOUND_ID, {

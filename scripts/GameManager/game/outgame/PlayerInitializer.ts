@@ -35,6 +35,14 @@ export class PlayerInitializer {
             HudElement.StatusEffects,
         ]);
 
+        player.onScreenDisplay.setHudVisibility(HudVisibility.Reset, [
+            HudElement.Crosshair,
+            HudElement.Health,
+            HudElement.Hotbar,
+            HudElement.ItemText,
+            HudElement.TouchControls,
+        ]);
+
         // インベントリ関連
         const inventory = player.getComponent(EntityComponentTypes.Inventory);
         if (!inventory) return;

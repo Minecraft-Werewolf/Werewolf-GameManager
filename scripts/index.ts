@@ -1,6 +1,8 @@
+import { world } from "@minecraft/server";
 import { Kairo } from "./@core/kairo";
 import type { KairoCommand, KairoResponse } from "./@core/kairo/utils/KairoUtils";
 import { SystemManager } from "./GameManager/game/SystemManager";
+import { MinecraftDimensionTypes } from "@minecraft/vanilla-data";
 
 async function main(): Promise<void> {
     Kairo.init(); // client
@@ -45,6 +47,15 @@ Kairo.onTick = () => {
      * Defines logic that is executed on every tick.
      * It becomes active when onActivate is called and is disabled when onDeactivate is called.
      */
+
+    world.getPlayers().forEach((player) => {
+        player.setSpawnPoint({
+            dimension: world.getDimension(MinecraftDimensionTypes.Overworld),
+            x: player.location.x,
+            y: player.location.y,
+            z: player.location.z,
+        });
+    });
 };
 
 main();

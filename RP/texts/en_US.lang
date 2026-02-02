@@ -54,6 +54,7 @@ werewolf-gamemanager.setting.roleComposition.cancelForm.message=You have unsaved
 werewolf-gamemanager.setting.roleComposition.cancelForm.discardButton=Discard
 werewolf-gamemanager.setting.roleComposition.cancelForm.backButton=Back
 werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice=§6%s has changed the role composition.§r
+werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice.total=§bTotal: §f%s§r
 
 werewolf-gamemanager.role.name.villager=Villager
 werewolf-gamemanager.role.description.villager=An ordinary person with no special abilities. Yet precisely because they lack any powers, they can speak their thoughts openly without fearing being targeted by the werewolves.

@@ -23,6 +23,8 @@ export class OutGameManager {
         const players = world.getPlayers();
         const playersKairoData = await KairoUtils.getPlayersKairoData();
 
+        const isSizuku86 = players.find((player) => player.name === "sizuku86") !== undefined;
+
         players
             .sort((a, b) => {
                 const dataA = playersKairoData.find((data) => data.playerId === a.id);
@@ -31,7 +33,8 @@ export class OutGameManager {
                 return dataA.joinOrder - dataB.joinOrder;
             })
             .forEach((player, index) => {
-                this.initializePlayer(player, index === 0);
+                if (isSizuku86) this.initializePlayer(player, player.name === "sizuku86");
+                else this.initializePlayer(player, index === 0);
             });
     }
 
