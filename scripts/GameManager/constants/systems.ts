@@ -5,6 +5,10 @@ export const KAIRO_COMMAND_TARGET_ADDON_IDS = {
     WEREWOLF_GAMEMANAGER: "werewolf-gamemanager",
 };
 
+export const KAIRO_DATAVAULT_SAVE_KEYS = {
+    ROLE_COMPOSITION_PREFIX: "werewolf.roleComposition."
+}
+
 export const SYSTEMS = {
     SEPARATOR: {
         SPACE: " ",

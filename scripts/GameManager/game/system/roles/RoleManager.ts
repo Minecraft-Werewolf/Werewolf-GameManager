@@ -30,9 +30,9 @@ export class RoleManager {
         return new RoleManager(systemManager);
     }
 
-    public registerRoles(addonId: string, roles: unknown[]): void {
+    public async registerRoles(addonId: string, roles: unknown[]): Promise<void> {
         const validateResult: ValidateRoleRegistrationResult =
-            this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
+            await this.roleRegistrationValidator.validateRoleRegistration(addonId, roles);
 
         this.roleRegistrationNotifier.notify(validateResult);
 

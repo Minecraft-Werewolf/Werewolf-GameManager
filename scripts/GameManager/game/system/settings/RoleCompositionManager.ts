@@ -3,8 +3,9 @@ import type { GameSettingManager } from "./GameSettingManager";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import type { RoleDefinition } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
-import { SYSTEMS } from "../../../constants/systems";
+import { KAIRO_DATAVAULT_SAVE_KEYS, SYSTEMS } from "../../../constants/systems";
 import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
+import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
 
 // クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {
@@ -210,6 +211,7 @@ export class RoleCompositionManager {
             if (!workingRoles) continue;
             const workingMap = new Map(workingRoles.map((r) => [r.id, r]));
 
+            const compactRoleComposition: Record<string, number> = {};
             for (const role of registeredRoles) {
                 const w = workingMap.get(role.id);
                 if (!w) continue;
@@ -217,7 +219,16 @@ export class RoleCompositionManager {
                 if (!role.count) role.count = { amount: 0 };
 
                 role.count.amount = w.count?.amount ?? 0;
+
+                if (role.count.amount <= 0) continue;
+
+                compactRoleComposition[role.id] = role.count.amount;
             }
+
+            KairoUtils.saveToDataVault(
+                KAIRO_DATAVAULT_SAVE_KEYS.ROLE_COMPOSITION_PREFIX + addonId,
+                JSON.stringify(compactRoleComposition),
+            );
         }
 
         const roleDefinitionsAfterApply = this.gameSettingManager.getSelectedRolesForNextGame();

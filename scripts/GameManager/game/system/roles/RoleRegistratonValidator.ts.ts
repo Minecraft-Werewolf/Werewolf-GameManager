@@ -1,3 +1,5 @@
+import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
+import { KAIRO_DATAVAULT_SAVE_KEYS } from "../../../constants/systems";
 import type { RoleDefinition } from "../../../data/roles";
 import type { RoleManager } from "./RoleManager";
 
@@ -13,10 +15,10 @@ export class RoleRegistrationValidator {
         return new RoleRegistrationValidator(roleManager);
     }
 
-    public validateRoleRegistration(
+    public async validateRoleRegistration(
         addonId: string,
         roles: unknown[],
-    ): ValidateRoleRegistrationResult {
+    ): Promise<ValidateRoleRegistrationResult> {
         if (!addonId || !Array.isArray(roles)) {
             return {
                 addonId,
@@ -25,14 +27,23 @@ export class RoleRegistrationValidator {
             };
         }
 
+        const loaded = await KairoUtils.loadFromDataVault(
+            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_COMPOSITION_PREFIX + addonId,
+        );
+
+        const loadedRoleComposition: Record<string, number> =
+            typeof loaded === "string" ? JSON.parse(loaded) : {};
+
         const validatedRoles: RoleDefinition[] = roles
             .map((item) => {
                 if (this.roleManager.isRole(item)) {
+                    if (!this.roleManager.isRole(item)) return null;
+
                     const role = item as RoleDefinition;
                     role.providerAddonId = addonId;
 
-                    if (role.count === undefined) role.count = {};
-                    role.count.amount = 0;
+                    role.count ??= {};
+                    role.count.amount = loadedRoleComposition[role.id] ?? 0;
 
                     return role;
                 }
