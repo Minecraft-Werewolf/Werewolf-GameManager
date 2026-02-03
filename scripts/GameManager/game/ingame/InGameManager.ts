@@ -202,4 +202,8 @@ export class InGameManager {
             },
         );
     }
+
+    public compareRoleDifinition(a: RoleDefinition, b: RoleDefinition) {
+        return this.systemManager.compareRoleDifinition(a, b);
+    }
 }

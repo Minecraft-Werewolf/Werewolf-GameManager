@@ -62,8 +62,8 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_ROLE_COMPOSITION_APPLIED_CHANGES_NOTICE_TOTAL:
         "werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice.total",
 
-    ROLE_NAME_VILLAGER: "werewolf-standardroles.role.name.villager",
-    ROLE_DESCRIPTION_VILLAGER: "werewolf-standardroles.role.description.villager",
+    ROLE_NAME_VILLAGER: "werewolf-gamemanager.role.name.villager",
+    ROLE_DESCRIPTION_VILLAGER: "werewolf-gamemanager.role.description.villager",
 
     WEREWOLF_GAME_SHOW_YOUR_ROLE_TITLE: "werewolf-gamemanager.game.yourRole.title",
     WEREWOLF_GAME_SHOW_YOUR_ROLE_MESSAGE: "werewolf-gamemanager.game.yourRole.message",

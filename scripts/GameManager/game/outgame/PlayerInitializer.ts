@@ -3,6 +3,7 @@ import {
     GameMode,
     HudElement,
     HudVisibility,
+    ItemLockMode,
     ItemStack,
     type Player,
 } from "@minecraft/server";
@@ -11,15 +12,45 @@ import { ITEM_USE } from "../../constants/itemuse";
 import { SYSTEMS } from "../../constants/systems";
 
 export class PlayerInitializer {
+    private readonly items: {
+        typeId: string;
+        slot: number;
+        lockMode: ItemLockMode;
+    }[] = [
+        {
+            typeId: ITEM_USE.PERSONAL_SETTINGS_ITEM_ID,
+            slot: SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.PERSONAL_SETTINGS,
+            lockMode: ItemLockMode.slot,
+        },
+        {
+            typeId: ITEM_USE.GAME_SPECTATE_ITEM_ID,
+            slot: SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_SPECTATE,
+            lockMode: ItemLockMode.inventory,
+        },
+    ];
+
+    private readonly hostItems: {
+        typeId: string;
+        slot: number;
+        lockMode: ItemLockMode;
+    }[] = [
+        {
+            typeId: ITEM_USE.GAME_STARTER_ITEM_ID,
+            slot: SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_STARTER,
+            lockMode: ItemLockMode.slot,
+        },
+        {
+            typeId: ITEM_USE.GAME_SETTINGS_ITEM_ID,
+            slot: SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_SETTINGS,
+            lockMode: ItemLockMode.slot,
+        },
+    ];
     private constructor(private readonly outGameManager: OutGameManager) {}
     public static create(outGameManager: OutGameManager) {
         return new PlayerInitializer(outGameManager);
     }
 
     public initializePlayer(player: Player, isHost: boolean): void {
-        const wantsToJoinNextGame = player.getDynamicProperty("wantsToJoinNextGame") ?? true;
-        player.setDynamicProperty("wantsToJoinNextGame", wantsToJoinNextGame);
-
         // ゲームモード
         player.setGameMode(GameMode.Adventure);
 
@@ -48,32 +79,24 @@ export class PlayerInitializer {
         if (!inventory) return;
 
         inventory.container.clearAll();
-        inventory.container.setItem(
-            SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.PERSONAL_SETTINGS,
-            new ItemStack(ITEM_USE.PERSONAL_SETTINGS_ITEM_ID, 1),
-        );
+        for (const item of this.items) {
+            if (inventory.container.getItem(item.slot)?.typeId !== item.typeId) {
+                const itemStack = new ItemStack(item.typeId);
+                itemStack.lockMode = item.lockMode;
 
-        if (wantsToJoinNextGame)
-            inventory.container.setItem(
-                SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_SPECTATE,
-                new ItemStack(ITEM_USE.GAME_SPECTATE_ITEM_ID, 1),
-            );
-        else
-            inventory.container.setItem(
-                SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_JOIN,
-                new ItemStack(ITEM_USE.GAME_JOIN_ITEM_ID, 1),
-            );
+                inventory.container.setItem(item.slot, itemStack);
+            }
+        }
 
         if (isHost) {
-            inventory.container.setItem(
-                SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_STARTER,
-                new ItemStack(ITEM_USE.GAME_STARTER_ITEM_ID, 1),
-            );
+            for (const item of this.hostItems) {
+                if (inventory.container.getItem(item.slot)?.typeId !== item.typeId) {
+                    const itemStack = new ItemStack(item.typeId);
+                    itemStack.lockMode = item.lockMode;
 
-            inventory.container.setItem(
-                SYSTEMS.OUT_GAME_ITEM_SLOT_INDEX.GAME_SETTINGS,
-                new ItemStack(ITEM_USE.GAME_SETTINGS_ITEM_ID, 1),
-            );
+                    inventory.container.setItem(item.slot, itemStack);
+                }
+            }
         }
     }
 }

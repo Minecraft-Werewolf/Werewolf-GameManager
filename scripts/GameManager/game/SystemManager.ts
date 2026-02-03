@@ -189,4 +189,8 @@ export class SystemManager {
     public monitorSystem(): void {
         this.systemMonitor.monitor();
     }
+
+    public compareRoleDifinition(a: RoleDefinition, b: RoleDefinition): number {
+        return this.roleManager.compareRoleDifinition(a, b);
+    }
 }

@@ -75,4 +75,8 @@ export class RoleManager {
     public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
         return this.roleDefinitionSorter.sort(roles);
     }
+
+    public compareRoleDifinition(a: RoleDefinition, b: RoleDefinition): number {
+        return this.roleDefinitionSorter.compare(a, b);
+    }
 }

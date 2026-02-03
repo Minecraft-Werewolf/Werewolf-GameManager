@@ -50,34 +50,41 @@ export class GameResultPresentation {
         const gameResult = terminator.getGameResult();
         if (!gameResult) return;
 
-        players.forEach((player) => {
-            const playerData = inGameManager.getPlayerData(player.id);
+        players
+            .sort((a, b) => {
+                const aPlayerData = inGameManager.getPlayerData(a.id);
+                const bPlayerData = inGameManager.getPlayerData(b.id);
+                if (aPlayerData.role === null || bPlayerData.role === null) return 0;
+                return inGameManager.compareRoleDifinition(aPlayerData.role, bPlayerData.role);
+            })
+            .forEach((player) => {
+                const playerData = inGameManager.getPlayerData(player.id);
 
-            this.playResultSound(player, playerData.isVictory);
+                this.playResultSound(player, playerData.isVictory);
 
-            const { subtitleId, messageId } = this.getPlayerResultTextIds(
-                gameResult,
-                playerData.isVictory,
-            );
+                const { subtitleId, messageId } = this.getPlayerResultTextIds(
+                    gameResult,
+                    playerData.isVictory,
+                );
 
-            player.onScreenDisplay.setTitle(gameResult.presentation.title, {
-                subtitle: { translate: subtitleId },
-                ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
+                player.onScreenDisplay.setTitle(gameResult.presentation.title, {
+                    subtitle: { translate: subtitleId },
+                    ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
+                });
+
+                const lineBreak = { text: "\n" };
+                player.sendMessage({
+                    rawtext: [
+                        { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+                        lineBreak,
+                        gameResult.presentation.message,
+                        lineBreak,
+                        { translate: messageId },
+                        lineBreak,
+                        { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+                    ],
+                });
             });
-
-            const lineBreak = { text: "\n" };
-            player.sendMessage({
-                rawtext: [
-                    { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
-                    lineBreak,
-                    gameResult.presentation.message,
-                    lineBreak,
-                    { translate: messageId },
-                    lineBreak,
-                    { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
-                ],
-            });
-        });
 
         this.broadcastPlayersState(inGameManager.getPlayersData());
 

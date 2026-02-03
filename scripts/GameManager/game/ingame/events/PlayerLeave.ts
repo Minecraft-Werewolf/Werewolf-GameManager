@@ -1,7 +1,12 @@
-import { GameMode, PlayerLeaveAfterEvent, PlayerLeaveBeforeEvent, world } from "@minecraft/server";
+import {
+    GameMode,
+    PlayerLeaveAfterEvent,
+    PlayerLeaveBeforeEvent,
+    system,
+    world,
+} from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { InGameEventManager } from "./InGameEventManager";
-import { GamePhase } from "../InGameManager";
 
 export class InGamePlayerLeaveHandler extends BaseEventHandler<
     PlayerLeaveBeforeEvent,
@@ -26,7 +31,11 @@ export class InGamePlayerLeaveHandler extends BaseEventHandler<
 
         playerData.isLeave = true;
         playerData.isAlive = false;
-        player.setGameMode(GameMode.Spectator);
+        system.run(() => {
+            if (player.isValid) {
+                player.setGameMode(GameMode.Spectator);
+            }
+        });
     }
     protected handleAfter(ev: PlayerLeaveAfterEvent): void {}
 }

@@ -58,6 +58,9 @@ werewolf-gamemanager.setting.roleComposition.cancelForm.backButton=戻る
 werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice=§6%sが役職構成を変更しました§r
 werewolf-gamemanager.setting.roleComposition.appliedRoleChangesNotice.total=§b合計: §f%s§r
 
+werewolf-gamemanager.role.name.villager=村人
+werewolf-gamemanager.role.description.villager=なんの能力も持たないただの人。逆に何も能力も持っていないからこそ、人狼に襲撃されることを恐れず、自分の推論を述べることができる。
+
 werewolf-gamemanager.game.yourRole.title=§fあなたは %1%2%3 です§r
 werewolf-gamemanager.game.yourRole.message=§fあなたの役職は %1%2%3 です§r
 

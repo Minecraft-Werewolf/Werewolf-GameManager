@@ -2,37 +2,39 @@ import type { RoleDefinition } from "../../../data/roles";
 import type { RoleManager } from "./RoleManager";
 
 export class RoleDefinitionSorter {
-    private constructor(private readonly RoleManager: RoleManager) {}
+    private constructor(private readonly roleManager: RoleManager) {}
     public static create(roleManager: RoleManager): RoleDefinitionSorter {
         return new RoleDefinitionSorter(roleManager);
     }
 
     public sort(roles: RoleDefinition[]): RoleDefinition[] {
-        return roles.sort((a, b) => {
-            // 1. 陣営順に並べる
-            const aFaction = this.RoleManager.getFactionData(a.factionId);
-            const bFaction = this.RoleManager.getFactionData(b.factionId);
+        return roles.sort((a, b) => this.compare(a, b));
+    }
 
-            if (aFaction === null && bFaction !== null) return 1;
-            if (aFaction !== null && bFaction === null) return -1;
-            if (aFaction !== null && bFaction !== null) {
-                return aFaction.sortIndex - bFaction.sortIndex;
-            }
-            // 両方nullの場合はスキップ
+    public compare(a: RoleDefinition, b: RoleDefinition): number {
+        // 1. 陣営順
+        const aFaction = this.roleManager.getFactionData(a.factionId);
+        const bFaction = this.roleManager.getFactionData(b.factionId);
 
-            // 2. 狂人・非狂人で並べる
-            const aIsMad = a.isExcludedFromSurvivalCheck === true ? 1 : 0;
-            const bIsMad = b.isExcludedFromSurvivalCheck === true ? 1 : 0;
-            if (aIsMad !== bIsMad) return aIsMad - bIsMad;
+        if (aFaction === null && bFaction !== null) return 1;
+        if (aFaction !== null && bFaction === null) return -1;
+        if (aFaction !== null && bFaction !== null) {
+            const diff = aFaction.sortIndex - bFaction.sortIndex;
+            if (diff !== 0) return diff;
+        }
 
-            // 3. addonIdで並べる
-            const addonCompare = a.providerAddonId.localeCompare(b.providerAddonId, "en", {
-                numeric: true,
-            });
-            if (addonCompare !== 0) return addonCompare;
+        // 2. 狂人・非狂人
+        const aIsMad = a.isExcludedFromSurvivalCheck === true ? 1 : 0;
+        const bIsMad = b.isExcludedFromSurvivalCheck === true ? 1 : 0;
+        if (aIsMad !== bIsMad) return aIsMad - bIsMad;
 
-            // 4. sortIndexで並べる
-            return a.sortIndex - b.sortIndex;
+        // 3. addonId
+        const addonCompare = a.providerAddonId.localeCompare(b.providerAddonId, "en", {
+            numeric: true,
         });
+        if (addonCompare !== 0) return addonCompare;
+
+        // 4. sortIndex
+        return a.sortIndex - b.sortIndex;
     }
 }

@@ -1,4 +1,4 @@
-import { EntityComponentTypes, ItemStack, type Player } from "@minecraft/server";
+import { EntityComponentTypes, ItemLockMode, ItemStack, type Player } from "@minecraft/server";
 import type { GameManager } from "../GameManager";
 import { ITEM_USE } from "../../../../constants/itemuse";
 
@@ -12,6 +12,33 @@ export interface InGameItem {
 }
 
 export class ItemManager {
+    private readonly items: {
+        typeId: string;
+        slot: number;
+        lockMode: ItemLockMode;
+    }[] = [
+        {
+            typeId: "minecraft:bow",
+            slot: 0,
+            lockMode: ItemLockMode.slot,
+        },
+        {
+            typeId: "minecraft:arrow",
+            slot: 9,
+            lockMode: ItemLockMode.slot,
+        },
+        {
+            typeId: ITEM_USE.SKILL_TRIGGER_ITEM_ID,
+            slot: 8,
+            lockMode: ItemLockMode.slot,
+        },
+        //{
+        //    typeId: ITEM_USE.GAME_FORCE_TERMINATOR_ITEM_ID,
+        //    slot: 17,
+        //    lockMode: "inventory",
+        //},
+    ];
+
     private constructor(private readonly gameManager: GameManager) {}
     public static create(gameManager: GameManager): ItemManager {
         return new ItemManager(gameManager);
@@ -30,23 +57,13 @@ export class ItemManager {
         const inventory = player.getComponent(EntityComponentTypes.Inventory);
         if (!inventory) return;
 
-        if (inventory.container.getItem(0)?.typeId !== "minecraft:bow") {
-            inventory.container.setItem(0, new ItemStack("minecraft:bow", 1));
-        }
+        for (const item of this.items) {
+            if (inventory.container.getItem(item.slot)?.typeId !== item.typeId) {
+                const itemStack = new ItemStack(item.typeId);
+                itemStack.lockMode = item.lockMode;
 
-        if (inventory.container.getItem(8)?.typeId !== ITEM_USE.SKILL_TRIGGER_ITEM_ID) {
-            inventory.container.setItem(8, new ItemStack(ITEM_USE.SKILL_TRIGGER_ITEM_ID, 1));
-        }
-
-        if (inventory.container.getItem(9)?.typeId !== "minecraft:arrow") {
-            inventory.container.setItem(9, new ItemStack("minecraft:arrow", 1));
-        }
-
-        if (inventory.container.getItem(17)?.typeId !== ITEM_USE.GAME_FORCE_TERMINATOR_ITEM_ID) {
-            inventory.container.setItem(
-                17,
-                new ItemStack(ITEM_USE.GAME_FORCE_TERMINATOR_ITEM_ID, 1),
-            );
+                inventory.container.setItem(item.slot, itemStack);
+            }
         }
     }
 }
