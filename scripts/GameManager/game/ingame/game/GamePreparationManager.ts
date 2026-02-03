@@ -6,11 +6,12 @@ import {
     world,
 } from "@minecraft/server";
 import { CountdownManager } from "../utils/CountdownManager";
-import { GamePhase, type InGameManager } from "../InGameManager";
+import { type InGameManager } from "../InGameManager";
 import { DEFAULT_SETTINGS } from "../../../constants/settings";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { SYSTEMS } from "../../../constants/systems";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { GamePhase } from "../GamePhase";
 
 export class GamePreparationManager {
     private readonly countdownManager: CountdownManager;

@@ -1,8 +1,9 @@
 import { world } from "@minecraft/server";
-import { GamePhase, type InGameManager } from "../../InGameManager";
+import { type InGameManager } from "../../InGameManager";
 import { CancelableWait } from "../../utils/CancelableWait";
 import { GameResultPresentation } from "./GameResultPresentation";
 import type { ResolvedGameOutcome } from "../GameManager";
+import { GamePhase } from "../../GamePhase";
 
 export class GameTerminator {
     private readonly gameResultPresentation: GameResultPresentation;

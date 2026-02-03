@@ -7,7 +7,7 @@ import {
 } from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { InGameEventManager } from "./InGameEventManager";
-import { GamePhase } from "../InGameManager";
+import { GamePhase } from "../GamePhase";
 
 export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityHurtAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {

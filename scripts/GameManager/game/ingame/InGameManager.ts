@@ -15,14 +15,7 @@ import type { RoleDefinition } from "../../data/roles";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
 import { ConsoleManager } from "../../../@core/kairo/utils/ConsoleManager";
-
-export enum GamePhase {
-    Initializing = "Initializing",
-    Preparing = "Preparing",
-    InGame = "InGame",
-    Result = "Result",
-    Waiting = "Waiting",
-}
+import { GamePhase } from "./GamePhase";
 
 export type IngameConstants = {
     roleDefinitions: Record<string, RoleDefinition[]>;

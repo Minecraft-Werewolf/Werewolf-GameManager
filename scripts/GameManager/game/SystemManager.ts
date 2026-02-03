@@ -1,4 +1,4 @@
-import { world, type Player } from "@minecraft/server";
+import { type Player } from "@minecraft/server";
 import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";

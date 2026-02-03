@@ -1,5 +1,5 @@
 import { world, type RawMessage } from "@minecraft/server";
-import { GamePhase, InGameManager } from "../InGameManager";
+import { InGameManager } from "../InGameManager";
 import { IntervalManager } from "../utils/IntervalManager";
 import { ItemManager } from "./gameplay/ItemManager";
 import { GameTerminationEvaluator } from "./gameplay/GameTerminationEvaluator";
@@ -8,6 +8,7 @@ import { PlayerData } from "./gameplay/PlayerData";
 import type { GameOutcome } from "../../../data/types/conditions";
 import { defaultGameOutcomeRules, type GameOutcomeRule } from "../../../data/outcome";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { GamePhase } from "../GamePhase";
 
 export interface ResolvedGameOutcome {
     type: "resolved";

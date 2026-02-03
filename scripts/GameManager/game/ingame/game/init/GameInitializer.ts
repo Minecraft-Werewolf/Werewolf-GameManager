@@ -1,8 +1,9 @@
 import { Player, world } from "@minecraft/server";
 import { InitPresentation } from "./InitPresentation";
-import { GamePhase, type InGameManager } from "../../InGameManager";
+import { type InGameManager } from "../../InGameManager";
 import { CancelableWait } from "../../utils/CancelableWait";
 import { RoleAssignmentManager } from "./RoleAssignmentManager";
+import { GamePhase } from "../../GamePhase";
 
 export class GameInitializer {
     private readonly initPresentation: InitPresentation;
