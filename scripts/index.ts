@@ -51,12 +51,13 @@ Kairo.onTick = () => {
     SystemManager.getInstance().monitorSystem();
 
     world.getPlayers().forEach((player) => {
-        player.setSpawnPoint({
-            dimension: world.getDimension(MinecraftDimensionTypes.Overworld),
-            x: player.location.x,
-            y: player.location.y,
-            z: player.location.z,
-        });
+        if (player.isValid)
+            player.setSpawnPoint({
+                dimension: world.getDimension(MinecraftDimensionTypes.Overworld),
+                x: player.location.x,
+                y: Math.max(player.location.y, -64),
+                z: player.location.z,
+            });
     });
 };
 

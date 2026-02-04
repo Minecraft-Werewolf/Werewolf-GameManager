@@ -164,6 +164,11 @@ export class GamePreparationManager {
                     },
                 },
                 {
+                    text: "\n" + (playerData.role.color ?? SYSTEMS.COLOR_CODE.RESET),
+                },
+                playerData.role.description,
+                { text: SYSTEMS.COLOR_CODE.RESET },
+                {
                     text: "\n" + SYSTEMS.SEPARATOR.LINE_ORANGE,
                 },
             ],

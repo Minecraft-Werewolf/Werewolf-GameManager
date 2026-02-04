@@ -1,5 +1,6 @@
 import {
     EntityComponentTypes,
+    EquipmentSlot,
     GameMode,
     HudElement,
     HudVisibility,
@@ -78,7 +79,16 @@ export class PlayerInitializer {
         const inventory = player.getComponent(EntityComponentTypes.Inventory);
         if (!inventory) return;
 
+        const equipment = player.getComponent(EntityComponentTypes.Equippable);
+        if (!equipment) return;
+
         inventory.container.clearAll();
+        equipment.setEquipment(EquipmentSlot.Chest);
+        equipment.setEquipment(EquipmentSlot.Feet);
+        equipment.setEquipment(EquipmentSlot.Head);
+        equipment.setEquipment(EquipmentSlot.Legs);
+        equipment.setEquipment(EquipmentSlot.Offhand);
+
         for (const item of this.items) {
             if (inventory.container.getItem(item.slot)?.typeId !== item.typeId) {
                 const itemStack = new ItemStack(item.typeId);

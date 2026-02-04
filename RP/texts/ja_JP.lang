@@ -73,3 +73,5 @@ werewolf-gamemanager.skill.onCooldown.error=§cスキルCT中...%ss§r
 werewolf-gamemanager.game.actionbar.skill.ready=§bReady§r
 
 werewolf-gamemanager.game.actionbar.remainingTime=§b制限時間: %ss§r
+werewolf-gamemanager.game.selfKill.message=§cあなたは自ら生命を絶った§r
+werewolf-gamemanager.game.slain.message=§c%sに殺害された§r

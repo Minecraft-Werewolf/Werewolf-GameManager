@@ -50,43 +50,36 @@ export class GameResultPresentation {
         const gameResult = terminator.getGameResult();
         if (!gameResult) return;
 
-        players
-            .sort((a, b) => {
-                const aPlayerData = inGameManager.getPlayerData(a.id);
-                const bPlayerData = inGameManager.getPlayerData(b.id);
-                if (aPlayerData.role === null || bPlayerData.role === null) return 0;
-                return inGameManager.compareRoleDifinition(aPlayerData.role, bPlayerData.role);
-            })
-            .forEach((player) => {
-                const playerData = inGameManager.getPlayerData(player.id);
+        players.forEach((player) => {
+            const playerData = inGameManager.getPlayerData(player.id);
 
-                this.playResultSound(player, playerData.isVictory);
+            this.playResultSound(player, playerData.isVictory);
 
-                const { subtitleId, messageId } = this.getPlayerResultTextIds(
-                    gameResult,
-                    playerData.isVictory,
-                );
+            const { subtitleId, messageId } = this.getPlayerResultTextIds(
+                gameResult,
+                playerData.isVictory,
+            );
 
-                player.onScreenDisplay.setTitle(gameResult.presentation.title, {
-                    subtitle: { translate: subtitleId },
-                    ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
-                });
-
-                const lineBreak = { text: "\n" };
-                player.sendMessage({
-                    rawtext: [
-                        { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
-                        lineBreak,
-                        gameResult.presentation.message,
-                        lineBreak,
-                        { translate: messageId },
-                        lineBreak,
-                        { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
-                    ],
-                });
+            player.onScreenDisplay.setTitle(gameResult.presentation.title, {
+                subtitle: { translate: subtitleId },
+                ...GAMES.UI_RESULT_WINNING_FACTION_TITLE_ANIMATION,
             });
 
-        this.broadcastPlayersState(inGameManager.getPlayersData());
+            const lineBreak = { text: "\n" };
+            player.sendMessage({
+                rawtext: [
+                    { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+                    lineBreak,
+                    gameResult.presentation.message,
+                    lineBreak,
+                    { translate: messageId },
+                    lineBreak,
+                    { text: SYSTEMS.SEPARATOR.LINE_ORANGE },
+                ],
+            });
+        });
+
+        this.broadcastPlayersState(players);
 
         await terminator.getWaitController().waitTicks(SYSTEMS.GAME_SHOW_RESULT.DURATION);
     }
@@ -127,28 +120,38 @@ export class GameResultPresentation {
         };
     }
 
-    private broadcastPlayersState(playersData: readonly PlayerData[]): void {
+    private broadcastPlayersState(players: Player[]): void {
         const lines: { rawtext: any[] }[] = [];
+        const terminator = this.gameTerminator;
+        const inGameManager = terminator.getInGameManager();
 
-        playersData.forEach((playerData) => {
-            const translateId = playerData.isLeave
-                ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_LEFT
-                : playerData.isAlive
-                  ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ALIVE
-                  : WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEAD;
+        players
+            .sort((a, b) => {
+                const aPlayerData = inGameManager.getPlayerData(a.id);
+                const bPlayerData = inGameManager.getPlayerData(b.id);
+                if (aPlayerData.role === null || bPlayerData.role === null) return 0;
+                return inGameManager.compareRoleDifinition(aPlayerData.role, bPlayerData.role);
+            })
+            .forEach((player) => {
+                const playerData = inGameManager.getPlayerData(player.id);
+                const translateId = playerData.isLeave
+                    ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_LEFT
+                    : playerData.isAlive
+                      ? WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_ALIVE
+                      : WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_DEAD;
 
-            lines.push({
-                rawtext: [
-                    { text: playerData.name },
-                    { text: SYSTEMS.SEPARATOR.COLON },
-                    { text: playerData.role?.color || SYSTEMS.COLOR_CODE.RESET },
-                    playerData.role?.name || { text: "Unknown Role" },
-                    { text: SYSTEMS.COLOR_CODE.RESET },
-                    { text: SYSTEMS.SEPARATOR.SPACE },
-                    { translate: translateId },
-                ],
+                lines.push({
+                    rawtext: [
+                        { text: playerData.name },
+                        { text: SYSTEMS.SEPARATOR.COLON },
+                        { text: playerData.role?.color || SYSTEMS.COLOR_CODE.RESET },
+                        playerData.role?.name || { text: "Unknown Role" },
+                        { text: SYSTEMS.COLOR_CODE.RESET },
+                        { text: SYSTEMS.SEPARATOR.SPACE },
+                        { translate: translateId },
+                    ],
+                });
             });
-        });
 
         world.sendMessage({
             rawtext: [

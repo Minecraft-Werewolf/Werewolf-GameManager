@@ -2,6 +2,7 @@ import { type Player, type RawMessage } from "@minecraft/server";
 import type { GameManager } from "../GameManager";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
+import type { PlayerData } from "./PlayerData";
 
 export class ActionBarManager {
     private constructor(private readonly gameManager: GameManager) {}
@@ -20,6 +21,7 @@ export class ActionBarManager {
         if (!actionBarRawMessage.rawtext) return;
 
         const playerData = this.gameManager.getPlayerData(player.id);
+        const playersData = this.gameManager.getPlayersData();
         if (!playerData) return;
         if (!playerData.role) return;
 
@@ -55,6 +57,33 @@ export class ActionBarManager {
 
         actionBarRawMessage.rawtext.push(...skillCTs);
 
+        // revealTo 表示
+        const revealedPlayers: RawMessage[] = [];
+        const revealedPlayerNames: string[] = [];
+
+        playersData.forEach((other) => {
+            if (other.player.id === player.id) return;
+            if (!other.role) return;
+
+            if (!this.canSeeRole(playerData, other)) return;
+
+            if (revealedPlayers.length === 0) {
+                if (other.role.roleGroup)
+                    revealedPlayers.push(
+                        { text: other.role.roleGroup.color },
+                        other.role.roleGroup.name,
+                        { text: "§7: " + other.role.roleGroup.color },
+                    );
+            }
+
+            revealedPlayerNames.push(other.player.name);
+        });
+
+        if (revealedPlayers.length > 0) {
+            revealedPlayers.push({ text: revealedPlayerNames.join(" ,") });
+            actionBarRawMessage.rawtext.push(...revealedPlayers, { text: "\n" });
+        }
+
         // 制限時間表示
         actionBarRawMessage.rawtext.push(lineBreak);
         const remainingTicks = this.gameManager.getRemainingTicks();
@@ -66,5 +95,24 @@ export class ActionBarManager {
         actionBarRawMessage.rawtext.push(remainingTimeMessage, lineBreak);
 
         player.onScreenDisplay.setActionBar(actionBarRawMessage);
+    }
+
+    private canSeeRole(viewer: PlayerData, target: PlayerData): boolean {
+        if (viewer.role === null || target.role === null) return false;
+        const reveal = target.role?.revealTo;
+        if (!reveal) return false;
+
+        if (reveal.roles?.includes(viewer.role.id)) return true;
+        if (reveal.factions?.includes(viewer.role.factionId)) return true;
+
+        if (
+            reveal.roleGroups &&
+            viewer.role.roleGroup &&
+            reveal.roleGroups.includes(viewer.role.roleGroup.id)
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

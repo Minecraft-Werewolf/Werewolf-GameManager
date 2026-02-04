@@ -22,13 +22,19 @@ export class RoleDataValidator {
         if (typeof data.factionId !== "string") return false;
         if (typeof data.sortIndex !== "number") return false;
 
+        if (data.roleGroup !== undefined) {
+            if (!this.isRoleGroup(data.roleGroup)) return false;
+        }
+
         if (data.count !== undefined && !this.isValidCount(data.count)) return false;
         if (data.color !== undefined && !this.isColorType(data.color)) return false;
         if (data.divinationResult !== undefined && !this.isResultType(data.divinationResult))
             return false;
         if (data.clairvoyanceResult !== undefined && !this.isResultType(data.clairvoyanceResult))
             return false;
-        if (data.knownRoles !== undefined && !this.isStringArray(data.knownRoles)) return false;
+        if (data.revealTo !== undefined) {
+            if (!this.isRevealTo(data.revealTo)) return false;
+        }
 
         if (data.skills !== undefined) {
             if (!Array.isArray(data.skills)) return false;
@@ -61,6 +67,26 @@ export class RoleDataValidator {
 
     private isStringArray(x: unknown): x is string[] {
         return Array.isArray(x) && x.every((v) => typeof v === "string");
+    }
+
+    private isRoleGroup(x: unknown): boolean {
+        if (!this.isObject(x)) return false;
+
+        if (typeof x.id !== "string") return false;
+        if (!KairoUtils.isRawMessage(x.name)) return false;
+        if (typeof x.color !== "string") return false;
+
+        return true;
+    }
+
+    private isRevealTo(x: unknown): boolean {
+        if (!this.isObject(x)) return false;
+
+        if (x.roles !== undefined && !this.isStringArray(x.roles)) return false;
+        if (x.factions !== undefined && !this.isStringArray(x.factions)) return false;
+        if (x.roleGroups !== undefined && !this.isStringArray(x.roleGroups)) return false;
+
+        return true;
     }
 
     private isValidCount(x: unknown): boolean {

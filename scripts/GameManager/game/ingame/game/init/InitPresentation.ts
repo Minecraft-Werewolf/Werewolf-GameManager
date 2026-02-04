@@ -1,5 +1,7 @@
 import {
     EntityComponentTypes,
+    EquipmentSlot,
+    GameMode,
     HudElement,
     HudVisibility,
     InputPermissionCategory,
@@ -65,6 +67,14 @@ export class InitPresentation {
             this.hideHudForPlayer(player);
             this.showGameTitleForPlayer(player);
             player.getComponent(EntityComponentTypes.Inventory)?.container.clearAll();
+            const equipment = player.getComponent(EntityComponentTypes.Equippable);
+            if (!equipment) return;
+            equipment.setEquipment(EquipmentSlot.Chest);
+            equipment.setEquipment(EquipmentSlot.Feet);
+            equipment.setEquipment(EquipmentSlot.Head);
+            equipment.setEquipment(EquipmentSlot.Legs);
+            equipment.setEquipment(EquipmentSlot.Offhand);
+            player.setGameMode(GameMode.Adventure);
             player.playSound(SYSTEMS.SHOW_GAME_TITLE.SOUND_ID, {
                 location: player.location,
                 pitch: SYSTEMS.SHOW_GAME_TITLE.SOUND_PITCH,

@@ -8,6 +8,8 @@ import {
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { InGameEventManager } from "./InGameEventManager";
 import { GamePhase } from "../GamePhase";
+import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
+import { MinecraftEntityTypes } from "@minecraft/vanilla-data";
 
 export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityHurtAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {
@@ -35,6 +37,21 @@ export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityH
         if (hurtPlayerHealthComponent.currentValue === 0) {
             hurtPlayerData.isAlive = false;
             hurtPlayer.setGameMode(GameMode.Spectator);
+
+            if (damageSource.damagingEntity === undefined) return;
+            if (damageSource.damagingEntity.typeId !== MinecraftEntityTypes.Player) return;
+            const damagingPlayer = damageSource.damagingEntity;
+
+            if (damagingPlayer.id === hurtPlayer.id) {
+                hurtPlayer.sendMessage({
+                    translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SELF_KILL_MESSAGE,
+                });
+            } else {
+                hurtPlayer.sendMessage({
+                    translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SLAIN_MESSAGE,
+                    with: [damageSource.damagingEntity.nameTag],
+                });
+            }
         }
     }
 }
