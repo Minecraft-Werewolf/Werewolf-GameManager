@@ -1,5 +1,5 @@
-import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
-import type { VictoryCondition } from "../../../data/factions";
+import { KairoUtils } from "../../../../../@core/kairo/utils/KairoUtils";
+import type { VictoryCondition } from "../../../../data/factions";
 import type {
     AndCondition,
     ComparisonCondition,
@@ -11,13 +11,18 @@ import type {
     OrCondition,
     PlayerAliveCountComparison,
     RemainingTimeComparison,
-} from "../../../data/types/conditions";
-import type { FactionManager } from "./FactionManager";
+} from "../../../../data/types/conditions";
+import type { FactionRegistrationValidator } from "./FactionRegistrationValidator";
 
-export class FactionDataValidator {
-    private constructor(private readonly factionManager: FactionManager) {}
-    public static create(factionManager: FactionManager): FactionDataValidator {
-        return new FactionDataValidator(factionManager);
+export class FactionDefinitionValidator {
+    private constructor(
+        private readonly factionRegistrationValidator: FactionRegistrationValidator,
+    ) {}
+
+    public static create(
+        roleRegistrationValidator: FactionRegistrationValidator,
+    ): FactionDefinitionValidator {
+        return new FactionDefinitionValidator(roleRegistrationValidator);
     }
 
     public isFaction(data: unknown): boolean {

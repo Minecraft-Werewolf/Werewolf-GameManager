@@ -9,7 +9,7 @@ export class RoleDefinitionManager {
 
     private readonly roleRegistrationValidator = RoleRegistrationValidator.create(this);
     private constructor(private readonly definitionManager: DefinitionManager) {}
-    public static create(definitionManager: DefinitionManager) {
+    public static create(definitionManager: DefinitionManager): RoleDefinitionManager {
         return new RoleDefinitionManager(definitionManager);
     }
 

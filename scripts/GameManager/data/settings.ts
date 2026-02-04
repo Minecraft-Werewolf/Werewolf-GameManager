@@ -3,6 +3,11 @@ import { properties } from "../../properties";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../constants/translate";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../constants/scriptevent";
 
+export interface SettingDefinition {
+    providerAddonId: string; // 登録要求時に GameManager が独自に付与する。定義側では不要
+    id: string;
+}
+
 export interface SettingNodeBase {
     id: string;
     title: RawMessage;
