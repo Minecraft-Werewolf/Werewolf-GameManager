@@ -1,16 +1,14 @@
-import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
-import type { RoleDefinition } from "../../../data/roles";
-import type { RoleManager } from "./RoleManager";
+import { KairoUtils } from "../../../../../@core/kairo/utils/KairoUtils";
+import type { RoleDefinition } from "../../../../data/roles";
+import type { RoleRegistrationValidator } from "./RoleRegistrationValidator";
 
-/**
- * 役職データは文字列で送られてくるため、
- * データを検証する必要がある。そのためのクラス
- */
-export class RoleDataValidator {
-    private constructor(private readonly roleManager: RoleManager) {}
+export class RoleDefinitionValidator {
+    private constructor(private readonly roleRegistrationValidator: RoleRegistrationValidator) {}
 
-    public static create(roleManager: RoleManager): RoleDataValidator {
-        return new RoleDataValidator(roleManager);
+    public static create(
+        roleRegistrationValidator: RoleRegistrationValidator,
+    ): RoleDefinitionValidator {
+        return new RoleDefinitionValidator(roleRegistrationValidator);
     }
 
     public isRole(data: unknown): data is RoleDefinition {

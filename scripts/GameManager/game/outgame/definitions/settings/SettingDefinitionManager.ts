@@ -1,3 +1,4 @@
+import type { KairoResponse } from "../../../../../@core/kairo/utils/KairoUtils";
 import type { DefinitionManager } from "../DefinitionManager";
 
 export class SettingDefinitionManager {
@@ -6,5 +7,8 @@ export class SettingDefinitionManager {
         return new SettingDefinitionManager(definitionManager);
     }
 
-    public registerSettingDefinitions(roles: unknown[]) {}
+    public async registerSettingDefinitions(
+        addonId: string,
+        roles: unknown[],
+    ): Promise<KairoResponse> {}
 }

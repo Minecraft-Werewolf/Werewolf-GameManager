@@ -2,14 +2,9 @@ import { type Player } from "@minecraft/server";
 import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
-import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
-import { GameSettingManager } from "./system/settings/GameSettingManager";
-import type { RoleDefinition } from "../data/roles";
-import { FactionManager } from "./system/factions/FactionManager";
-import type { FactionDefinition } from "../data/factions";
 import {
     KairoUtils,
     type KairoCommand,
@@ -28,9 +23,6 @@ export class SystemManager {
     private readonly systemMonitor: SystemMonitor;
     private readonly worldStateChanger: WorldStateChanger;
     private readonly worldStateChangeBroadcaster: WorldStateChangeBroadcaster;
-    private readonly factionManager: FactionManager;
-    private readonly roleManager: RoleManager;
-    private readonly gameSettingManager: GameSettingManager;
     private inGameManager: InGameManager | null = null;
     private outGameManager: OutGameManager | null = null;
     private currentWorldState: GameWorldState | null = null;
@@ -41,9 +33,6 @@ export class SystemManager {
         this.systemMonitor = SystemMonitor.create(this);
         this.worldStateChanger = WorldStateChanger.create(this);
         this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
-        this.factionManager = FactionManager.create(this);
-        this.roleManager = RoleManager.create(this);
-        this.gameSettingManager = GameSettingManager.create(this);
     }
 
     // アドオン初期化時の処理
@@ -125,55 +114,17 @@ export class SystemManager {
     }
 
     public openSettingsForm(player: Player): void {
-        this.gameSettingManager.opneSettingsForm(player);
+        this.outGameManager?.openSettingsForm(player);
     }
 
     public openFormRoleComposition(playerId: string): void {
-        this.gameSettingManager.openFormRoleComposition(playerId);
+        this.outGameManager?.openFormRoleComposition(playerId);
     }
 
-    public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
-        return this.roleManager.getRegisteredRoleDefinitions();
-    }
-
-    public getSelectedRolesForNextGame(): RoleDefinition[] {
-        return this.roleManager.getSelectedRolesForNextGame();
-    }
-
-    public registerFactions(addonId: string, factions: unknown[]): void {
-        this.factionManager.registerFactions(addonId, factions);
-    }
-
-    public requestFactionReRegistration(): void {
-        this.factionManager.requestFactionReRegistration();
-    }
-
-    public registerRoles(addonId: string, roles: unknown[]): void {
-        this.roleManager.registerRoles(addonId, roles);
-    }
-
-    public requestRoleReRegistration(): void {
-        this.roleManager.requestRoleReRegistration();
-    }
-
-    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
-        return this.roleManager.sortRoleDefinitions(roles);
-    }
-
-    public getRoleComposition() {
-        return this.roleManager.getSelectedRolesForNextGame();
-    }
-
-    public getFactionData(factionId: string): FactionDefinition | null {
-        return this.factionManager.getFactionData(factionId);
-    }
-
-    public getFactionDefinitions() {
-        return this.factionManager.getSelectedFactionsForNextGame();
-    }
-
-    public getRegisteredFactionDefinitions(): Map<string, FactionDefinition[]> {
-        return this.factionManager.getRegisteredFactionDefinitions();
+    public async requestRegistrationDefinitions(command: KairoCommand): Promise<KairoResponse> {
+        if (!this.outGameManager)
+            return KairoUtils.buildKairoResponse({}, false, "The game is currently in progress.");
+        return this.outGameManager.requestRegistrationDefinitions(command);
     }
 
     public getWerewolfGameDataDTO(): KairoResponse {
@@ -188,9 +139,5 @@ export class SystemManager {
 
     public monitorSystem(): void {
         this.systemMonitor.monitor();
-    }
-
-    public compareRoleDifinition(a: RoleDefinition, b: RoleDefinition): number {
-        return this.roleManager.compareRoleDifinition(a, b);
     }
 }

@@ -1,11 +1,9 @@
 import type { Player } from "@minecraft/server";
 import { ROOT_SETTINGS, type SettingCategoryNode } from "../../../data/settings";
-import type { SystemManager } from "../../SystemManager";
 import { RoleCompositionManager } from "./RoleCompositionManager";
 import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
-import type { RoleDefinition } from "../../../data/roles";
-import type { FactionDefinition } from "../../../data/factions";
+import type { OutGameManager } from "../OutGameManager";
 
 export class GameSettingManager {
     private readonly roleCompositionManager: RoleCompositionManager;
@@ -13,14 +11,14 @@ export class GameSettingManager {
     private readonly settingUIManager: SettingUIManager;
     private readonly rootSettingCategory: SettingCategoryNode;
 
-    private constructor(private readonly systemManager: SystemManager) {
+    private constructor(private readonly outGameManager: OutGameManager) {
         this.roleCompositionManager = RoleCompositionManager.create(this);
         this.settingTreeManager = SettingTreeManager.create(this);
         this.settingUIManager = SettingUIManager.create(this);
         this.rootSettingCategory = ROOT_SETTINGS;
     }
-    public static create(systemManager: SystemManager): GameSettingManager {
-        return new GameSettingManager(systemManager);
+    public static create(outGameManager: OutGameManager): GameSettingManager {
+        return new GameSettingManager(outGameManager);
     }
 
     public async opneSettingsForm(player: Player): Promise<void> {
@@ -35,19 +33,17 @@ export class GameSettingManager {
         return this.rootSettingCategory;
     }
 
-    public getRegisteredRoleDefinitions(): Map<string, RoleDefinition[]> {
-        return this.systemManager.getRegisteredRoleDefinitions();
+    public getDefinitions<T>(
+        addonListSaveKey: string,
+        definitionSaveKeyPrefix: string,
+    ): Promise<T[]> {
+        return this.outGameManager.getDefinitions<T>(addonListSaveKey, definitionSaveKeyPrefix);
     }
 
-    public getSelectedRolesForNextGame(): RoleDefinition[] {
-        return this.systemManager.getSelectedRolesForNextGame();
-    }
-
-    public getFactionData(factionId: string): FactionDefinition | null {
-        return this.systemManager.getFactionData(factionId);
-    }
-
-    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
-        return this.systemManager.sortRoleDefinitions(roles);
+    public getDefinitionsMap<T>(
+        addonListSaveKey: string,
+        definitionSaveKeyPrefix: string,
+    ): Promise<Map<string, T[]>> {
+        return this.outGameManager.getDefinitionsMap<T>(addonListSaveKey, definitionSaveKeyPrefix);
     }
 }

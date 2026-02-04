@@ -6,6 +6,7 @@ import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate
 import { KAIRO_DATAVAULT_SAVE_KEYS, SYSTEMS } from "../../../constants/systems";
 import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
 import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
+import type { FactionDefinition } from "../../../data/factions";
 
 // クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {
@@ -21,8 +22,11 @@ export class RoleCompositionManager {
             return;
         }
 
-        const registeredRoleDefinitions: Map<string, RoleDefinition[]> =
-            this.gameSettingManager.getRegisteredRoleDefinitions();
+        const registeredRoleDefinitions =
+            await this.gameSettingManager.getDefinitionsMap<RoleDefinition>(
+                KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_ADDON_LIST,
+                KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_PREFIX,
+            );
 
         const workingRoleDefinitions: Map<string, RoleDefinition[]> =
             this.deepCopyRegisteredRoleDefinitions(registeredRoleDefinitions);
@@ -39,13 +43,18 @@ export class RoleCompositionManager {
         );
 
         let roleCount = 0;
+        const factions = await this.gameSettingManager.getDefinitions<FactionDefinition>(
+            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_ADDON_LIST,
+            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_PREFIX,
+        );
         const workingRolesList = this.filterRolesByCount(workingRoleDefinitions).map(
             (role): RawMessage => {
                 const rawMessage: RawMessage[] = [];
-                const faction = this.gameSettingManager.getFactionData(role.factionId);
+                const faction = factions.find((faction) => faction.id === role.factionId);
 
                 if (role.color !== undefined) rawMessage.push({ text: `\n${role.color}` });
-                else if (faction !== null) rawMessage.push({ text: `\n${faction.defaultColor}` });
+                else if (faction !== undefined)
+                    rawMessage.push({ text: `\n${faction.defaultColor}` });
 
                 if (role.count?.amount === undefined) return {};
 
@@ -96,7 +105,7 @@ export class RoleCompositionManager {
         }
         const { selection, canceled, cancelationReason } = await form.show(player);
         if (canceled || selection === undefined) {
-            if (this.hasRoleCompositionChanged(workingRoleDefinitions))
+            if (await this.hasRoleCompositionChanged(workingRoleDefinitions))
                 return this.openCancelForm(player, workingRoleDefinitions);
             else return;
         }
@@ -119,9 +128,14 @@ export class RoleCompositionManager {
         const registeredRolesForAddon = workingRoleDefinitions.get(addonId);
         if (registeredRolesForAddon === undefined) return;
 
+        const factions = await this.gameSettingManager.getDefinitions<FactionDefinition>(
+            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_ADDON_LIST,
+            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_PREFIX,
+        );
+
         for (const role of registeredRolesForAddon) {
-            const faction = this.gameSettingManager.getFactionData(role.factionId);
-            if (faction === null) continue;
+            const faction = factions.find((faction) => faction.id === role.factionId);
+            if (faction === undefined) continue;
 
             const color = role.color ?? faction.defaultColor;
             const maxValue = role.count?.max ?? 4;
@@ -202,10 +216,16 @@ export class RoleCompositionManager {
         }
     }
 
-    public applyChanges(player: Player, working: Map<string, RoleDefinition[]>): void {
-        if (!this.hasRoleCompositionChanged(working)) return;
+    public async applyChanges(
+        player: Player,
+        working: Map<string, RoleDefinition[]>,
+    ): Promise<void> {
+        if (await !this.hasRoleCompositionChanged(working)) return;
 
-        const registered = this.gameSettingManager.getRegisteredRoleDefinitions();
+        const registered = await this.gameSettingManager.getDefinitionsMap<RoleDefinition>(
+            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_ADDON_LIST,
+            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_PREFIX,
+        );
         for (const [addonId, registeredRoles] of registered.entries()) {
             const workingRoles = working.get(addonId);
             if (!workingRoles) continue;
@@ -240,13 +260,18 @@ export class RoleCompositionManager {
         });
         const roleListMessage: RawMessage[] = [];
         roleListMessage.push({ text: SYSTEMS.SEPARATOR.LINE_CYAN + "\n" });
+
+        const factions = await this.gameSettingManager.getDefinitions<FactionDefinition>(
+            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_ADDON_LIST,
+            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_PREFIX,
+        );
         let roleCount = 0;
         for (const role of this.gameSettingManager.sortRoleDefinitions(roleDefinitionsAfterApply)) {
             const rawMessage: RawMessage[] = [];
-            const faction = this.gameSettingManager.getFactionData(role.factionId);
+            const faction = factions.find((faction) => faction.id === role.factionId);
 
             if (role.color !== undefined) rawMessage.push({ text: `${role.color}` });
-            else if (faction !== null) rawMessage.push({ text: `${faction.defaultColor}` });
+            else if (faction !== undefined) rawMessage.push({ text: `${faction.defaultColor}` });
 
             if (role.count?.amount === undefined) continue;
 
@@ -295,8 +320,13 @@ export class RoleCompositionManager {
         return [...RoleDefinitions.values()].flat().filter((role) => (role.count?.amount ?? 0) > 0);
     }
 
-    private hasRoleCompositionChanged(working: Map<string, RoleDefinition[]>): boolean {
-        const original = this.gameSettingManager.getRegisteredRoleDefinitions();
+    private async hasRoleCompositionChanged(
+        working: Map<string, RoleDefinition[]>,
+    ): Promise<boolean> {
+        const original = await this.gameSettingManager.getDefinitionsMap<RoleDefinition>(
+            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_ADDON_LIST,
+            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_PREFIX,
+        );
         for (const [addonId, originalRoles] of original.entries()) {
             const workingRoles = working.get(addonId);
             if (!workingRoles) return true;

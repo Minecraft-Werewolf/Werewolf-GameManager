@@ -1,3 +1,4 @@
+import type { KairoResponse } from "../../../../../@core/kairo/utils/KairoUtils";
 import type { DefinitionManager } from "../DefinitionManager";
 
 export class FactionDefinitionManager {
@@ -6,5 +7,8 @@ export class FactionDefinitionManager {
         return new FactionDefinitionManager(definitionManager);
     }
 
-    public registerFactionDefinitions(roles: unknown[]) {}
+    public async registerFactionDefinitions(
+        addonId: string,
+        roles: unknown[],
+    ): Promise<KairoResponse> {}
 }

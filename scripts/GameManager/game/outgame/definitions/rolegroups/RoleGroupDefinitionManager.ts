@@ -6,5 +6,8 @@ export class RoleGroupDefinitionManager {
         return new RoleGroupDefinitionManager(definitionManager);
     }
 
-    public registerRoleGroupDefinitions(roleGroups: unknown[]) {}
+    public async registerRoleGroupDefinitions(
+        addonId: string,
+        roleGroups: unknown[],
+    ): Promise<KairoResponse> {}
 }

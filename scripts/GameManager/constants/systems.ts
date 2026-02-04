@@ -6,6 +6,14 @@ export const KAIRO_COMMAND_TARGET_ADDON_IDS = {
 };
 
 export const KAIRO_DATAVAULT_SAVE_KEYS = {
+    ROLE_DEFINITIONS_ADDON_LIST: "werewolf.role.definitions.addonList",
+    ROLE_DEFINITIONS_PREFIX: "werewolf.role.definitions.",
+    FACTION_DEFINITIONS_ADDON_LIST: "werewolf.faction.definitions.addonList",
+    FACTION_DEFINITIONS_PREFIX: "werewolf.faction.definitions.",
+    ROLEGROUP_DEFINITIONS_ADDON_LIST: "werewolf.roleGroup.definitions.addonList",
+    ROLEGROUP_DEFINITIONS_PREFIX: "werewolf.roleGroup.definitions.",
+    SETTING_DEFINITIONS_ADDON_LIST: "werewolf.setting.definitions.addonList",
+    SETTING_DEFINITIONS_PREFIX: "werewolf.setting.definitions.",
     ROLE_COMPOSITION_PREFIX: "werewolf.roleComposition."
 }
 

@@ -2,15 +2,20 @@ import { world, type Player } from "@minecraft/server";
 import type { SystemManager } from "../SystemManager";
 import { OutGameEventManager } from "./events/OutGameEventManager";
 import { PlayerInitializer } from "./PlayerInitializer";
-import { KairoUtils } from "../../../@core/kairo/utils/KairoUtils";
+import {
+    KairoUtils,
+    type KairoCommand,
+    type KairoResponse,
+} from "../../../@core/kairo/utils/KairoUtils";
+import { DefinitionManager } from "./definitions/DefinitionManager";
+import { GameSettingManager } from "./settings/GameSettingManager";
 
 export class OutGameManager {
-    private readonly outGameEventManager: OutGameEventManager;
-    private readonly playerInitializer: PlayerInitializer;
+    private readonly definitionManager = DefinitionManager.create(this);
+    private readonly gameSettingManager = GameSettingManager.create(this);
+    private readonly outGameEventManager = OutGameEventManager.create(this);
+    private readonly playerInitializer = PlayerInitializer.create(this);
     private constructor(private readonly systemManager: SystemManager) {
-        this.outGameEventManager = OutGameEventManager.create(this);
-        this.playerInitializer = PlayerInitializer.create(this);
-
         this.init();
     }
     public static create(systemManager: SystemManager): OutGameManager {
@@ -51,6 +56,31 @@ export class OutGameManager {
     }
 
     public openSettingsForm(player: Player): void {
-        this.systemManager.openSettingsForm(player);
+        this.gameSettingManager.opneSettingsForm(player);
+    }
+
+    public openFormRoleComposition(playerId: string): void {
+        this.gameSettingManager.openFormRoleComposition(playerId);
+    }
+
+    public async requestRegistrationDefinitions(command: KairoCommand): Promise<KairoResponse> {
+        return this.definitionManager.requestRegistrationDefinitions(command);
+    }
+
+    public getDefinitions<T>(
+        addonListSaveKey: string,
+        definitionSaveKeyPrefix: string,
+    ): Promise<T[]> {
+        return this.definitionManager.getDefinitions<T>(addonListSaveKey, definitionSaveKeyPrefix);
+    }
+
+    public getDefinitionsMap<T>(
+        addonListSaveKey: string,
+        definitionSaveKeyPrefix: string,
+    ): Promise<Map<string, T[]>> {
+        return this.definitionManager.getDefinitionsMap<T>(
+            addonListSaveKey,
+            definitionSaveKeyPrefix,
+        );
     }
 }
