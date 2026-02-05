@@ -3,7 +3,7 @@ import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../constants/systems";
 import { KairoUtils } from "../../../@core/kairo/utils/KairoUtils";
 import { ConsoleManager } from "../../../@core/kairo/utils/ConsoleManager";
-import type { IngameConstants } from "../ingame/WerewolfGameDataManager";
+import type { IngameConstants } from "../ingame/InGameManager";
 
 export class WorldStateChangeBroadcaster {
     private constructor(private readonly systemManager: SystemManager) {}

@@ -1,5 +1,5 @@
 import { type Player } from "@minecraft/server";
-import { InGameManager } from "./ingame/InGameManager";
+import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
@@ -11,7 +11,6 @@ import {
     type KairoResponse,
 } from "../../@core/kairo/utils/KairoUtils";
 import { SystemMonitor } from "./system/SystemMonitor";
-import type { IngameConstants } from "./ingame/WerewolfGameDataManager";
 import { DefinitionManager, type DefinitionType } from "./system/definitions/DefinitionManager";
 import type { RoleCountMap } from "./system/definitions/roles/RoleDefinitionRegistry";
 import type { RoleDefinition } from "../data/roles";
@@ -97,8 +96,8 @@ export class SystemManager {
         this.outGameManager = v;
     }
 
-    public createInGameManager(ingameConstants: IngameConstants): InGameManager {
-        return InGameManager.create(this, ingameConstants);
+    public createInGameManager(): InGameManager {
+        return InGameManager.create(this);
     }
 
     public createOutGameManager(): OutGameManager {

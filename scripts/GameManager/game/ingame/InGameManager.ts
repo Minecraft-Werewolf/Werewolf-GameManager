@@ -8,7 +8,7 @@ import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
 import { GameFinalizer } from "./game/GameFinalizer";
 import type { PlayerData } from "./game/gameplay/PlayerData";
-import { WerewolfGameDataManager, type IngameConstants } from "./WerewolfGameDataManager";
+import { WerewolfGameDataManager } from "./WerewolfGameDataManager";
 import { GamePreparationManager } from "./game/GamePreparationManager";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
@@ -17,6 +17,17 @@ import { GamePhase } from "./GamePhase";
 import type { DefinitionType } from "../system/definitions/DefinitionManager";
 import type { RoleDefinition } from "../../data/roles";
 import type { RoleCountMap } from "../system/definitions/roles/RoleDefinitionRegistry";
+import type { FactionDefinition } from "../../data/factions";
+import type { RoleGroupDefinition } from "../../data/rolegroup";
+import type { SettingDefinition } from "../../data/settings";
+
+export type IngameConstants = {
+    roleComposition: RoleCountMap;
+    roleDefinitions: Record<string, RoleDefinition[]>;
+    factionDefinitions: Record<string, FactionDefinition[]>;
+    roleGroupDefinitions: Record<string, RoleGroupDefinition[]>;
+    settingDefinitions: Record<string, SettingDefinition[]>;
+};
 
 export class InGameManager {
     private currentPhase: GamePhase = GamePhase.Waiting;
@@ -31,24 +42,18 @@ export class InGameManager {
 
     private isResetRequested = false;
 
-    private constructor(
-        private readonly systemManager: SystemManager,
-        ingameConstants: IngameConstants,
-    ) {
+    private constructor(private readonly systemManager: SystemManager) {
         this.gameInitializer = GameInitializer.create(this);
         this.gamePreparationManager = GamePreparationManager.create(this);
         this.gameManager = GameManager.create(this);
         this.gameTerminator = GameTerminator.create(this);
         this.gameFinalizer = GameFinalizer.create(this);
         this.inGameEventManager = InGameEventManager.create(this);
-        this.werewolfGameDataManager = WerewolfGameDataManager.create(this, ingameConstants);
+        this.werewolfGameDataManager = WerewolfGameDataManager.create(this);
     }
 
-    public static create(
-        systemManager: SystemManager,
-        ingameConstants: IngameConstants,
-    ): InGameManager {
-        return new InGameManager(systemManager, ingameConstants);
+    public static create(systemManager: SystemManager): InGameManager {
+        return new InGameManager(systemManager);
     }
 
     public async gameStart(): Promise<void> {
@@ -185,37 +190,37 @@ export class InGameManager {
     }
 
     public getDefinitionsMap<T>(type: DefinitionType): ReadonlyMap<string, readonly T[]> {
-        return this.werewolfGameDataManager.getDefinitionsMap<T>(type);
+        return this.systemManager.getDefinitionsMap<T>(type);
     }
 
     public getDefinitions<T>(type: DefinitionType): readonly T[] {
-        return this.werewolfGameDataManager.getDefinitions<T>(type);
+        return this.systemManager.getDefinitions<T>(type);
     }
 
     public getDefinitionsByAddon<T>(type: DefinitionType, addonId: string): readonly T[] {
-        return this.werewolfGameDataManager.getDefinitionsByAddon<T>(type, addonId);
+        return this.systemManager.getDefinitionsByAddon<T>(type, addonId);
     }
 
     public getDefinitionById<T extends { id: string }>(
         type: DefinitionType,
         id: string,
     ): T | undefined {
-        return this.werewolfGameDataManager.getDefinitionById<T>(type, id);
+        return this.systemManager.getDefinitionById<T>(type, id);
     }
 
     public getRoleCount(roleId: string): number {
-        return this.werewolfGameDataManager.getRoleCount(roleId);
+        return this.systemManager.getRoleCount(roleId);
     }
 
     public getRoleComposition(): RoleCountMap {
-        return this.werewolfGameDataManager.getRoleComposition();
+        return this.systemManager.getAllRoleCounts();
     }
 
     public getEnabledRoleIds(): string[] {
-        return this.werewolfGameDataManager.getEnabledRoleIds();
+        return this.systemManager.getEnabledRoleIds();
     }
 
     public getEnabledRoles(): RoleDefinition[] {
-        return this.werewolfGameDataManager.getEnabledRoles();
+        return this.systemManager.getEnabledRoles();
     }
 }

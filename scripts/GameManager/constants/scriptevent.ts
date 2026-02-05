@@ -3,7 +3,6 @@ export const SCRIPT_EVENT_COMMAND_IDS = {
     WEREWOLF_GAME_RESET: "werewolf_game_reset",
     WORLD_STATE_CHANGE: "world_state_change",
     DEFINITIONS_REGISTRATION_REQUEST: "definitions_registration_request",
-    DEFINITIONS_RE_REGISTRATION_REQUEST: "definitions_re_registration_request",
     OPEN_FORM_ROLE_COMPOSITION: "open_form_role_composition",
     OPEN_FORM_ROLE_SETTINGS: "open_form_role_settings",
     OPEN_FORM_GAME_SETTINGS: "open_form_game_settings",

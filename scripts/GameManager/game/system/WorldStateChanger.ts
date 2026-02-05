@@ -1,4 +1,4 @@
-import type { IngameConstants } from "../ingame/WerewolfGameDataManager";
+import type { IngameConstants } from "../ingame/InGameManager";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 
 export class WorldStateChanger {
@@ -29,7 +29,7 @@ export class WorldStateChanger {
                         this.systemManager.getDefinitionsMap("setting"),
                     ),
                 };
-                this.toInGame(ingameConstants);
+                this.toInGame();
                 break;
             }
 
@@ -42,11 +42,11 @@ export class WorldStateChanger {
         else this.systemManager.broadcastWorldStateChange(next, ingameConstants);
     }
 
-    private toInGame(ingameConstants: IngameConstants): void {
+    private toInGame(): void {
         this.systemManager.getOutGameManager()?.getOutGameEventManager().unsubscribeAll();
         this.systemManager.setOutGameManager(null);
 
-        const InGameManager = this.systemManager.createInGameManager(ingameConstants);
+        const InGameManager = this.systemManager.createInGameManager();
         InGameManager.getInGameEventManager().subscribeAll();
         this.systemManager.setInGameManager(InGameManager);
 
