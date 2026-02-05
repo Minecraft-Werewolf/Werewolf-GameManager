@@ -2,23 +2,16 @@ import { world, type Player } from "@minecraft/server";
 import type { SystemManager } from "../SystemManager";
 import { OutGameEventManager } from "./events/OutGameEventManager";
 import { PlayerInitializer } from "./PlayerInitializer";
-import {
-    KairoUtils,
-    type KairoCommand,
-    type KairoResponse,
-} from "../../../@core/kairo/utils/KairoUtils";
-import { DefinitionManager, type DefinitionType } from "./definitions/DefinitionManager";
+import { KairoUtils } from "../../../@core/kairo/utils/KairoUtils";
 import { GameSettingManager } from "./settings/GameSettingManager";
 import type { RoleDefinition } from "../../data/roles";
-import type { RoleCountMap } from "./definitions/roles/RoleDefinitionRegistry";
-import { RoleComparator } from "./RoleComparator";
+import type { DefinitionType } from "../system/definitions/DefinitionManager";
+import type { RoleCountMap } from "../system/definitions/roles/RoleDefinitionRegistry";
 
 export class OutGameManager {
-    private readonly definitionManager = DefinitionManager.create(this);
     private readonly gameSettingManager = GameSettingManager.create(this);
     private readonly outGameEventManager = OutGameEventManager.create(this);
     private readonly playerInitializer = PlayerInitializer.create(this);
-    private readonly roleComparator = RoleComparator.create(this);
     private constructor(private readonly systemManager: SystemManager) {
         this.init();
     }
@@ -67,55 +60,51 @@ export class OutGameManager {
         this.gameSettingManager.openFormRoleComposition(playerId);
     }
 
-    public async requestRegistrationDefinitions(command: KairoCommand): Promise<KairoResponse> {
-        return this.definitionManager.requestRegistrationDefinitions(command);
-    }
-
     public compareRoleDefinitions(a: RoleDefinition, b: RoleDefinition): number {
-        return this.roleComparator.compare(a, b);
+        return this.systemManager.compareRoleDefinitions(a, b);
     }
 
     public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
-        return this.roleComparator.sort(roles);
+        return this.systemManager.sortRoleDefinitions(roles);
     }
 
     public getDefinitions<T>(type: DefinitionType): T[] {
-        return this.definitionManager.getDefinitions<T>(type);
+        return this.systemManager.getDefinitions<T>(type);
     }
 
     public getDefinitionsByAddon<T>(type: DefinitionType, addonId: string): T[] {
-        return this.definitionManager.getDefinitionsByAddon<T>(type, addonId);
+        return this.systemManager.getDefinitionsByAddon<T>(type, addonId);
     }
 
     public getDefinitionsMap<T>(type: DefinitionType): Map<string, T[]> {
-        return this.definitionManager.getDefinitionsMap<T>(type);
+        return this.systemManager.getDefinitionsMap<T>(type);
     }
 
     public getDefinitionById<T>(type: DefinitionType, id: string): T | undefined {
-        return this.definitionManager.getDefinitionById<T>(type, id);
+        return this.systemManager.getDefinitionById<T>(type, id);
     }
 
     public getRoleCount(roleId: string): number {
-        return this.definitionManager.getRoleCount(roleId);
+        return this.systemManager.getRoleCount(roleId);
     }
 
     public getAllRoleCounts(): Readonly<RoleCountMap> {
-        return this.definitionManager.getAllRoleCounts();
+        return this.systemManager.getAllRoleCounts();
     }
 
     public getEnabledRoleIds(): string[] {
-        return this.definitionManager.getEnabledRoleIds();
+        return this.systemManager.getEnabledRoleIds();
     }
 
     public getEnabledRoles(): RoleDefinition[] {
-        return this.definitionManager.getEnabledRoles();
+        return this.systemManager.getEnabledRoles();
     }
 
     public setRoleCount(roleId: string, amount: number): void {
-        this.definitionManager.setRoleCount(roleId, amount);
+        this.systemManager.setRoleCount(roleId, amount);
     }
 
     public setAllRoleCounts(counts: Record<string, number>): void {
-        this.definitionManager.setAllRoleCounts(counts);
+        this.systemManager.setAllRoleCounts(counts);
     }
 }

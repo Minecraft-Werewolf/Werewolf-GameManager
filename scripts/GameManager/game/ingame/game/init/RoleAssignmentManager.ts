@@ -10,7 +10,7 @@ export class RoleAssignmentManager {
 
     public assign(players: Player[]): void {
         const rolePool = this.buildRolePool(
-            this.gameInitializer.getInGameManager().getRoleComposition(),
+            this.gameInitializer.getInGameManager().getEnabledRoles(),
             players.length,
         );
         this.shuffle(rolePool);
@@ -35,7 +35,7 @@ export class RoleAssignmentManager {
         const pool: RoleDefinition[] = [];
 
         for (const role of roleComposition) {
-            const amount = role.count?.amount ?? 0;
+            const amount = this.gameInitializer.getInGameManager().getRoleCount(role.id);
             for (let i = 0; i < amount; i++) {
                 pool.push(role);
             }

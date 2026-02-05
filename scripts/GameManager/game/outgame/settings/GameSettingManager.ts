@@ -5,8 +5,8 @@ import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
 import type { OutGameManager } from "../OutGameManager";
 import type { RoleDefinition } from "../../../data/roles";
-import type { RoleCountMap } from "../definitions/roles/RoleDefinitionRegistry";
-import type { DefinitionType } from "../definitions/DefinitionManager";
+import type { RoleCountMap } from "../../system/definitions/roles/RoleDefinitionRegistry";
+import type { DefinitionType } from "../../system/definitions/DefinitionManager";
 
 export class GameSettingManager {
     private readonly roleCompositionManager: RoleCompositionManager;

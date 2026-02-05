@@ -4,9 +4,10 @@ import {
     type KairoResponse,
 } from "../../../../@core/kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../../../data/roles";
-import type { OutGameManager } from "../OutGameManager";
+import type { SystemManager } from "../../SystemManager";
 import { FactionDefinitionRegistry } from "./factions/FactionDefinitionRegistry";
 import { RoleGroupDefinitionRegistry } from "./rolegroups/RoleGroupDefinitionRegistry";
+import { RoleComparator } from "./roles/RoleComparator";
 import { RoleDefinitionRegistry, type RoleCountMap } from "./roles/RoleDefinitionRegistry";
 import { SettingDefinitionRegistry } from "./settings/SettingDefinitionRegistry";
 
@@ -14,13 +15,14 @@ export const definitionTypeValues = ["role", "faction", "roleGroup", "setting"] 
 export type DefinitionType = (typeof definitionTypeValues)[number];
 
 export class DefinitionManager {
+    private readonly roleComparator = RoleComparator.create(this);
     private readonly roleDefinitionRegistry = RoleDefinitionRegistry.create(this);
     private readonly factionDefinitionRegistry = FactionDefinitionRegistry.create(this);
     private readonly roleGroupDefinitionRegistry = RoleGroupDefinitionRegistry.create(this);
     private readonly settingDefinitionRegistry = SettingDefinitionRegistry.create(this);
-    private constructor(private readonly outGameManager: OutGameManager) {}
-    public static create(outGameManager: OutGameManager): DefinitionManager {
-        return new DefinitionManager(outGameManager);
+    private constructor(private readonly systemManager: SystemManager) {}
+    public static create(systemManager: SystemManager): DefinitionManager {
+        return new DefinitionManager(systemManager);
     }
 
     public async requestRegistrationDefinitions(command: KairoCommand): Promise<KairoResponse> {
@@ -47,6 +49,14 @@ export class DefinitionManager {
             default:
                 return KairoUtils.buildKairoResponse({}, false);
         }
+    }
+
+    public compareRoleDefinitions(a: RoleDefinition, b: RoleDefinition): number {
+        return this.roleComparator.compare(a, b);
+    }
+
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.roleComparator.sort(roles);
     }
 
     public getDefinitions<T>(type: DefinitionType): T[] {

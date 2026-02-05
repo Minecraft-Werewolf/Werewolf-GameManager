@@ -7,7 +7,7 @@ import { KAIRO_DATAVAULT_SAVE_KEYS, SYSTEMS } from "../../../constants/systems";
 import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
 import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
 import type { FactionDefinition } from "../../../data/factions";
-import type { RoleCountMap } from "../definitions/roles/RoleDefinitionRegistry";
+import type { RoleCountMap } from "../../system/definitions/roles/RoleDefinitionRegistry";
 
 // クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {

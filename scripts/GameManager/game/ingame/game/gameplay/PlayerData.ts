@@ -1,6 +1,7 @@
 import type { Player, RawMessage } from "@minecraft/server";
 import type { RoleDefinition } from "../../../../data/roles";
 import type { PlayersDataManager } from "./PlayersDataManager";
+import type { FactionDefinition } from "../../../../data/factions";
 
 export type ParticipationState = "participant" | "spectator";
 export interface PlayerSkillState {
@@ -36,7 +37,7 @@ export class PlayerData {
 
         const faction = this.playerDataManager
             .getInGameManager()
-            .getFactionData(this.role.factionId);
+            .getDefinitionById<FactionDefinition>("faction", this.role.factionId);
         if (!faction) return;
 
         if (this.role.color === undefined) {

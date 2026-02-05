@@ -3,7 +3,6 @@ import type { GameTerminator } from "./GameTerminator";
 import { GAMES, SYSTEMS } from "../../../../constants/systems";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import type { ResolvedGameOutcome } from "../GameManager";
-import type { PlayerData } from "../gameplay/PlayerData";
 
 export class GameResultPresentation {
     private constructor(private readonly gameTerminator: GameTerminator) {}
@@ -130,7 +129,7 @@ export class GameResultPresentation {
                 const aPlayerData = inGameManager.getPlayerData(a.id);
                 const bPlayerData = inGameManager.getPlayerData(b.id);
                 if (aPlayerData.role === null || bPlayerData.role === null) return 0;
-                return inGameManager.compareRoleDifinition(aPlayerData.role, bPlayerData.role);
+                return inGameManager.compareRoleDefinitions(aPlayerData.role, bPlayerData.role);
             })
             .forEach((player) => {
                 const playerData = inGameManager.getPlayerData(player.id);

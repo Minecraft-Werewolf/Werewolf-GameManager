@@ -1,6 +1,4 @@
-import type { FactionDefinition } from "../../data/factions";
-import type { RoleDefinition } from "../../data/roles";
-import type { IngameConstants } from "../ingame/InGameManager";
+import type { IngameConstants } from "../ingame/WerewolfGameDataManager";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 
 export class WorldStateChanger {
@@ -18,21 +16,17 @@ export class WorldStateChanger {
 
         switch (next) {
             case GameWorldState.InGame: {
-                const outGameManager = this.systemManager.getOutGameManager();
-                if (outGameManager === null) return;
-
                 ingameConstants = {
-                    roleDefinitions: this.mapToObject(
-                        outGameManager.getDefinitionManager().getDefinitionsMap("role"),
-                    ),
+                    roleComposition: this.systemManager.getAllRoleCounts(),
+                    roleDefinitions: this.mapToObject(this.systemManager.getDefinitionsMap("role")),
                     factionDefinitions: this.mapToObject(
-                        outGameManager.getDefinitionManager().getDefinitionsMap("faction"),
+                        this.systemManager.getDefinitionsMap("faction"),
                     ),
                     roleGroupDefinitions: this.mapToObject(
-                        outGameManager.getDefinitionManager().getDefinitionsMap("roleGroup"),
+                        this.systemManager.getDefinitionsMap("roleGroup"),
                     ),
                     settingDefinitions: this.mapToObject(
-                        outGameManager.getDefinitionManager().getDefinitionsMap("setting"),
+                        this.systemManager.getDefinitionsMap("setting"),
                     ),
                 };
                 this.toInGame(ingameConstants);

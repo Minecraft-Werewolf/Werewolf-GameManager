@@ -9,6 +9,8 @@ import type { GameOutcome } from "../../../data/types/conditions";
 import { defaultGameOutcomeRules, type GameOutcomeRule } from "../../../data/outcome";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { GamePhase } from "../GamePhase";
+import type { DefinitionType } from "../../system/definitions/DefinitionManager";
+import type { RoleDefinition } from "../../../data/roles";
 
 export interface ResolvedGameOutcome {
     type: "resolved";
@@ -142,8 +144,35 @@ export class GameManager {
         return this.inGameManager.getPlayersData();
     }
 
-    public getFactionDefinitions() {
-        return this.inGameManager.getFactionDefinitions();
+    public getDefinitionsMap<T>(type: DefinitionType): ReadonlyMap<string, readonly T[]> {
+        return this.inGameManager.getDefinitionsMap<T>(type);
+    }
+
+    public getDefinitions<T>(type: DefinitionType): readonly T[] {
+        return this.inGameManager.getDefinitions<T>(type);
+    }
+
+    public getDefinitionsByAddon<T>(type: DefinitionType, addonId: string): readonly T[] {
+        return this.inGameManager.getDefinitionsByAddon<T>(type, addonId);
+    }
+
+    public getDefinitionById<T extends { id: string }>(
+        type: DefinitionType,
+        id: string,
+    ): T | undefined {
+        return this.inGameManager.getDefinitionById<T>(type, id);
+    }
+
+    public getRoleCount(roleId: string): number {
+        return this.inGameManager.getRoleCount(roleId);
+    }
+
+    public getEnabledRoleIds(): string[] {
+        return this.inGameManager.getEnabledRoleIds();
+    }
+
+    public getEnabledRoles(): RoleDefinition[] {
+        return this.inGameManager.getEnabledRoles();
     }
 
     public getDefaultOutcomeRules(): GameOutcomeRule[] {

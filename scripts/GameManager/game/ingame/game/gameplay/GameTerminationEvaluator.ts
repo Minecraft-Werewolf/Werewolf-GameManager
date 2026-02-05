@@ -1,3 +1,4 @@
+import type { FactionDefinition } from "../../../../data/factions";
 import type { GameOutcomeRule } from "../../../../data/outcome";
 import type { Condition, GameContext, GameOutcome } from "../../../../data/types/conditions";
 import type { GameManager } from "../GameManager";
@@ -83,7 +84,7 @@ export class GameTerminationEvaluator {
     }
 
     private buildFactionVictoryRules(): GameOutcomeRule[] {
-        return this.gameManager.getFactionDefinitions().map((faction) => ({
+        return this.gameManager.getDefinitions<FactionDefinition>("faction").map((faction) => ({
             id: `victory:${faction.id}`,
             factionId: faction.id,
             priority: faction.victoryCondition.priority,

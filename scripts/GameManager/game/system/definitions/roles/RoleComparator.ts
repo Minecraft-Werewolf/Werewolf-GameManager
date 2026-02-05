@@ -1,21 +1,21 @@
-import type { FactionDefinition } from "../../data/factions";
-import type { RoleDefinition } from "../../data/roles";
-import type { OutGameManager } from "./OutGameManager";
+import type { FactionDefinition } from "../../../../data/factions";
+import type { RoleDefinition } from "../../../../data/roles";
+import type { DefinitionManager } from "../DefinitionManager";
 
 export class RoleComparator {
-    private constructor(private readonly outGameManager: OutGameManager) {}
+    private constructor(private readonly definitionManager: DefinitionManager) {}
 
-    public static create(outGameManager: OutGameManager): RoleComparator {
-        return new RoleComparator(outGameManager);
+    public static create(definitionManager: DefinitionManager): RoleComparator {
+        return new RoleComparator(definitionManager);
     }
 
     public compare(a: RoleDefinition, b: RoleDefinition): number {
         // 1. 陣営順
-        const aFaction = this.outGameManager.getDefinitionById<FactionDefinition>(
+        const aFaction = this.definitionManager.getDefinitionById<FactionDefinition>(
             "faction",
             a.factionId,
         );
-        const bFaction = this.outGameManager.getDefinitionById<FactionDefinition>(
+        const bFaction = this.definitionManager.getDefinitionById<FactionDefinition>(
             "faction",
             b.factionId,
         );

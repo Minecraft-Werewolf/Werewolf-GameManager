@@ -1,3 +1,4 @@
+import type { FactionDefinition } from "../../../../data/factions";
 import type {
     Condition,
     GameContext,
@@ -151,7 +152,7 @@ export class ConditionNormalizer {
 
         const factions = this.gameTerminationEvaluator
             .getGameManager()
-            .getFactionDefinitions()
+            .getDefinitions<FactionDefinition>("faction")
             .filter((f) => f.type === "standard");
 
         const selfAliveCount = ctx.aliveCountByFaction[factionId] ?? 0;

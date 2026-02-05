@@ -1,5 +1,5 @@
 import { type Player } from "@minecraft/server";
-import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
+import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
@@ -11,6 +11,10 @@ import {
     type KairoResponse,
 } from "../../@core/kairo/utils/KairoUtils";
 import { SystemMonitor } from "./system/SystemMonitor";
+import type { IngameConstants } from "./ingame/WerewolfGameDataManager";
+import { DefinitionManager, type DefinitionType } from "./system/definitions/DefinitionManager";
+import type { RoleCountMap } from "./system/definitions/roles/RoleDefinitionRegistry";
+import type { RoleDefinition } from "../data/roles";
 
 export enum GameWorldState {
     OutGame = "OutGame",
@@ -18,22 +22,17 @@ export enum GameWorldState {
 }
 
 export class SystemManager {
-    private readonly scriptEventReceiver: ScriptEventReceiver;
-    private readonly systemEventManager: SystemEventManager;
-    private readonly systemMonitor: SystemMonitor;
-    private readonly worldStateChanger: WorldStateChanger;
-    private readonly worldStateChangeBroadcaster: WorldStateChangeBroadcaster;
+    private readonly definitionManager = DefinitionManager.create(this);
+    private readonly scriptEventReceiver = ScriptEventReceiver.create(this);
+    private readonly systemEventManager = SystemEventManager.create(this);
+    private readonly systemMonitor = SystemMonitor.create(this);
+    private readonly worldStateChanger = WorldStateChanger.create(this);
+    private readonly worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
     private inGameManager: InGameManager | null = null;
     private outGameManager: OutGameManager | null = null;
     private currentWorldState: GameWorldState | null = null;
 
-    private constructor() {
-        this.scriptEventReceiver = ScriptEventReceiver.create(this);
-        this.systemEventManager = SystemEventManager.create(this);
-        this.systemMonitor = SystemMonitor.create(this);
-        this.worldStateChanger = WorldStateChanger.create(this);
-        this.worldStateChangeBroadcaster = WorldStateChangeBroadcaster.create(this);
-    }
+    private constructor() {}
 
     // アドオン初期化時の処理
     public init(): void {
@@ -122,9 +121,7 @@ export class SystemManager {
     }
 
     public async requestRegistrationDefinitions(command: KairoCommand): Promise<KairoResponse> {
-        if (!this.outGameManager)
-            return KairoUtils.buildKairoResponse({}, false, "The game is currently in progress.");
-        return this.outGameManager.requestRegistrationDefinitions(command);
+        return this.definitionManager.requestRegistrationDefinitions(command);
     }
 
     public getWerewolfGameDataDTO(): KairoResponse {
@@ -139,5 +136,53 @@ export class SystemManager {
 
     public monitorSystem(): void {
         this.systemMonitor.monitor();
+    }
+
+    public compareRoleDefinitions(a: RoleDefinition, b: RoleDefinition): number {
+        return this.definitionManager.compareRoleDefinitions(a, b);
+    }
+
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.definitionManager.sortRoleDefinitions(roles);
+    }
+
+    public getDefinitions<T>(type: DefinitionType): T[] {
+        return this.definitionManager.getDefinitions<T>(type);
+    }
+
+    public getDefinitionsByAddon<T>(type: DefinitionType, addonId: string): T[] {
+        return this.definitionManager.getDefinitionsByAddon<T>(type, addonId);
+    }
+
+    public getDefinitionsMap<T>(type: DefinitionType): Map<string, T[]> {
+        return this.definitionManager.getDefinitionsMap<T>(type);
+    }
+
+    public getDefinitionById<T>(type: DefinitionType, id: string): T | undefined {
+        return this.definitionManager.getDefinitionById<T>(type, id);
+    }
+
+    public getRoleCount(roleId: string): number {
+        return this.definitionManager.getRoleCount(roleId);
+    }
+
+    public getAllRoleCounts(): Readonly<RoleCountMap> {
+        return this.definitionManager.getAllRoleCounts();
+    }
+
+    public getEnabledRoleIds(): string[] {
+        return this.definitionManager.getEnabledRoleIds();
+    }
+
+    public getEnabledRoles(): RoleDefinition[] {
+        return this.definitionManager.getEnabledRoles();
+    }
+
+    public setRoleCount(roleId: string, amount: number): void {
+        this.definitionManager.setRoleCount(roleId, amount);
+    }
+
+    public setAllRoleCounts(counts: Record<string, number>): void {
+        this.definitionManager.setAllRoleCounts(counts);
     }
 }
