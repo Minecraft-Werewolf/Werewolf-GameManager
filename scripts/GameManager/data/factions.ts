@@ -1,5 +1,6 @@
 import type { RawMessage } from "@minecraft/server";
 import type { Condition } from "./types/conditions";
+import type { BaseDefinition } from "./roles";
 
 export interface VictoryCondition {
     priority: number;
@@ -11,9 +12,7 @@ export interface VictoryCondition {
     };
 }
 
-export interface FactionDefinition {
-    providerAddonId: string; // 登録要求時に GameManager が独自に付与する。定義側では不要
-    id: string;
+export interface FactionDefinition extends BaseDefinition {
     defaultRoleId: string;
     type: FactionCategory;
     name: RawMessage;

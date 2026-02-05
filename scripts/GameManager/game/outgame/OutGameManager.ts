@@ -7,14 +7,18 @@ import {
     type KairoCommand,
     type KairoResponse,
 } from "../../../@core/kairo/utils/KairoUtils";
-import { DefinitionManager } from "./definitions/DefinitionManager";
+import { DefinitionManager, type DefinitionType } from "./definitions/DefinitionManager";
 import { GameSettingManager } from "./settings/GameSettingManager";
+import type { RoleDefinition } from "../../data/roles";
+import type { RoleCountMap } from "./definitions/roles/RoleDefinitionRegistry";
+import { RoleComparator } from "./RoleComparator";
 
 export class OutGameManager {
     private readonly definitionManager = DefinitionManager.create(this);
     private readonly gameSettingManager = GameSettingManager.create(this);
     private readonly outGameEventManager = OutGameEventManager.create(this);
     private readonly playerInitializer = PlayerInitializer.create(this);
+    private readonly roleComparator = RoleComparator.create(this);
     private constructor(private readonly systemManager: SystemManager) {
         this.init();
     }
@@ -67,20 +71,51 @@ export class OutGameManager {
         return this.definitionManager.requestRegistrationDefinitions(command);
     }
 
-    public getDefinitions<T>(
-        addonListSaveKey: string,
-        definitionSaveKeyPrefix: string,
-    ): Promise<T[]> {
-        return this.definitionManager.getDefinitions<T>(addonListSaveKey, definitionSaveKeyPrefix);
+    public compareRoleDefinitions(a: RoleDefinition, b: RoleDefinition): number {
+        return this.roleComparator.compare(a, b);
     }
 
-    public getDefinitionsMap<T>(
-        addonListSaveKey: string,
-        definitionSaveKeyPrefix: string,
-    ): Promise<Map<string, T[]>> {
-        return this.definitionManager.getDefinitionsMap<T>(
-            addonListSaveKey,
-            definitionSaveKeyPrefix,
-        );
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.roleComparator.sort(roles);
+    }
+
+    public getDefinitions<T>(type: DefinitionType): T[] {
+        return this.definitionManager.getDefinitions<T>(type);
+    }
+
+    public getDefinitionsByAddon<T>(type: DefinitionType, addonId: string): T[] {
+        return this.definitionManager.getDefinitionsByAddon<T>(type, addonId);
+    }
+
+    public getDefinitionsMap<T>(type: DefinitionType): Map<string, T[]> {
+        return this.definitionManager.getDefinitionsMap<T>(type);
+    }
+
+    public getDefinitionById<T>(type: DefinitionType, id: string): T | undefined {
+        return this.definitionManager.getDefinitionById<T>(type, id);
+    }
+
+    public getRoleCount(roleId: string): number {
+        return this.definitionManager.getRoleCount(roleId);
+    }
+
+    public getAllRoleCounts(): Readonly<RoleCountMap> {
+        return this.definitionManager.getAllRoleCounts();
+    }
+
+    public getEnabledRoleIds(): string[] {
+        return this.definitionManager.getEnabledRoleIds();
+    }
+
+    public getEnabledRoles(): RoleDefinition[] {
+        return this.definitionManager.getEnabledRoles();
+    }
+
+    public setRoleCount(roleId: string, amount: number): void {
+        this.definitionManager.setRoleCount(roleId, amount);
+    }
+
+    public setAllRoleCounts(counts: Record<string, number>): void {
+        this.definitionManager.setAllRoleCounts(counts);
     }
 }

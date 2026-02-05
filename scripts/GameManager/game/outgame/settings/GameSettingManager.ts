@@ -4,6 +4,9 @@ import { RoleCompositionManager } from "./RoleCompositionManager";
 import { SettingTreeManager } from "./SettingTreeManager";
 import { SettingUIManager } from "./SettingUIManager";
 import type { OutGameManager } from "../OutGameManager";
+import type { RoleDefinition } from "../../../data/roles";
+import type { RoleCountMap } from "../definitions/roles/RoleDefinitionRegistry";
+import type { DefinitionType } from "../definitions/DefinitionManager";
 
 export class GameSettingManager {
     private readonly roleCompositionManager: RoleCompositionManager;
@@ -33,17 +36,51 @@ export class GameSettingManager {
         return this.rootSettingCategory;
     }
 
-    public getDefinitions<T>(
-        addonListSaveKey: string,
-        definitionSaveKeyPrefix: string,
-    ): Promise<T[]> {
-        return this.outGameManager.getDefinitions<T>(addonListSaveKey, definitionSaveKeyPrefix);
+    public compareRoleDefinitions(a: RoleDefinition, b: RoleDefinition): number {
+        return this.outGameManager.compareRoleDefinitions(a, b);
     }
 
-    public getDefinitionsMap<T>(
-        addonListSaveKey: string,
-        definitionSaveKeyPrefix: string,
-    ): Promise<Map<string, T[]>> {
-        return this.outGameManager.getDefinitionsMap<T>(addonListSaveKey, definitionSaveKeyPrefix);
+    public sortRoleDefinitions(roles: RoleDefinition[]): RoleDefinition[] {
+        return this.outGameManager.sortRoleDefinitions(roles);
+    }
+
+    public getDefinitions<T>(type: DefinitionType): T[] {
+        return this.outGameManager.getDefinitions<T>(type);
+    }
+
+    public getDefinitionsByAddon<T>(type: DefinitionType, addonId: string): T[] {
+        return this.outGameManager.getDefinitionsByAddon<T>(type, addonId);
+    }
+
+    public getDefinitionsMap<T>(type: DefinitionType): Map<string, T[]> {
+        return this.outGameManager.getDefinitionsMap<T>(type);
+    }
+
+    public getDefinitionById<T>(type: DefinitionType, id: string): T | undefined {
+        return this.outGameManager.getDefinitionById<T>(type, id);
+    }
+
+    public getRoleCount(roleId: string): number {
+        return this.outGameManager.getRoleCount(roleId);
+    }
+
+    public getAllRoleCounts(): Readonly<RoleCountMap> {
+        return this.outGameManager.getAllRoleCounts();
+    }
+
+    public getEnabledRoleIds(): string[] {
+        return this.outGameManager.getEnabledRoleIds();
+    }
+
+    public getEnabledRoles(): RoleDefinition[] {
+        return this.outGameManager.getEnabledRoles();
+    }
+
+    public setRoleCount(roleId: string, amount: number): void {
+        this.outGameManager.setRoleCount(roleId, amount);
+    }
+
+    public setAllRoleCounts(counts: Record<string, number>): void {
+        this.outGameManager.setAllRoleCounts(counts);
     }
 }

@@ -16,10 +16,14 @@ import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
 import { ConsoleManager } from "../../../@core/kairo/utils/ConsoleManager";
 import { GamePhase } from "./GamePhase";
+import type { RoleGroupDefinition } from "../../data/rolegroup";
+import type { SettingDefinition } from "../../data/settings";
 
 export type IngameConstants = {
     roleDefinitions: Record<string, RoleDefinition[]>;
     factionDefinitions: Record<string, FactionDefinition[]>;
+    roleGroupDefinitions: Record<string, RoleGroupDefinition[]>;
+    settingDefinitions: Record<string, SettingDefinition[]>;
 };
 
 export class InGameManager {
@@ -164,18 +168,6 @@ export class InGameManager {
         return this.werewolfGameDataManager;
     }
 
-    public getRoleComposition() {
-        return this.systemManager.getRoleComposition();
-    }
-
-    public getFactionData(factionId: string) {
-        return this.systemManager.getFactionData(factionId);
-    }
-
-    public getFactionDefinitions() {
-        return this.systemManager.getFactionDefinitions();
-    }
-
     public getWerewolfGameDataDTO(): KairoResponse {
         return this.werewolfGameDataManager.getWerewolfGameDataDTO();
     }
@@ -194,9 +186,5 @@ export class InGameManager {
                 newPhase: phase,
             },
         );
-    }
-
-    public compareRoleDifinition(a: RoleDefinition, b: RoleDefinition) {
-        return this.systemManager.compareRoleDifinition(a, b);
     }
 }

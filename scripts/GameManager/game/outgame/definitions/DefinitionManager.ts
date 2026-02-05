@@ -3,24 +3,21 @@ import {
     type KairoCommand,
     type KairoResponse,
 } from "../../../../@core/kairo/utils/KairoUtils";
+import type { RoleDefinition } from "../../../data/roles";
 import type { OutGameManager } from "../OutGameManager";
-import { DefinitionDataManager } from "./DefinitionDataManager";
-import { FactionDefinitionManager } from "./factions/FactionDefinitionManager";
-import { RegistrationResultNotifer } from "./RegistrationResultNotifer";
-import { RoleGroupDefinitionManager } from "./rolegroups/RoleGroupDefinitionManager";
-import { RoleDefinitionManager } from "./roles/RoleDefinitionManager";
-import { SettingDefinitionManager } from "./settings/SettingDefinitionManager";
+import { FactionDefinitionRegistry } from "./factions/FactionDefinitionRegistry";
+import { RoleGroupDefinitionRegistry } from "./rolegroups/RoleGroupDefinitionRegistry";
+import { RoleDefinitionRegistry, type RoleCountMap } from "./roles/RoleDefinitionRegistry";
+import { SettingDefinitionRegistry } from "./settings/SettingDefinitionRegistry";
 
 export const definitionTypeValues = ["role", "faction", "roleGroup", "setting"] as const;
 export type DefinitionType = (typeof definitionTypeValues)[number];
 
 export class DefinitionManager {
-    private readonly definitionDataManager = DefinitionDataManager.create(this);
-    private readonly registrationResultNotifer = RegistrationResultNotifer.create(this);
-    private readonly roleDefinitionManager = RoleDefinitionManager.create(this);
-    private readonly factionDefinitionManager = FactionDefinitionManager.create(this);
-    private readonly roleGroupDefinitionManager = RoleGroupDefinitionManager.create(this);
-    private readonly settingDefinitionManager = SettingDefinitionManager.create(this);
+    private readonly roleDefinitionRegistry = RoleDefinitionRegistry.create(this);
+    private readonly factionDefinitionRegistry = FactionDefinitionRegistry.create(this);
+    private readonly roleGroupDefinitionRegistry = RoleGroupDefinitionRegistry.create(this);
+    private readonly settingDefinitionRegistry = SettingDefinitionRegistry.create(this);
     private constructor(private readonly outGameManager: OutGameManager) {}
     public static create(outGameManager: OutGameManager): DefinitionManager {
         return new DefinitionManager(outGameManager);
@@ -36,71 +33,103 @@ export class DefinitionManager {
 
         switch (definitionType) {
             case "role":
-                return this.roleDefinitionManager.registerRoleDefinitions(
-                    command.sourceAddonId,
-                    definitions,
-                );
+                return this.roleDefinitionRegistry.register(command.sourceAddonId, definitions);
 
             case "faction":
-                return this.factionDefinitionManager.registerFactionDefinitions(
-                    command.sourceAddonId,
-                    definitions,
-                );
+                return this.factionDefinitionRegistry.register(command.sourceAddonId, definitions);
             case "roleGroup":
-                return this.roleGroupDefinitionManager.registerRoleGroupDefinitions(
+                return this.roleGroupDefinitionRegistry.register(
                     command.sourceAddonId,
                     definitions,
                 );
             case "setting":
-                return this.settingDefinitionManager.registerSettingDefinitions(
-                    command.sourceAddonId,
-                    definitions,
-                );
+                return this.settingDefinitionRegistry.register(command.sourceAddonId, definitions);
             default:
                 return KairoUtils.buildKairoResponse({}, false);
         }
     }
 
-    public notifiyRegistrationResult(
-        isSuccessful: boolean,
-        type: DefinitionType,
-        addonId: string,
-        definitionIds: string[],
-    ) {
-        this.registrationResultNotifer.notifiy(isSuccessful, type, addonId, definitionIds);
+    public getDefinitions<T>(type: DefinitionType): T[] {
+        switch (type) {
+            case "role":
+                return this.roleDefinitionRegistry.getAll() as T[];
+            case "faction":
+                return this.factionDefinitionRegistry.getAll() as T[];
+            case "roleGroup":
+                return this.roleGroupDefinitionRegistry.getAll() as T[];
+            case "setting":
+                return this.settingDefinitionRegistry.getAll() as T[];
+            default:
+                return [];
+        }
     }
 
-    public saveDefinitionsToDataVault(
-        addonId: string,
-        definitionsJSON: string,
-        addonListSaveKey: string,
-        definitionSaveKeyPrefix: string,
-    ) {
-        return this.definitionDataManager.saveDefinitionsToDataVault(
-            addonId,
-            definitionsJSON,
-            addonListSaveKey,
-            definitionSaveKeyPrefix,
-        );
+    public getDefinitionsByAddon<T>(type: DefinitionType, addonId: string): T[] {
+        switch (type) {
+            case "role":
+                return this.roleDefinitionRegistry.getByAddon(addonId) as T[];
+            case "faction":
+                return this.factionDefinitionRegistry.getByAddon(addonId) as T[];
+            case "roleGroup":
+                return this.roleGroupDefinitionRegistry.getByAddon(addonId) as T[];
+            case "setting":
+                return this.settingDefinitionRegistry.getByAddon(addonId) as T[];
+            default:
+                return [];
+        }
     }
 
-    public getDefinitions<T>(
-        addonListSaveKey: string,
-        definitionSaveKeyPrefix: string,
-    ): Promise<T[]> {
-        return this.definitionDataManager.getDefinitions<T>(
-            addonListSaveKey,
-            definitionSaveKeyPrefix,
-        );
+    public getDefinitionsMap<T>(type: DefinitionType): Map<string, T[]> {
+        switch (type) {
+            case "role":
+                return this.roleDefinitionRegistry.getMap() as Map<string, T[]>;
+            case "faction":
+                return this.factionDefinitionRegistry.getMap() as Map<string, T[]>;
+            case "roleGroup":
+                return this.roleGroupDefinitionRegistry.getMap() as Map<string, T[]>;
+            case "setting":
+                return this.settingDefinitionRegistry.getMap() as Map<string, T[]>;
+            default:
+                return new Map();
+        }
     }
 
-    public getDefinitionsMap<T>(
-        addonListSaveKey: string,
-        definitionSaveKeyPrefix: string,
-    ): Promise<Map<string, T[]>> {
-        return this.definitionDataManager.getDefinitionsMap<T>(
-            addonListSaveKey,
-            definitionSaveKeyPrefix,
-        );
+    public getDefinitionById<T>(type: DefinitionType, id: string): T | undefined {
+        switch (type) {
+            case "role":
+                return this.roleDefinitionRegistry.getById(id) as T | undefined;
+            case "faction":
+                return this.factionDefinitionRegistry.getById(id) as T | undefined;
+            case "roleGroup":
+                return this.roleGroupDefinitionRegistry.getById(id) as T | undefined;
+            case "setting":
+                return this.settingDefinitionRegistry.getById(id) as T | undefined;
+            default:
+                return undefined;
+        }
+    }
+
+    public getRoleCount(roleId: string): number {
+        return this.roleDefinitionRegistry.getRoleCount(roleId);
+    }
+
+    public getAllRoleCounts(): Readonly<RoleCountMap> {
+        return this.roleDefinitionRegistry.getAllRoleCounts();
+    }
+
+    public getEnabledRoleIds(): string[] {
+        return this.roleDefinitionRegistry.getEnabledRoleIds();
+    }
+
+    public getEnabledRoles(): RoleDefinition[] {
+        return this.roleDefinitionRegistry.getEnabledRoles();
+    }
+
+    public setRoleCount(roleId: string, amount: number): void {
+        this.roleDefinitionRegistry.setRoleCount(roleId, amount);
+    }
+
+    public setAllRoleCounts(counts: Record<string, number>): void {
+        this.roleDefinitionRegistry.setAllRoleCounts(counts);
     }
 }

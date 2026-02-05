@@ -14,7 +14,7 @@ export const KAIRO_DATAVAULT_SAVE_KEYS = {
     ROLEGROUP_DEFINITIONS_PREFIX: "werewolf.roleGroup.definitions.",
     SETTING_DEFINITIONS_ADDON_LIST: "werewolf.setting.definitions.addonList",
     SETTING_DEFINITIONS_PREFIX: "werewolf.setting.definitions.",
-    ROLE_COMPOSITION_PREFIX: "werewolf.roleComposition."
+    ROLE_COMPOSITION: "werewolf.roleComposition"
 }
 
 export const SYSTEMS = {

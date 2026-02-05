@@ -1,5 +1,5 @@
 import { KairoUtils } from "../../../../../@core/kairo/utils/KairoUtils";
-import type { VictoryCondition } from "../../../../data/factions";
+import type { FactionDefinition, VictoryCondition } from "../../../../data/factions";
 import type {
     AndCondition,
     ComparisonCondition,
@@ -12,20 +12,21 @@ import type {
     PlayerAliveCountComparison,
     RemainingTimeComparison,
 } from "../../../../data/types/conditions";
-import type { FactionRegistrationValidator } from "./FactionRegistrationValidator";
+import { BaseDefinitionValidator } from "../BaseDefinitionValidator";
+import type { FactionDefinitionRegistry } from "./FactionDefinitionRegistry";
 
-export class FactionDefinitionValidator {
-    private constructor(
-        private readonly factionRegistrationValidator: FactionRegistrationValidator,
-    ) {}
-
-    public static create(
-        roleRegistrationValidator: FactionRegistrationValidator,
-    ): FactionDefinitionValidator {
-        return new FactionDefinitionValidator(roleRegistrationValidator);
+export class FactionDefinitionValidator extends BaseDefinitionValidator<
+    FactionDefinition,
+    FactionDefinitionRegistry
+> {
+    private constructor(registry: FactionDefinitionRegistry) {
+        super(registry);
+    }
+    public static create(factionDefinitionRegistry: FactionDefinitionRegistry) {
+        return new FactionDefinitionValidator(factionDefinitionRegistry);
     }
 
-    public isFaction(data: unknown): boolean {
+    public isDefinition(data: unknown): data is FactionDefinition {
         if (!this.isObject(data)) return false;
 
         if (typeof data.id !== "string") return false;
@@ -178,9 +179,5 @@ export class FactionDefinitionValidator {
 
     private isOperator(op: unknown): boolean {
         return op === "==" || op === "!=" || op === "<" || op === "<=" || op === ">" || op === ">=";
-    }
-
-    private isObject(x: unknown): x is Record<string, unknown> {
-        return typeof x === "object" && x !== null && !Array.isArray(x);
     }
 }

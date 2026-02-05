@@ -7,6 +7,7 @@ import { KAIRO_DATAVAULT_SAVE_KEYS, SYSTEMS } from "../../../constants/systems";
 import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
 import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
 import type { FactionDefinition } from "../../../data/factions";
+import type { RoleCountMap } from "../definitions/roles/RoleDefinitionRegistry";
 
 // クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {
@@ -23,49 +24,48 @@ export class RoleCompositionManager {
         }
 
         const registeredRoleDefinitions =
-            await this.gameSettingManager.getDefinitionsMap<RoleDefinition>(
-                KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_ADDON_LIST,
-                KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_PREFIX,
-            );
+            this.gameSettingManager.getDefinitionsMap<RoleDefinition>("role");
 
-        const workingRoleDefinitions: Map<string, RoleDefinition[]> =
-            this.deepCopyRegisteredRoleDefinitions(registeredRoleDefinitions);
+        const workingRoleComposition: RoleCountMap = {
+            ...this.gameSettingManager.getAllRoleCounts(),
+        };
 
-        this.openOverviewForm(player, workingRoleDefinitions);
+        this.openOverviewForm(player, registeredRoleDefinitions, workingRoleComposition);
     }
 
     private async openOverviewForm(
         player: Player,
-        workingRoleDefinitions: Map<string, RoleDefinition[]>,
+        registeredRoleDefinitions: Map<string, RoleDefinition[]>,
+        workingRoleComposition: RoleCountMap,
     ): Promise<void> {
-        const addonIds = Array.from(workingRoleDefinitions.keys()).sort((a, b) =>
+        const addonIds = Array.from(registeredRoleDefinitions.keys()).sort((a, b) =>
             a.localeCompare(b, "en", { numeric: true }),
         );
 
         let roleCount = 0;
-        const factions = await this.gameSettingManager.getDefinitions<FactionDefinition>(
-            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_ADDON_LIST,
-            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_PREFIX,
-        );
-        const workingRolesList = this.filterRolesByCount(workingRoleDefinitions).map(
-            (role): RawMessage => {
+        const workingRolesList = [...registeredRoleDefinitions.values()]
+            .flat()
+            .filter((role) => (workingRoleComposition[role.id] ?? 0) > 0)
+            .map((role): RawMessage => {
                 const rawMessage: RawMessage[] = [];
-                const faction = factions.find((faction) => faction.id === role.factionId);
+                const faction = this.gameSettingManager.getDefinitionById<FactionDefinition>(
+                    "faction",
+                    role.factionId,
+                );
 
                 if (role.color !== undefined) rawMessage.push({ text: `\n${role.color}` });
                 else if (faction !== undefined)
                     rawMessage.push({ text: `\n${faction.defaultColor}` });
 
-                if (role.count?.amount === undefined) return {};
+                const amount = workingRoleComposition[role.id] ?? 0;
 
                 rawMessage.push(role.name);
-                rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${role.count?.amount}` });
+                rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${amount}` });
 
-                roleCount += role.count.amount;
+                roleCount += amount;
 
                 return { rawtext: rawMessage };
-            },
-        );
+            });
 
         const formBody: RawMessage[] = [];
         if (workingRolesList.length === 0)
@@ -105,41 +105,49 @@ export class RoleCompositionManager {
         }
         const { selection, canceled, cancelationReason } = await form.show(player);
         if (canceled || selection === undefined) {
-            if (await this.hasRoleCompositionChanged(workingRoleDefinitions))
-                return this.openCancelForm(player, workingRoleDefinitions);
+            if (this.hasRoleCompositionChanged(workingRoleComposition))
+                return this.openCancelForm(
+                    player,
+                    registeredRoleDefinitions,
+                    workingRoleComposition,
+                );
             else return;
         }
 
-        if (selection === 0) this.applyChanges(player, workingRoleDefinitions);
+        if (selection === 0) this.applyChanges(player, workingRoleComposition);
         else {
             const addonId = addonIds[selection - 1];
             if (addonId === undefined) return;
-            return this.openEditorForm(player, workingRoleDefinitions, addonId);
+            return this.openEditorForm(
+                player,
+                registeredRoleDefinitions,
+                workingRoleComposition,
+                addonId,
+            );
         }
     }
 
     public async openEditorForm(
         player: Player,
-        workingRoleDefinitions: Map<string, RoleDefinition[]>,
+        registeredRoleDefinitions: Map<string, RoleDefinition[]>,
+        workingRoleComposition: RoleCountMap,
         addonId: string,
     ): Promise<void> {
         const form = new ModalFormData().title({ translate: `${addonId}.name` });
 
-        const registeredRolesForAddon = workingRoleDefinitions.get(addonId);
+        const registeredRolesForAddon = registeredRoleDefinitions.get(addonId);
         if (registeredRolesForAddon === undefined) return;
 
-        const factions = await this.gameSettingManager.getDefinitions<FactionDefinition>(
-            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_ADDON_LIST,
-            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_PREFIX,
-        );
-
         for (const role of registeredRolesForAddon) {
-            const faction = factions.find((faction) => faction.id === role.factionId);
+            const faction = this.gameSettingManager.getDefinitionById<FactionDefinition>(
+                "faction",
+                role.factionId,
+            );
             if (faction === undefined) continue;
 
             const color = role.color ?? faction.defaultColor;
             const maxValue = role.count?.max ?? 4;
-            const defaultValue = role.count?.amount ?? 0;
+            const defaultValue = workingRoleComposition[role.id] ?? 0;
             const valueStep = role.count?.step ?? 1;
             const tooltip = {
                 rawtext: [
@@ -167,22 +175,22 @@ export class RoleCompositionManager {
 
         const { formValues, canceled, cancelationReason } = await form.show(player);
         if (canceled || formValues === undefined) {
-            return this.openOverviewForm(player, workingRoleDefinitions);
+            return this.openOverviewForm(player, registeredRoleDefinitions, workingRoleComposition);
         }
 
         registeredRolesForAddon.forEach((role, index) => {
             const newValue = formValues[index];
             if (typeof newValue !== "number") return;
-
-            if (role.count?.amount !== undefined) role.count.amount = newValue;
+            workingRoleComposition[role.id] = newValue;
         });
 
-        return this.openOverviewForm(player, workingRoleDefinitions);
+        return this.openOverviewForm(player, registeredRoleDefinitions, workingRoleComposition);
     }
 
     public async openCancelForm(
         player: Player,
-        workingRoleDefinitions: Map<string, RoleDefinition[]>,
+        registeredRoleDefinitions: Map<string, RoleDefinition[]>,
+        workingRoleComposition: RoleCountMap,
     ): Promise<void> {
         const form = new MessageFormData()
             .title({
@@ -204,54 +212,26 @@ export class RoleCompositionManager {
 
         const { selection, canceled, cancelationReason } = await form.show(player);
         if (canceled || selection === undefined) {
-            return this.openOverviewForm(player, workingRoleDefinitions);
+            return this.openOverviewForm(player, registeredRoleDefinitions, workingRoleComposition);
         }
 
         switch (selection) {
             case 0:
                 return;
             case 1:
-                this.openOverviewForm(player, workingRoleDefinitions);
-                break;
+                return this.openOverviewForm(
+                    player,
+                    registeredRoleDefinitions,
+                    workingRoleComposition,
+                );
         }
     }
 
-    public async applyChanges(
-        player: Player,
-        working: Map<string, RoleDefinition[]>,
-    ): Promise<void> {
-        if (await !this.hasRoleCompositionChanged(working)) return;
+    public async applyChanges(player: Player, workingRoleComposition: RoleCountMap): Promise<void> {
+        if (!this.hasRoleCompositionChanged(workingRoleComposition)) return;
 
-        const registered = await this.gameSettingManager.getDefinitionsMap<RoleDefinition>(
-            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_ADDON_LIST,
-            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_PREFIX,
-        );
-        for (const [addonId, registeredRoles] of registered.entries()) {
-            const workingRoles = working.get(addonId);
-            if (!workingRoles) continue;
-            const workingMap = new Map(workingRoles.map((r) => [r.id, r]));
-
-            const compactRoleComposition: Record<string, number> = {};
-            for (const role of registeredRoles) {
-                const w = workingMap.get(role.id);
-                if (!w) continue;
-
-                if (!role.count) role.count = { amount: 0 };
-
-                role.count.amount = w.count?.amount ?? 0;
-
-                if (role.count.amount <= 0) continue;
-
-                compactRoleComposition[role.id] = role.count.amount;
-            }
-
-            KairoUtils.saveToDataVault(
-                KAIRO_DATAVAULT_SAVE_KEYS.ROLE_COMPOSITION_PREFIX + addonId,
-                JSON.stringify(compactRoleComposition),
-            );
-        }
-
-        const roleDefinitionsAfterApply = this.gameSettingManager.getSelectedRolesForNextGame();
+        this.gameSettingManager.setAllRoleCounts(workingRoleComposition);
+        const roleDefinitionsAfterApply = this.gameSettingManager.getEnabledRoles();
 
         world.sendMessage({
             translate:
@@ -261,24 +241,23 @@ export class RoleCompositionManager {
         const roleListMessage: RawMessage[] = [];
         roleListMessage.push({ text: SYSTEMS.SEPARATOR.LINE_CYAN + "\n" });
 
-        const factions = await this.gameSettingManager.getDefinitions<FactionDefinition>(
-            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_ADDON_LIST,
-            KAIRO_DATAVAULT_SAVE_KEYS.FACTION_DEFINITIONS_PREFIX,
-        );
         let roleCount = 0;
         for (const role of this.gameSettingManager.sortRoleDefinitions(roleDefinitionsAfterApply)) {
             const rawMessage: RawMessage[] = [];
-            const faction = factions.find((faction) => faction.id === role.factionId);
+            const faction = this.gameSettingManager.getDefinitionById<FactionDefinition>(
+                "faction",
+                role.factionId,
+            );
 
             if (role.color !== undefined) rawMessage.push({ text: `${role.color}` });
             else if (faction !== undefined) rawMessage.push({ text: `${faction.defaultColor}` });
 
-            if (role.count?.amount === undefined) continue;
+            const amount = this.gameSettingManager.getRoleCount(role.id);
 
             rawMessage.push(role.name);
-            rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${role.count.amount}\n` });
+            rawMessage.push({ text: `${SYSTEMS.COLOR_CODE.RESET}: ${amount}\n` });
 
-            roleCount += role.count.amount;
+            roleCount += amount;
 
             roleListMessage.push({ rawtext: rawMessage });
         }
@@ -304,45 +283,14 @@ export class RoleCompositionManager {
         return;
     }
 
-    private deepCopyRegisteredRoleDefinitions(
-        source: Map<string, RoleDefinition[]>,
-    ): Map<string, RoleDefinition[]> {
-        const copy = new Map<string, RoleDefinition[]>();
+    private hasRoleCompositionChanged(working: RoleCountMap): boolean {
+        const original = this.gameSettingManager.getAllRoleCounts();
 
-        for (const [addonId, roles] of source.entries()) {
-            copy.set(addonId, JSON.parse(JSON.stringify(roles)));
-        }
+        const roleIds = new Set([...Object.keys(original), ...Object.keys(working)]);
 
-        return copy;
-    }
-
-    private filterRolesByCount(RoleDefinitions: Map<string, RoleDefinition[]>): RoleDefinition[] {
-        return [...RoleDefinitions.values()].flat().filter((role) => (role.count?.amount ?? 0) > 0);
-    }
-
-    private async hasRoleCompositionChanged(
-        working: Map<string, RoleDefinition[]>,
-    ): Promise<boolean> {
-        const original = await this.gameSettingManager.getDefinitionsMap<RoleDefinition>(
-            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_ADDON_LIST,
-            KAIRO_DATAVAULT_SAVE_KEYS.ROLE_DEFINITIONS_PREFIX,
-        );
-        for (const [addonId, originalRoles] of original.entries()) {
-            const workingRoles = working.get(addonId);
-            if (!workingRoles) return true;
-
-            const originalMap = new Map(originalRoles.map((r) => [r.id, r]));
-
-            for (const w of workingRoles) {
-                const o = originalMap.get(w.id);
-                if (!o) return true;
-
-                const oAmount = o.count?.amount ?? 0;
-                const wAmount = w.count?.amount ?? 0;
-
-                if (oAmount !== wAmount) {
-                    return true;
-                }
+        for (const roleId of roleIds) {
+            if ((original[roleId] ?? 0) !== (working[roleId] ?? 0)) {
+                return true;
             }
         }
 

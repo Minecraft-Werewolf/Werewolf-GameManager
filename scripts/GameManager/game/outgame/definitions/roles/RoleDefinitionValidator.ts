@@ -1,17 +1,20 @@
 import { KairoUtils } from "../../../../../@core/kairo/utils/KairoUtils";
 import type { RoleDefinition } from "../../../../data/roles";
-import type { RoleRegistrationValidator } from "./RoleRegistrationValidator";
+import { BaseDefinitionValidator } from "../BaseDefinitionValidator";
+import type { RoleDefinitionRegistry } from "./RoleDefinitionRegistry";
 
-export class RoleDefinitionValidator {
-    private constructor(private readonly roleRegistrationValidator: RoleRegistrationValidator) {}
-
-    public static create(
-        roleRegistrationValidator: RoleRegistrationValidator,
-    ): RoleDefinitionValidator {
-        return new RoleDefinitionValidator(roleRegistrationValidator);
+export class RoleDefinitionValidator extends BaseDefinitionValidator<
+    RoleDefinition,
+    RoleDefinitionRegistry
+> {
+    private constructor(registry: RoleDefinitionRegistry) {
+        super(registry);
+    }
+    public static create(roleDefinitionRegistry: RoleDefinitionRegistry) {
+        return new RoleDefinitionValidator(roleDefinitionRegistry);
     }
 
-    public isRole(data: unknown): data is RoleDefinition {
+    public isDefinition(data: unknown): data is RoleDefinition {
         if (!this.isObject(data)) return false;
 
         if (typeof data.id !== "string") return false;
@@ -57,10 +60,6 @@ export class RoleDefinitionValidator {
         }
 
         return true;
-    }
-
-    private isObject(x: unknown): x is Record<string, unknown> {
-        return typeof x === "object" && x !== null && !Array.isArray(x);
     }
 
     private isStringArray(x: unknown): x is string[] {

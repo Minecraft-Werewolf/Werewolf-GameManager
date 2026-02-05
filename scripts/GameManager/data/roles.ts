@@ -19,9 +19,12 @@ interface RoleKey {
 
 type RoleRef = RoleKey;
 
-export interface RoleDefinition {
+export interface BaseDefinition {
     providerAddonId: string; // 登録要求時に GameManager が独自に付与する。定義側では不要
     id: string;
+}
+
+export interface RoleDefinition extends BaseDefinition {
     name: RawMessage;
     description: RawMessage;
     factionId: string;
@@ -32,7 +35,6 @@ export interface RoleDefinition {
     };
     isExcludedFromSurvivalCheck?: boolean; // 主に狂人枠で使用
     count?: {
-        amount?: number;
         max?: number;
         step?: number;
     };

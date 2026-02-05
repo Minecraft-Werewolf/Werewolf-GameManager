@@ -1,0 +1,47 @@
+import type { FactionDefinition } from "../../data/factions";
+import type { RoleDefinition } from "../../data/roles";
+import type { OutGameManager } from "./OutGameManager";
+
+export class RoleComparator {
+    private constructor(private readonly outGameManager: OutGameManager) {}
+
+    public static create(outGameManager: OutGameManager): RoleComparator {
+        return new RoleComparator(outGameManager);
+    }
+
+    public compare(a: RoleDefinition, b: RoleDefinition): number {
+        // 1. 陣営順
+        const aFaction = this.outGameManager.getDefinitionById<FactionDefinition>(
+            "faction",
+            a.factionId,
+        );
+        const bFaction = this.outGameManager.getDefinitionById<FactionDefinition>(
+            "faction",
+            b.factionId,
+        );
+
+        if (aFaction === undefined && bFaction !== undefined) return 1;
+        if (aFaction !== undefined && bFaction === undefined) return -1;
+        if (aFaction !== undefined && bFaction !== undefined) {
+            const diff = aFaction.sortIndex - bFaction.sortIndex;
+            if (diff !== 0) return diff;
+        }
+
+        // 2. 狂人・非狂人
+        const aIsMad = a.isExcludedFromSurvivalCheck === true ? 1 : 0;
+        const bIsMad = b.isExcludedFromSurvivalCheck === true ? 1 : 0;
+        if (aIsMad !== bIsMad) return aIsMad - bIsMad;
+
+        // 3. addonId
+        const addonCompare = a.providerAddonId.localeCompare(b.providerAddonId, "en", {
+            numeric: true,
+        });
+        if (addonCompare !== 0) return addonCompare;
+
+        // 4. sortIndex
+        return a.sortIndex - b.sortIndex;
+    }
+    public sort(roles: readonly RoleDefinition[]): RoleDefinition[] {
+        return [...roles].sort((a, b) => this.compare(a, b));
+    }
+}

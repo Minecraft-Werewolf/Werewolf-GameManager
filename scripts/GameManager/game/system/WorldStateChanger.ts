@@ -1,3 +1,5 @@
+import type { FactionDefinition } from "../../data/factions";
+import type { RoleDefinition } from "../../data/roles";
 import type { IngameConstants } from "../ingame/InGameManager";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 
@@ -15,17 +17,27 @@ export class WorldStateChanger {
         let ingameConstants: IngameConstants | null = null;
 
         switch (next) {
-            case GameWorldState.InGame:
+            case GameWorldState.InGame: {
+                const outGameManager = this.systemManager.getOutGameManager();
+                if (outGameManager === null) return;
+
                 ingameConstants = {
                     roleDefinitions: this.mapToObject(
-                        this.systemManager.getRegisteredRoleDefinitions(),
+                        outGameManager.getDefinitionManager().getDefinitionsMap("role"),
                     ),
                     factionDefinitions: this.mapToObject(
-                        this.systemManager.getRegisteredFactionDefinitions(),
+                        outGameManager.getDefinitionManager().getDefinitionsMap("faction"),
+                    ),
+                    roleGroupDefinitions: this.mapToObject(
+                        outGameManager.getDefinitionManager().getDefinitionsMap("roleGroup"),
+                    ),
+                    settingDefinitions: this.mapToObject(
+                        outGameManager.getDefinitionManager().getDefinitionsMap("setting"),
                     ),
                 };
                 this.toInGame(ingameConstants);
                 break;
+            }
 
             case GameWorldState.OutGame:
                 this.toOutGame();
