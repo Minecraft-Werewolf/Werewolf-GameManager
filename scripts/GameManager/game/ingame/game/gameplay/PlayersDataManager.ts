@@ -1,7 +1,7 @@
 import type { Player } from "@minecraft/server";
 import type { InGameManager } from "../../InGameManager";
 import { PlayerData, type ParticipationState } from "./PlayerData";
-import type { WerewolfGameDataManager } from "../../WerewolfGameDataManager";
+import type { WerewolfGameDataManager } from "./WerewolfGameDataManager";
 
 export class PlayersDataManager {
     private dataMap: Map<string, PlayerData> = new Map();

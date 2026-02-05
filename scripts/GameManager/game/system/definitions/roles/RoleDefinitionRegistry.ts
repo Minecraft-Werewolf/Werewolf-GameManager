@@ -4,7 +4,6 @@ import { KAIRO_DATAVAULT_SAVE_KEYS } from "../../../../constants/systems";
 import type { RoleDefinition } from "../../../../data/roles";
 import { BaseDefinitionRegistry } from "../BaseDefinitionRegistry";
 import type { DefinitionManager } from "../DefinitionManager";
-import { RoleComparator } from "./RoleComparator";
 import { RoleDefinitionValidator } from "./RoleDefinitionValidator";
 
 export type RoleCountMap = Record<string, number>;

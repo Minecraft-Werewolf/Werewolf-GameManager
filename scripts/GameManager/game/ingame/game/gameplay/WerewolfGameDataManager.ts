@@ -1,10 +1,10 @@
-import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
-import type { RoleDefinition } from "../../data/roles";
-import type { DefinitionType } from "../system/definitions/DefinitionManager";
-import type { RoleCountMap } from "../system/definitions/roles/RoleDefinitionRegistry";
-import type { InGameManager } from "./InGameManager";
-import type { PlayerData } from "./game/gameplay/PlayerData";
-import { PlayersDataManager } from "./game/gameplay/PlayersDataManager";
+import { KairoUtils, type KairoResponse } from "../../../../../@core/kairo/utils/KairoUtils";
+import type { RoleDefinition } from "../../../../data/roles";
+import type { DefinitionType } from "../../../system/definitions/DefinitionManager";
+import type { RoleCountMap } from "../../../system/definitions/roles/RoleDefinitionRegistry";
+import type { InGameManager } from "../../InGameManager";
+import type { PlayerData } from "./PlayerData";
+import { PlayersDataManager } from "./PlayersDataManager";
 
 export type WerewolfGameData = {
     remainingTicks: number;

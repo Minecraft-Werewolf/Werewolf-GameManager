@@ -8,7 +8,7 @@ import { InGameEventManager } from "./events/InGameEventManager";
 import { GameTerminator } from "./game/terminate/GameTerminator";
 import { GameFinalizer } from "./game/GameFinalizer";
 import type { PlayerData } from "./game/gameplay/PlayerData";
-import { WerewolfGameDataManager } from "./WerewolfGameDataManager";
+import { WerewolfGameDataManager } from "./game/gameplay/WerewolfGameDataManager";
 import { GamePreparationManager } from "./game/GamePreparationManager";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
