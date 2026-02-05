@@ -1,11 +1,19 @@
 import { world } from "@minecraft/server";
-import { Kairo } from "./@core/kairo";
-import type { KairoCommand, KairoResponse } from "./@core/kairo/utils/KairoUtils";
+import {
+    ConsoleManager,
+    Kairo,
+    KairoUtils,
+    type KairoCommand,
+    type KairoResponse,
+} from "@kairo-ts/router";
 import { SystemManager } from "./GameManager/game/SystemManager";
 import { MinecraftDimensionTypes } from "@minecraft/vanilla-data";
+import { properties } from "./properties";
 
 async function main(): Promise<void> {
-    Kairo.init(); // client
+    Kairo.init(properties);
+    KairoUtils.init(properties);
+    ConsoleManager.init(properties);
 }
 
 Kairo.onActivate = () => {

@@ -1,4 +1,4 @@
-import { KairoUtils } from "../../../../../@core/kairo/utils/KairoUtils";
+import { KairoUtils } from "@kairo-ts/router";
 import type { FactionDefinition, VictoryCondition } from "../../../../data/factions";
 import type {
     AndCondition,

@@ -2,11 +2,11 @@ import { world, type Player } from "@minecraft/server";
 import type { SystemManager } from "../SystemManager";
 import { OutGameEventManager } from "./events/OutGameEventManager";
 import { PlayerInitializer } from "./PlayerInitializer";
-import { KairoUtils } from "../../../@core/kairo/utils/KairoUtils";
 import { GameSettingManager } from "./settings/GameSettingManager";
 import type { RoleDefinition } from "../../data/roles";
 import type { DefinitionType } from "../system/definitions/DefinitionManager";
 import type { RoleCountMap } from "../system/definitions/roles/RoleDefinitionRegistry";
+import { KairoUtils } from "@kairo-ts/router";
 
 export class OutGameManager {
     private readonly gameSettingManager = GameSettingManager.create(this);

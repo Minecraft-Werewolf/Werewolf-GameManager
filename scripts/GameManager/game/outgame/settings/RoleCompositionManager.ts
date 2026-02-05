@@ -3,11 +3,10 @@ import type { GameSettingManager } from "./GameSettingManager";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import type { RoleDefinition } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
-import { KAIRO_DATAVAULT_SAVE_KEYS, SYSTEMS } from "../../../constants/systems";
-import { ConsoleManager } from "../../../../@core/kairo/utils/ConsoleManager";
-import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
+import { SYSTEMS } from "../../../constants/systems";
 import type { FactionDefinition } from "../../../data/factions";
 import type { RoleCountMap } from "../../system/definitions/roles/RoleDefinitionRegistry";
+import { ConsoleManager } from "@kairo-ts/router";
 
 // クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {

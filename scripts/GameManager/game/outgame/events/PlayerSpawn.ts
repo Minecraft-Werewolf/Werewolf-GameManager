@@ -1,7 +1,7 @@
 import { PlayerSpawnAfterEvent, world } from "@minecraft/server";
 import { BaseEventHandler } from "../../events/BaseEventHandler";
 import type { OutGameEventManager } from "./OutGameEventManager";
-import { KairoUtils } from "../../../../@core/kairo/utils/KairoUtils";
+import { KairoUtils } from "@kairo-ts/router";
 
 export class OutGamePlayerSpawnHandler extends BaseEventHandler<undefined, PlayerSpawnAfterEvent> {
     private constructor(private readonly outGameEventManager: OutGameEventManager) {

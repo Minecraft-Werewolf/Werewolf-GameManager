@@ -1,4 +1,4 @@
-import { KairoUtils } from "../../../../../@core/kairo/utils/KairoUtils";
+import { KairoUtils } from "@kairo-ts/router";
 import type { RoleDefinition } from "../../../../data/roles";
 import { BaseDefinitionValidator } from "../BaseDefinitionValidator";
 import type { RoleDefinitionRegistry } from "./RoleDefinitionRegistry";

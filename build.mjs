@@ -9,5 +9,7 @@ await esbuild.build({
     outdir: "BP/scripts",
     sourcemap: false,
 
+    mainFields: ["module", "main"],
+
     external: ["@minecraft/server", "@minecraft/server-ui"],
 });

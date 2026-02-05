@@ -3,6 +3,8 @@
  * propertiesは、アドオン間通信においても、識別などに利用する
  */
 
+import type { KairoAddonProperties } from "@kairo-ts/router";
+
 export type SemVer = {
     major: number;
     minor: number;
@@ -16,7 +18,7 @@ export type SemVer = {
  * Modify and use where # is written at the end of the sentence as appropriate
  */
 
-export const properties = {
+export const properties: KairoAddonProperties = {
     id: "werewolf-gamemanager", // a-z & 0-9 - _
     metadata: {
         /** 製作者の名前 */

@@ -11,8 +11,6 @@ import type { PlayerData } from "./game/gameplay/PlayerData";
 import { WerewolfGameDataManager } from "./game/gameplay/WerewolfGameDataManager";
 import { GamePreparationManager } from "./game/GamePreparationManager";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
-import { KairoUtils, type KairoResponse } from "../../../@core/kairo/utils/KairoUtils";
-import { ConsoleManager } from "../../../@core/kairo/utils/ConsoleManager";
 import { GamePhase } from "./GamePhase";
 import type { DefinitionType } from "../system/definitions/DefinitionManager";
 import type { RoleDefinition } from "../../data/roles";
@@ -20,6 +18,7 @@ import type { RoleCountMap } from "../system/definitions/roles/RoleDefinitionReg
 import type { FactionDefinition } from "../../data/factions";
 import type { RoleGroupDefinition } from "../../data/rolegroup";
 import type { SettingDefinition } from "../../data/settings";
+import { ConsoleManager, KairoUtils, type KairoResponse } from "@kairo-ts/router";
 
 export type IngameConstants = {
     roleComposition: RoleCountMap;

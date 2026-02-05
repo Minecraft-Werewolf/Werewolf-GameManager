@@ -5,15 +5,11 @@ import { SystemEventManager } from "./system/events/SystemEventManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChangeBroadcaster } from "./system/WorldStateChangeBroadcaster";
 import { WorldStateChanger } from "./system/WorldStateChanger";
-import {
-    KairoUtils,
-    type KairoCommand,
-    type KairoResponse,
-} from "../../@core/kairo/utils/KairoUtils";
 import { SystemMonitor } from "./system/SystemMonitor";
 import { DefinitionManager, type DefinitionType } from "./system/definitions/DefinitionManager";
 import type { RoleCountMap } from "./system/definitions/roles/RoleDefinitionRegistry";
 import type { RoleDefinition } from "../data/roles";
+import { KairoUtils, type KairoCommand, type KairoResponse } from "@kairo-ts/router";
 
 export enum GameWorldState {
     OutGame = "OutGame",
