@@ -25,7 +25,7 @@ export const properties: KairoAddonProperties = {
         authors: ["shizuku86"],
     },
     header: {
-        name: "Werewolf-GameManager",
+        name: "Werewolf GameManager",
         description: "functions as the central GameManager for the Werewolf game.",
         version: {
             major: 1,
