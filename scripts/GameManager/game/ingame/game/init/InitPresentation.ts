@@ -5,7 +5,6 @@ import {
     HudElement,
     HudVisibility,
     InputPermissionCategory,
-    TicksPerSecond,
     world,
     type Player,
 } from "@minecraft/server";
@@ -13,7 +12,6 @@ import type { GameInitializer } from "./GameInitializer";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../../constants/translate";
 import { SYSTEMS } from "../../../../constants/systems";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
-import { DEFAULT_SETTINGS } from "../../../../constants/settings";
 
 export class InitPresentation {
     private constructor(private readonly gameInitializer: GameInitializer) {}

@@ -32,12 +32,6 @@ export class RoleComparator {
         const bIsMad = b.isExcludedFromSurvivalCheck === true ? 1 : 0;
         if (aIsMad !== bIsMad) return aIsMad - bIsMad;
 
-        // 3. addonId
-        const addonCompare = a.providerAddonId.localeCompare(b.providerAddonId, "en", {
-            numeric: true,
-        });
-        if (addonCompare !== 0) return addonCompare;
-
         // 4. sortIndex
         return a.sortIndex - b.sortIndex;
     }

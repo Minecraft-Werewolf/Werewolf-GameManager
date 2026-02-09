@@ -44,6 +44,7 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     WEREWOLF_GAME_SETTING_TITLE: "werewolf-gamemanager.setting.game.title",
     WEREWOLF_ROLE_SETTING_TITLE: "werewolf-gamemanager.setting.role.title",
     WEREWOLF_ROLE_COMPOSITION_TITLE: "werewolf-gamemanager.setting.roleComposition.title",
+    WEREWOLF_ROLE_COMPOSITION_ALL_ROLES_BUTTON: "werewolf-gamemanager.setting.roleComposition.allAddons.button",
 
     WEREWOLF_ROLE_COMPOSITION_CONFIRM: "werewolf-gamemanager.setting.roleComposition.confirm",
     WEREWOLF_ROLE_COMPOSITION_NONE_ROLES: "werewolf-gamemanager.setting.roleComposition.noneRoles",

@@ -46,6 +46,7 @@ werewolf-gamemanager.item.name.personal_settings=§bYour Settings§r
 werewolf-gamemanager.setting.game.title=Game Settings
 werewolf-gamemanager.setting.role.title=Role Settings
 werewolf-gamemanager.setting.roleComposition.title=Role Composition
+werewolf-gamemanager.setting.roleComposition.allRoles.button=All Roles
 werewolf-gamemanager.setting.roleComposition.confirm=Confirm
 werewolf-gamemanager.setting.roleComposition.noneRoles=No roles have been assigned
 werewolf-gamemanager.setting.roleComposition.selectedRoles=Selected Roles

@@ -45,6 +45,7 @@ export class RoleCompositionManager {
         const workingRolesList = [...registeredRoleDefinitions.values()]
             .flat()
             .filter((role) => (workingRoleComposition[role.id] ?? 0) > 0)
+            .sort((a, b) => this.gameSettingManager.compareRoleDefinitions(a, b))
             .map((role): RawMessage => {
                 const rawMessage: RawMessage[] = [];
                 const faction = this.gameSettingManager.getDefinitionById<FactionDefinition>(
@@ -98,7 +99,11 @@ export class RoleCompositionManager {
             .button({
                 translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_CONFIRM,
             })
-            .divider();
+            .divider()
+            .button({
+                translate:
+                    WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_ALL_ROLES_BUTTON,
+            });
         for (const addonId of addonIds) {
             form.button({ translate: `${addonId}.name` });
         }
@@ -114,8 +119,14 @@ export class RoleCompositionManager {
         }
 
         if (selection === 0) this.applyChanges(player, workingRoleComposition);
+        else if (selection === 1)
+            this.openEditorFormForAllAddons(
+                player,
+                registeredRoleDefinitions,
+                workingRoleComposition,
+            );
         else {
-            const addonId = addonIds[selection - 1];
+            const addonId = addonIds[selection - 2];
             if (addonId === undefined) return;
             return this.openEditorForm(
                 player,
@@ -178,6 +189,71 @@ export class RoleCompositionManager {
         }
 
         registeredRolesForAddon.forEach((role, index) => {
+            const newValue = formValues[index];
+            if (typeof newValue !== "number") return;
+            workingRoleComposition[role.id] = newValue;
+        });
+
+        return this.openOverviewForm(player, registeredRoleDefinitions, workingRoleComposition);
+    }
+
+    public async openEditorFormForAllAddons(
+        player: Player,
+        registeredRoleDefinitions: Map<string, RoleDefinition[]>,
+        workingRoleComposition: RoleCountMap,
+    ): Promise<void> {
+        const form = new ModalFormData().title({
+            translate:
+                WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_ROLE_COMPOSITION_ALL_ROLES_BUTTON,
+        });
+
+        const registeredAllRoles: RoleDefinition[] = [...registeredRoleDefinitions.values()]
+            .flat()
+            .sort((a, b) => this.gameSettingManager.compareRoleDefinitions(a, b))
+            .map((role) => {
+                const faction = this.gameSettingManager.getDefinitionById<FactionDefinition>(
+                    "faction",
+                    role.factionId,
+                );
+                if (faction === undefined) return null;
+
+                const color = role.color ?? faction.defaultColor;
+                const maxValue = role.count?.max ?? 4;
+                const defaultValue = workingRoleComposition[role.id] ?? 0;
+                const valueStep = role.count?.step ?? 1;
+                const tooltip = {
+                    rawtext: [
+                        { text: color },
+                        role.name,
+                        { text: `${SYSTEMS.COLOR_CODE.RESET}\n` },
+                        role.description,
+                        { text: "\n\n" },
+                        /**
+                         * Name:
+                         * Faction:
+                         * Count:
+                         * Fortune Result:
+                         * Medium Result:
+                         */
+                    ],
+                };
+                form.slider(
+                    { rawtext: [{ text: color }, role.name, { text: SYSTEMS.COLOR_CODE.RESET }] },
+                    0,
+                    maxValue,
+                    { defaultValue, tooltip, valueStep },
+                );
+
+                return role;
+            })
+            .filter((role) => role !== null);
+
+        const { formValues, canceled, cancelationReason } = await form.show(player);
+        if (canceled || formValues === undefined) {
+            return this.openOverviewForm(player, registeredRoleDefinitions, workingRoleComposition);
+        }
+
+        registeredAllRoles.forEach((role, index) => {
             const newValue = formValues[index];
             if (typeof newValue !== "number") return;
             workingRoleComposition[role.id] = newValue;

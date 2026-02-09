@@ -46,6 +46,7 @@ werewolf-gamemanager.item.name.personal_settings=§b個人設定§r
 werewolf-gamemanager.setting.game.title=ゲーム設定
 werewolf-gamemanager.setting.role.title=役職設定
 werewolf-gamemanager.setting.roleComposition.title=役職構成
+werewolf-gamemanager.setting.roleComposition.allRoles.button=全ての役職
 werewolf-gamemanager.setting.roleComposition.confirm=決定
 werewolf-gamemanager.setting.roleComposition.noneRoles=役職が設定されていません
 werewolf-gamemanager.setting.roleComposition.roleList=役職一覧
