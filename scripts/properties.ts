@@ -1,27 +1,8 @@
-/**
- * scripts/properties から manifest.jsonを自動生成する
- * propertiesは、アドオン間通信においても、識別などに利用する
- */
-
 import type { KairoAddonProperties } from "@kairo-ts/router";
 
-export type SemVer = {
-    major: number;
-    minor: number;
-    patch: number;
-    prerelease?: string | undefined; // "preview.3" / "rc.1"
-    build?: string | undefined; // "abc123" (commit)
-};
-
-/**
- * 文末に # が記述されている箇所を適宜修正して使用します。
- * Modify and use where # is written at the end of the sentence as appropriate
- */
-
 export const properties: KairoAddonProperties = {
-    id: "werewolf-gamemanager", // a-z & 0-9 - _
+    id: "werewolf-gamemanager", //# // a-z & 0-9 - _
     metadata: {
-        /** 製作者の名前 */
         authors: ["shizuku86"],
     },
     header: {
@@ -34,24 +15,8 @@ export const properties: KairoAddonProperties = {
             prerelease: "dev.2",
             // build: "abc123",
         },
-        min_engine_version: [1, 21, 100],
-        uuid: "f5610c00-9981-4818-8995-fb8589cd4002",
+        min_engine_version: [1, 21, 132],
     },
-    resourcepack: {
-        name: "Use BP Name",
-        description: "Use BP Description",
-        uuid: "5bfda9c4-e577-46d0-a5ea-3ed417e687e2",
-        module_uuid: "d0b64a65-62d5-40f6-89b4-f8534a7340e2",
-    },
-    modules: [
-        {
-            type: "script",
-            language: "javascript",
-            entry: "scripts/index.js",
-            version: "header.version",
-            uuid: "22edc901-d92a-4e4a-827e-edf8b459c8f9",
-        },
-    ],
     dependencies: [
         {
             module_name: "@minecraft/server",
@@ -64,17 +29,11 @@ export const properties: KairoAddonProperties = {
     ],
     /** 前提アドオン */
     requiredAddons: {
-        kairo: "1.0.0-dev.1", // "kairo": "1.0.0"
+        /**
+         * id: version (string) // "kairo": "1.0.0"
+         */
+        kairo: "1.0.0-dev.1",
         "kairo-datavault": "1.0.0-dev.1",
     },
     tags: ["official", "stable"],
 };
-
-/**
- * "official" を非公式に付与することは許可されていません。
- * 公認のアドオンには "approved" を付与します。
- * It is not allowed to assign "official" unofficially.
- * For approved addons, assign "approved".
- *
- */
-export const supportedTags: string[] = ["official", "approved", "stable", "experimental"];
