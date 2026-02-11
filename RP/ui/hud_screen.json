@@ -45,7 +45,7 @@
 
   "werewolf_version": {
     "type": "label",
-    "text": "§4Werewolf§r v2.0.0-beta.3",
+    "text": "§4Werewolf§r v2.0.0-beta.4",
     "text_alignment": "right",
     "shadow": true
   },
