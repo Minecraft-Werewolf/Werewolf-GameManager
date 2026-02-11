@@ -6,7 +6,7 @@ import type { InGameEventManager } from "./InGameEventManager";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS, SYSTEMS } from "../../../constants/systems";
 import type { GameEventType } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
-import { KairoUtils } from "@kairo-ts/router";
+import { KairoUtils } from "@kairo-js/router";
 
 export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {

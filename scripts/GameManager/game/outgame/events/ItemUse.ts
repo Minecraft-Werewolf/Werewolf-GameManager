@@ -4,7 +4,7 @@ import type { OutGameEventManager } from "./OutGameEventManager";
 import { ITEM_USE } from "../../../constants/itemuse";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../../constants/systems";
-import { KairoUtils } from "@kairo-ts/router";
+import { KairoUtils } from "@kairo-js/router";
 
 export class OutGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     private constructor(private readonly outGameEventManager: OutGameEventManager) {

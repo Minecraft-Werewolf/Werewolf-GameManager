@@ -6,7 +6,7 @@ import { GameSettingManager } from "./settings/GameSettingManager";
 import type { RoleDefinition } from "../../data/roles";
 import type { DefinitionType } from "../system/definitions/DefinitionManager";
 import type { RoleCountMap } from "../system/definitions/roles/RoleDefinitionRegistry";
-import { KairoUtils } from "@kairo-ts/router";
+import { KairoUtils } from "@kairo-js/router";
 
 export class OutGameManager {
     private readonly gameSettingManager = GameSettingManager.create(this);

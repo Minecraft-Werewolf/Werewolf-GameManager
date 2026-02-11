@@ -18,7 +18,7 @@ import type { RoleCountMap } from "../system/definitions/roles/RoleDefinitionReg
 import type { FactionDefinition } from "../../data/factions";
 import type { RoleGroupDefinition } from "../../data/rolegroup";
 import type { SettingDefinition } from "../../data/settings";
-import { ConsoleManager, KairoUtils, type KairoResponse } from "@kairo-ts/router";
+import { ConsoleManager, KairoUtils, type KairoResponse } from "@kairo-js/router";
 
 export type IngameConstants = {
     roleComposition: RoleCountMap;

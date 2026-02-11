@@ -1,4 +1,4 @@
-import { KairoUtils, type KairoCommand, type KairoResponse } from "@kairo-ts/router";
+import { KairoUtils, type KairoCommand, type KairoResponse } from "@kairo-js/router";
 import type { RoleDefinition } from "../../../data/roles";
 import type { SystemManager } from "../../SystemManager";
 import { FactionDefinitionRegistry } from "./factions/FactionDefinitionRegistry";

@@ -1,4 +1,4 @@
-import type { KairoCommand, KairoResponse } from "@kairo-ts/router";
+import type { KairoCommand, KairoResponse } from "@kairo-js/router";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
 import type { SystemManager } from "../SystemManager";
 

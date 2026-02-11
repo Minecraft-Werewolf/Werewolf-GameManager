@@ -1,4 +1,4 @@
-import { ConsoleManager, KairoUtils, type KairoResponse } from "@kairo-ts/router";
+import { ConsoleManager, KairoUtils, type KairoResponse } from "@kairo-js/router";
 import type { BaseDefinition } from "../../../data/roles";
 import type { DefinitionManager, DefinitionType } from "./DefinitionManager";
 

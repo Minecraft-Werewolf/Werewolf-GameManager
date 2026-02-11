@@ -2,7 +2,7 @@ import { Player } from "@minecraft/server";
 import type { SettingCategoryNode } from "../../../data/settings";
 import { ActionFormData } from "@minecraft/server-ui";
 import type { GameSettingManager } from "./GameSettingManager";
-import { KairoUtils } from "@kairo-ts/router";
+import { KairoUtils } from "@kairo-js/router";
 
 export class SettingUIManager {
     private constructor(private readonly gameSettingManager: GameSettingManager) {}

@@ -1,4 +1,4 @@
-import type { KairoAddonProperties } from "@kairo-ts/router";
+import type { KairoAddonProperties } from "@kairo-js/router";
 
 export const properties: KairoAddonProperties = {
     id: "werewolf-gamemanager", //# // a-z & 0-9 - _

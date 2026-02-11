@@ -1,4 +1,4 @@
-import { ConsoleManager, KairoUtils } from "@kairo-ts/router";
+import { ConsoleManager, KairoUtils } from "@kairo-js/router";
 import { KAIRO_DATAVAULT_SAVE_KEYS } from "../../../../constants/systems";
 import type { RoleDefinition } from "../../../../data/roles";
 import { BaseDefinitionRegistry } from "../BaseDefinitionRegistry";

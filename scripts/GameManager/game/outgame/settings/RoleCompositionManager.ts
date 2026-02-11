@@ -6,7 +6,7 @@ import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate
 import { SYSTEMS } from "../../../constants/systems";
 import type { FactionDefinition } from "../../../data/factions";
 import type { RoleCountMap } from "../../system/definitions/roles/RoleDefinitionRegistry";
-import { ConsoleManager } from "@kairo-ts/router";
+import { ConsoleManager } from "@kairo-js/router";
 
 // クラスが肥大化気味なので、UI部分と責務を分断したい
 export class RoleCompositionManager {

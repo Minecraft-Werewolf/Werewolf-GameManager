@@ -9,7 +9,7 @@ import { SystemMonitor } from "./system/SystemMonitor";
 import { DefinitionManager, type DefinitionType } from "./system/definitions/DefinitionManager";
 import type { RoleCountMap } from "./system/definitions/roles/RoleDefinitionRegistry";
 import type { RoleDefinition } from "../data/roles";
-import { KairoUtils, type KairoCommand, type KairoResponse } from "@kairo-ts/router";
+import { KairoUtils, type KairoCommand, type KairoResponse } from "@kairo-js/router";
 
 export enum GameWorldState {
     OutGame = "OutGame",
