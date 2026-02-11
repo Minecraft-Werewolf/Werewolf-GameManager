@@ -54,6 +54,7 @@ export class PlayerInitializer {
     public initializePlayer(player: Player, isHost: boolean): void {
         // ゲームモード
         player.setGameMode(GameMode.Adventure);
+        player.nameTag = player.name;
 
         // Hud
         player.onScreenDisplay.setHudVisibility(HudVisibility.Hide, [

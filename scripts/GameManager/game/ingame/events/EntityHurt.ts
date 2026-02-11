@@ -36,6 +36,7 @@ export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityH
 
         if (hurtPlayerHealthComponent.currentValue === 0) {
             hurtPlayerData.isAlive = false;
+            hurtPlayer.nameTag = `§b${hurtPlayer.name}§r`;
             hurtPlayer.setGameMode(GameMode.Spectator);
 
             if (damageSource.damagingEntity === undefined) return;
