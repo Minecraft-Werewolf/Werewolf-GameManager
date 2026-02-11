@@ -10,7 +10,7 @@ export const properties: KairoAddonProperties = {
         description: "functions as the central GameManager for the Werewolf game.",
         version: {
             major: 1,
-            minor: 0,
+            minor: 1,
             patch: 0,
             prerelease: "dev.2",
             // build: "abc123",
