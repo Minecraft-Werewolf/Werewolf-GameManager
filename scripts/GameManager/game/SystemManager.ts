@@ -43,6 +43,10 @@ export class SystemManager {
         return this.instance;
     }
 
+    public static destroy(): void {
+        this.instance = null;
+    }
+
     public async handleScriptEvent(data: KairoCommand): Promise<void | KairoResponse> {
         return this.scriptEventReceiver.handleScriptEvent(data);
     }
