@@ -2,7 +2,6 @@ import {
     EntityComponentTypes,
     GameMode,
     Player,
-    TicksPerSecond,
     world,
     type EntityHurtAfterEvent,
 } from "@minecraft/server";
