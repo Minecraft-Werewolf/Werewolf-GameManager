@@ -122,6 +122,10 @@ export class GameManager {
                     skillState.cooldownRemaining -= 1;
                 }
             });
+
+            if (playerData.tmpArrowCooldown > 0) {
+                playerData.tmpArrowCooldown--;
+            }
         });
     };
 

@@ -1,6 +1,7 @@
 import { EntityComponentTypes, ItemLockMode, ItemStack, type Player } from "@minecraft/server";
 import type { GameManager } from "../GameManager";
 import { ITEM_USE } from "../../../../constants/itemuse";
+import { MinecraftItemTypes } from "@minecraft/vanilla-data";
 
 export interface InGameItem {
     typeId: string;
@@ -22,11 +23,11 @@ export class ItemManager {
             slot: 0,
             lockMode: ItemLockMode.slot,
         },
-        {
-            typeId: "minecraft:arrow",
-            slot: 9,
-            lockMode: ItemLockMode.slot,
-        },
+        //{
+        //    typeId: "minecraft:arrow",
+        //    slot: 9,
+        //    lockMode: ItemLockMode.slot,
+        //},
         {
             typeId: ITEM_USE.SKILL_TRIGGER_ITEM_ID,
             slot: 8,
@@ -63,6 +64,21 @@ export class ItemManager {
                 itemStack.lockMode = item.lockMode;
 
                 inventory.container.setItem(item.slot, itemStack);
+            }
+        }
+
+        if (playerData.tmpArrowCooldown > 0) {
+            const arrow = inventory.container.getItem(9);
+            if (arrow) {
+                inventory.container.setItem(9, undefined);
+            }
+        } else {
+            const arrow = inventory.container.getItem(9);
+            if (arrow?.typeId !== MinecraftItemTypes.Arrow) {
+                const itemStack = new ItemStack(MinecraftItemTypes.Arrow);
+                itemStack.lockMode = ItemLockMode.slot;
+
+                inventory.container.setItem(9, itemStack);
             }
         }
     }

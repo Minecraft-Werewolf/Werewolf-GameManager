@@ -44,6 +44,8 @@ export class ActionBarManager {
         // スキルクールタイム表示
         const skillCTs: RawMessage[] = [];
         playerData.skillStates.forEach((skillState, skillId) => {
+            if (skillState.remainingUses <= 0) return;
+
             const cooldown =
                 skillState.cooldownRemaining > 0
                     ? { text: `${skillState.cooldownRemaining}s` }
@@ -82,6 +84,14 @@ export class ActionBarManager {
         if (revealedPlayers.length > 0) {
             revealedPlayers.push({ text: revealedPlayerNames.join(" ,") });
             actionBarRawMessage.rawtext.push(...revealedPlayers, { text: "\n" });
+        }
+
+        // 襲撃CT表示
+        if (playerData.tmpArrowCooldown > 0) {
+            actionBarRawMessage.rawtext.push(lineBreak, {
+                translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TMP_ARROW_COOLDOWN,
+                with: [playerData.tmpArrowCooldown.toString()],
+            });
         }
 
         // 制限時間表示

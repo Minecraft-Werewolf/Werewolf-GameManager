@@ -18,6 +18,8 @@ export class PlayerData {
     public role: RoleDefinition | null = null;
     public readonly skillStates = new Map<string, PlayerSkillState>();
 
+    public tmpArrowCooldown: number = 0; // 仮襲撃クールタイム
+
     constructor(
         private readonly playerDataManager: PlayersDataManager,
         public readonly player: Player,
@@ -57,10 +59,11 @@ export class PlayerData {
             // const cooldown = gameManager.resolveSkillValue(skill.cooldown);
             // const maxUses = gameManager.resolveSkillValue(skill.maxUses);
 
+            const uses = skill.maxUses as number;
             this.skillStates.set(skill.id, {
                 name: skill.name,
                 cooldownRemaining: 0,
-                remainingUses: 3, // とりあえず3で固定しておく
+                remainingUses: uses, // とりあえずnumberで固定
             });
         }
     }

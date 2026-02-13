@@ -21,6 +21,7 @@ export class InGameProjectileHitEntityHandler extends BaseEventHandler<
 
         if (source?.typeId !== MinecraftEntityTypes.Player) return;
         if (projectile.typeId !== MinecraftEntityTypes.Arrow) return;
+        if (ev.getEntityHit().entity?.typeId !== MinecraftEntityTypes.Player) return;
         const player = source as Player;
         player.playSound("random.orb");
     }

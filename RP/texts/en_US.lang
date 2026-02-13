@@ -75,3 +75,6 @@ werewolf-gamemanager.game.actionbar.skill.ready=§bReady§r
 werewolf-gamemanager.game.actionbar.remainingTime=§bRemaining Time: %ss§r
 werewolf-gamemanager.game.selfKill.message=§cYou took your own life§r
 werewolf-gamemanager.game.slain.message=§cYou were slain by %s§r
+
+werewolf-gamemanager.game.tmp.arrowCooldown=§cArrow CT: %ss§r
+werewolf-gamemanager.game.tmp.arrowCooldown.error.message=§cArrow is on cooldown for %s seconds§r

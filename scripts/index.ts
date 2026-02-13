@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";
+import { system, world } from "@minecraft/server";
 import { Kairo, type KairoCommand, type KairoResponse } from "@kairo-js/router";
 import { SystemManager } from "./GameManager/game/SystemManager";
 import { MinecraftDimensionTypes } from "@minecraft/vanilla-data";

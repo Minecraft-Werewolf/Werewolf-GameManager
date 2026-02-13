@@ -2,6 +2,7 @@ import {
     EntityComponentTypes,
     GameMode,
     Player,
+    TicksPerSecond,
     world,
     type EntityHurtAfterEvent,
 } from "@minecraft/server";
@@ -41,9 +42,9 @@ export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityH
 
             if (damageSource.damagingEntity === undefined) return;
             if (damageSource.damagingEntity.typeId !== MinecraftEntityTypes.Player) return;
-            const damagingPlayer = damageSource.damagingEntity;
+            const hitPlayer = damageSource.damagingEntity as Player;
 
-            if (damagingPlayer.id === hurtPlayer.id) {
+            if (hitPlayer.id === hurtPlayer.id) {
                 hurtPlayer.sendMessage({
                     translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SELF_KILL_MESSAGE,
                 });
@@ -52,6 +53,16 @@ export class InGameEntityHurtHandler extends BaseEventHandler<undefined, EntityH
                     translate: WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_SLAIN_MESSAGE,
                     with: [damageSource.damagingEntity.nameTag],
                 });
+
+                if (damageSource.damagingProjectile?.typeId === MinecraftEntityTypes.Arrow) {
+                    const hitPlayerData = gameManager.getPlayerData(hitPlayer.id);
+                    hitPlayerData.tmpArrowCooldown = 15;
+
+                    const inventory = hitPlayer.getComponent(EntityComponentTypes.Inventory);
+                    if (!inventory) return;
+
+                    inventory.container.setItem(0, undefined);
+                }
             }
         }
     }

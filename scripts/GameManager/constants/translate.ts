@@ -87,5 +87,8 @@ export const WEREWOLF_GAMEMANAGER_TRANSLATE_IDS = {
     
     WEREWOLF_GAME_ACTIONBAR_REMAINING_TIME: "werewolf-gamemanager.game.actionbar.remainingTime",
     WEREWOLF_GAME_SELF_KILL_MESSAGE: "werewolf-gamemanager.game.selfKill.message",
-    WEREWOLF_GAME_SLAIN_MESSAGE: "werewolf-gamemanager.game.slain.message"
+    WEREWOLF_GAME_SLAIN_MESSAGE: "werewolf-gamemanager.game.slain.message",
+
+    WEREWOLF_GAME_TMP_ARROW_COOLDOWN: "werewolf-gamemanager.game.tmp.arrowCooldown",
+    WEREWOLF_GAME_TMP_ARROW_COOLDOWN_ERROR_MESSAGE: "werewolf-gamemanager.game.tmp.arrowCooldown.error.message"
 };

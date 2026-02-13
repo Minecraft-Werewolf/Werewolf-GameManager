@@ -7,6 +7,7 @@ import { KAIRO_COMMAND_TARGET_ADDON_IDS, SYSTEMS } from "../../../constants/syst
 import type { GameEventType } from "../../../data/roles";
 import { WEREWOLF_GAMEMANAGER_TRANSLATE_IDS } from "../../../constants/translate";
 import { KairoUtils } from "@kairo-js/router";
+import { MinecraftItemTypes } from "@minecraft/vanilla-data";
 
 export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, ItemUseAfterEvent> {
     private constructor(private readonly inGameEventManager: InGameEventManager) {
@@ -35,7 +36,31 @@ export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, I
                     SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_GAME_RESET,
                 );
                 break;
-            case ITEM_USE.SKILL_TRIGGER_ITEM_ID:
+            case MinecraftItemTypes.Bow: {
+                const player = source;
+                const playerData = this.inGameEventManager
+                    .getInGameManager()
+                    .getPlayerData(player.id);
+                if (!playerData || !playerData.isAlive) return;
+                if (!playerData.role) return;
+                if (!playerData.role.skills) return;
+
+                if (playerData.tmpArrowCooldown > 0) {
+                    player.playSound(SYSTEMS.ERROR.SOUND_ID, {
+                        pitch: SYSTEMS.ERROR.SOUND_PITCH,
+                        volume: SYSTEMS.ERROR.SOUND_VOLUME,
+                        location: player.location,
+                    });
+                    player.sendMessage({
+                        translate:
+                            WEREWOLF_GAMEMANAGER_TRANSLATE_IDS.WEREWOLF_GAME_TMP_ARROW_COOLDOWN_ERROR_MESSAGE,
+                        with: [playerData.tmpArrowCooldown.toString()],
+                    });
+                }
+
+                break;
+            }
+            case ITEM_USE.SKILL_TRIGGER_ITEM_ID: {
                 const player = source;
                 const playerData = this.inGameEventManager
                     .getInGameManager()
@@ -84,6 +109,7 @@ export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, I
 
                 if (kairoResponse.data.success) {
                     skillState.remainingUses -= 1;
+                    console.log(skillState.remainingUses);
                     skillState.cooldownRemaining =
                         (playerData.role.skills.find((skill) => skill.id === skillId)
                             ?.cooldown as number) ?? 0;
@@ -91,6 +117,7 @@ export class InGameItemUseHandler extends BaseEventHandler<ItemUseBeforeEvent, I
                 }
 
                 break;
+            }
         }
     }
 }
